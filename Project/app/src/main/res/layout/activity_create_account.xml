@@ -2,17 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.CreateAccountActivity">
 
-    <!-- Title for the login screen -->
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/title_create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log In"
+        android:text="Create an Account"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginTop="30dp"
@@ -20,51 +18,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Username field -->
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/username_create"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Username"
-        android:layout_marginTop="16dp"
         android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/title_create_account"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8" />
 
-    <!-- Password field -->
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/password_create"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@id/username_create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8" />
 
-    <!-- Login button -->
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/password_create"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log In"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Create Account button -->
-    <Button
-        android:id="@+id/createAccountButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Account"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
+        app:layout_constraintTop_toBottomOf="@id/registerButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
