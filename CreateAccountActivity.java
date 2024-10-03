@@ -55,12 +55,12 @@ public class CreateAccountActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
+                                if (task.isSuccessful() && username_create.contains(" ")) {
                                     Toast.makeText(CreateAccountActivity.this, "Authentication created.",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(CreateAccountActivity.this, "Authentication failed.",
+                                    Toast.makeText(CreateAccountActivity.this, "Authentication failed or username has white space",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
