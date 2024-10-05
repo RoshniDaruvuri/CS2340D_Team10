@@ -2,6 +2,8 @@ package com.example.wandersyncteam10.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_create_account);
 
         EditText usernameEditText = findViewById(R.id.username_create);
@@ -32,14 +35,12 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         viewModel = new CreateAccountActivityBackEnd();
 
-        // Login button click listener
         loginButton.setOnClickListener(view -> {
             Intent intent = new Intent(CreateAccountActivity.this, Navigation.class);
             startActivity(intent);
             finish();
         });
 
-        // Register button click listener
         registerButton.setOnClickListener(view -> {
             String email = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -49,7 +50,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            // Call the createAccount method from viewModel
             viewModel.createAccount(email, password, CreateAccountActivity.this);
         });
     }
