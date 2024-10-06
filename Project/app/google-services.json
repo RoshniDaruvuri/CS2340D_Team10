@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1062255533135",
+    "firebase_url": "https://wandersync-6096a-default-rtdb.firebaseio.com",
+    "project_id": "wandersync-6096a",
+    "storage_bucket": "wandersync-6096a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062255533135:android:11cbf89505b6cf2a50de3a",
+        "android_client_info": {
+          "package_name": "com.example.wandersyncteam10"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWI1hgJVN109eaTBuszkO1g19bmxIjkqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
