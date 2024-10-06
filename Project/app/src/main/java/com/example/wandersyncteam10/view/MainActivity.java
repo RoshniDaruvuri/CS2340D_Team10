@@ -2,36 +2,69 @@ package com.example.wandersyncteam10.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.wandersyncteam10.R;
+import com.example.wandersyncteam10.viewModel.LoginActivityViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
+
+    private EditText editTextUsername;
+    private EditText editTextPassword;
+    private Button loginButton;
+    private Button createAccountButton;
+    private LoginActivityViewModel loginActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        editTextUsername = findViewById(R.id.username);
+        editTextPassword = findViewById(R.id.password);
+        loginButton = findViewById(R.id.loginButton);
+        createAccountButton = findViewById(R.id.createAccountButton);
+
+        loginActivityViewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
+
+        createAccountButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+            startActivity(intent);
+            finish();
         });
 
-        // Handle Create Account button click
-        findViewById(R.id.createAccountButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+
+        loginActivityViewModel.getUser().observe(this, firebaseUser -> {
+            if (firebaseUser != null) {
+                Toast.makeText(MainActivity.this, "User has logged in!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, Logistics_Activity.class);
                 startActivity(intent);
+                finish();
             }
+        });
+
+        loginActivityViewModel.getLoginError().observe(this, errorMessage -> {
+            if (errorMessage != null) {
+                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        loginButton.setOnClickListener(view -> {
+            String email = editTextUsername.getText().toString().trim();
+            String password = editTextPassword.getText().toString().trim();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            loginActivityViewModel.loginUser(email, password);
         });
     }
 }
