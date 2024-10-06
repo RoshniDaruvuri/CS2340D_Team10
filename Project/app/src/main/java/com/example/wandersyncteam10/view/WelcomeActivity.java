@@ -22,8 +22,8 @@ public class WelcomeActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to MainActivity when "Start" is clicked
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                // Navigate to LoginActivity when "Start" is clicked
+                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
