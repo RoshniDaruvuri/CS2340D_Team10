@@ -6,14 +6,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wandersyncteam10.R;
 import com.example.wandersyncteam10.viewModel.CreateAccountActivityBackEnd;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class CreateAccountActivity extends AppCompatActivity {
@@ -33,7 +29,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         viewModel = new CreateAccountActivityBackEnd();
 
         loginButton.setOnClickListener(view -> {
-            Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
+            Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         });

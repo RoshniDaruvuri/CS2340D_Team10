@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.wandersyncteam10.R;
 import com.example.wandersyncteam10.viewModel.LoginActivityViewModel;
-import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextUsername;
     private EditText editTextPassword;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         editTextUsername = findViewById(R.id.username);
         editTextPassword = findViewById(R.id.password);
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         loginActivityViewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
 
         createAccountButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+            Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
             startActivity(intent);
             finish();
         });
@@ -42,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         loginActivityViewModel.getUser().observe(this, firebaseUser -> {
             if (firebaseUser != null) {
-                Toast.makeText(MainActivity.this, "User has logged in!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, Logistics_Activity.class);
+                Toast.makeText(LoginActivity.this, "User has logged in!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, Logistics_Activity.class);
                 startActivity(intent);
                 finish();
             }
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         loginActivityViewModel.getLoginError().observe(this, errorMessage -> {
             if (errorMessage != null) {
-                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             String password = editTextPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
                 return;
             }
 

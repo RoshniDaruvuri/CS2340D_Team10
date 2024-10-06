@@ -53,10 +53,10 @@
         </activity> <!-- WelcomeActivity is accessed from SplashActivity -->
         <activity
             android:name=".view.WelcomeActivity"
-            android:exported="true" /> <!-- MainActivity contains login screen, accessed from WelcomeActivity -->
+            android:exported="true" /> <!-- LoginActivity contains login screen, accessed from WelcomeActivity -->
         <activity
-            android:name=".view.MainActivity"
-            android:exported="true" /> <!-- CreateAccountActivity for new account creation, accessed from MainActivity -->
+            android:name=".view.LoginActivity"
+            android:exported="true" /> <!-- CreateAccountActivity for new account creation, accessed from LoginActivity -->
         <activity
             android:name=".view.CreateAccountActivity"
             android:exported="true" />
