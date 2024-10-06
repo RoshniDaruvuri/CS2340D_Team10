@@ -14,14 +14,11 @@ import com.google.firebase.auth.FirebaseAuth;
 public class CreateAccountActivityBackEnd {
     public FirebaseAuth mAuth;
 
-    // Constructor
     public CreateAccountActivityBackEnd() {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    // Method to handle account creation
     public void createAccount(String email, String password, Context context) {
-        // Basic validation to check for white space
         if (email.isEmpty() || password.isEmpty() || email.contains(" ") || password.contains(" ")) {
             Toast.makeText(context, "Username or password cannot be empty or contain white space, try again.", Toast.LENGTH_SHORT).show();
             return;

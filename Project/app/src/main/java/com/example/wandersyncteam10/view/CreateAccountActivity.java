@@ -6,14 +6,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wandersyncteam10.R;
 import com.example.wandersyncteam10.viewModel.CreateAccountActivityBackEnd;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class CreateAccountActivity extends AppCompatActivity {
@@ -21,7 +17,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
@@ -32,14 +28,12 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         viewModel = new CreateAccountActivityBackEnd();
 
-        // Login button click listener
         loginButton.setOnClickListener(view -> {
-            Intent intent = new Intent(CreateAccountActivity.this, Navigation.class);
+            Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         });
 
-        // Register button click listener
         registerButton.setOnClickListener(view -> {
             String email = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -47,10 +41,12 @@ public class CreateAccountActivity extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(CreateAccountActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
                 return;
+            } else {
+                viewModel.createAccount(email, password, CreateAccountActivity.this);
+                //switch to Logistics_Activity after registration
+                Intent intent = new Intent(CreateAccountActivity.this, Logistics_Activity.class);
+                startActivity(intent);
             }
-
-            // Call the createAccount method from viewModel
-            viewModel.createAccount(email, password, CreateAccountActivity.this);
         });
     }
 }
