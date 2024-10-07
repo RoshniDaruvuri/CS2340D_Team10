@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         });
 
-
+        // Observe the login result
         loginActivityViewModel.getUser().observe(this, firebaseUser -> {
             if (firebaseUser != null) {
                 Toast.makeText(LoginActivity.this, "User has logged in!", Toast.LENGTH_SHORT).show();
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginButton.setOnClickListener(view -> {
+        loginButton.setOnClickListener(view -> { 
             String email = editTextUsername.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
 
