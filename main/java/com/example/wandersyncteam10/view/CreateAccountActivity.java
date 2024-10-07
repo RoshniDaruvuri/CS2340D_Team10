@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private CreateAccountActivityBackEnd viewModel;
+    //Firebase Authentication
     public FirebaseAuth mAuth;
 
     @Override
