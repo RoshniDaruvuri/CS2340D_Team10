@@ -7,16 +7,85 @@
     android:layout_height="match_parent"
     tools:context=".view.Destination_Activity">
 
-    <TextView
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Destination Screen"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+
+    <!-- linear layout for form to show up   -->
+    <Button
+        android:id="@+id/log_travel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Destination Screen"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Log Travel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/form_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/log_travel_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <EditText
+            android:id="@+id/location_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Travel Location"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <EditText
+            android:id="@+id/start_date_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Start Date (yyyy-mm-dd)"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <EditText
+            android:id="@+id/end_date_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter End Date (yyyy-mm-dd)"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <Button
+            android:id="@+id/calculate_vacation_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calculate Vacation Time" />
+
+
+
+    </LinearLayout>
+
+    <!-- Travel logs ListView (always visible) -->
+    <ListView
+        android:id="@+id/travel_logs_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/form_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:dividerHeight="1dp" />
+
+
 
     <!-- First button -->
+
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
@@ -50,6 +119,7 @@
         app:layout_constraintHorizontal_weight="1" />
 
     <!-- Fourth button -->
+
     <Button
         android:id="@+id/button4"
         android:layout_width="0dp"
