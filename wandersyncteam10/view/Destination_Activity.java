@@ -25,13 +25,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Destination_Activity extends AppCompatActivity {
 
     private LinearLayout formLayout;
-    private EditText locationInput, startDateInput, endDateInput;
+    private EditText locationInput, startDateInput, endDateInput, startInput, endInput, durationOutcome;
     private ListView travelLogsList;
-    private Button calculateDurationButton;
+    private Button calculateDurationButton, calculateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +51,17 @@ public class Destination_Activity extends AppCompatActivity {
         travelLogsList = findViewById(R.id.travel_logs_list);
         calculateDurationButton = findViewById(R.id.calculate_duration_button);
 
+        startInput = findViewById(R.id.start_input);
+        endInput = findViewById(R.id.end_input);
+        durationOutcome = findViewById(R.id.duration_outcome);
+
+        startInput.setVisibility(View.GONE);
+        endInput.setVisibility(View.GONE);
+        durationOutcome.setVisibility(View.GONE);
+
+        calculateButton = findViewById(R.id.calculate_button);
+        calculateButton.setVisibility(View.GONE);  // Initially hidden
+
         Button logTravelButton = findViewById(R.id.log_travel_button);
         Button calculateVacationButton = findViewById(R.id.calculate_vacation_button);
 
@@ -63,64 +73,24 @@ public class Destination_Activity extends AppCompatActivity {
         logTravelButton.setOnClickListener(v -> {
             formLayout.setVisibility(View.VISIBLE);
             calculateDurationButton.setVisibility(View.GONE);
+
+            // Hide the duration input fields when logging travel
+            startInput.setVisibility(View.GONE);
+            endInput.setVisibility(View.GONE);
+            durationOutcome.setVisibility(View.GONE);
+            calculateButton.setVisibility(View.GONE);
         });
 
-        // Handle form submission on "Calculate Vacation Time"
         calculateVacationButton.setOnClickListener(v -> {
             String location = locationInput.getText().toString();
             String startDate = startDateInput.getText().toString();
             String endDate = endDateInput.getText().toString();
 
-            // Validate form input
+            // validation for form input
             if (location.isEmpty()) {
                 Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            // You can keep the commented validation if you plan to implement it later
-            //if (!isValidDate(startDate) || !isValidDate(endDate)) {
-            //    Toast.makeText(Destination_Activity.this, "Please enter valid dates", Toast.LENGTH_SHORT).show();
-            //    return;
-            //}
-
-            //if (!isEndDateValid(startDate, endDate)) {
-            //    Toast.makeText(Destination_Activity.this, "End date must be after start date", Toast.LENGTH_SHORT).show();
-            //    return;
-            //}
-
-            // Save travel data in the Singleton Database
-            DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
-            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
-
-            // Update the travel logs list
-            updateTravelLogsList();
-
-            // Optionally hide the form after logging
-            formLayout.setVisibility(View.GONE);
-        });
-
-        // Handle form submission on "Calculate Vacation Time"
-        calculateVacationButton.setOnClickListener(v -> {
-            String location = locationInput.getText().toString();
-            String startDate = startDateInput.getText().toString();
-            String endDate = endDateInput.getText().toString();
-
-            // Validate form input
-            if (location.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // You can re-enable date validation if needed:
-            // if (!isValidDate(startDate) || !isValidDate(endDate)) {
-            //     Toast.makeText(Destination_Activity.this, "Please enter valid dates", Toast.LENGTH_SHORT).show();
-            //     return;
-            // }
-
-            // if (!isEndDateValid(startDate, endDate)) {
-            //     Toast.makeText(Destination_Activity.this, "End date must be after start date", Toast.LENGTH_SHORT).show();
-            //     return;
-            // }
 
             // Save travel data in the Singleton Database
             DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
@@ -130,8 +100,30 @@ public class Destination_Activity extends AppCompatActivity {
             updateTravelLogsList();
 
             formLayout.setVisibility(View.GONE);
-            calculateVacationButton.setVisibility(View.VISIBLE);
             calculateDurationButton.setVisibility(View.VISIBLE);
+        });
+
+        // handle the Calculate Duration button click to show the duration input fields
+        calculateDurationButton.setOnClickListener(v -> {
+            // show the duration input fields when the button is clicked
+            startInput.setVisibility(View.VISIBLE);
+            endInput.setVisibility(View.VISIBLE);
+            durationOutcome.setVisibility(View.VISIBLE);
+            calculateButton.setVisibility(View.VISIBLE);
+        });
+
+        calculateButton.setOnClickListener(v -> {
+            String startDateInputText = startInput.getText().toString();
+            String endDateInputText = endInput.getText().toString();
+
+            // Validate inputs
+            if (startDateInputText.isEmpty() || endDateInputText.isEmpty()) {
+                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int duration = calculateTravelDuration(startDateInputText, endDateInputText);
+            durationOutcome.setText(duration + " days");
         });
 
         // DASHBOARD BUTTONS
@@ -178,7 +170,7 @@ public class Destination_Activity extends AppCompatActivity {
             Log.d("DEBUG", "Found " + travelLogs.size() + " travel logs.");
         }
 
-        // Prepare a list of strings to display (formatted with location and duration)
+
         List<String> travelLogStrings = new ArrayList<>();
         for (TravelLog log : travelLogs) {
             String duration = getTravelDuration(log.getStartDate(), log.getEndDate()) + " days";
@@ -190,14 +182,26 @@ public class Destination_Activity extends AppCompatActivity {
         travelLogsList.setAdapter(adapter);
     }
 
-    // Calculate travel duration between two dates
+    // Calculate travel duration between the two dates
     private int getTravelDuration(String startDate, String endDate) {
         try {
-            LocalDate start = LocalDate.parse(startDate);  // Parse the start date
-            LocalDate end = LocalDate.parse(endDate);      // Parse the end date
-            return (int) ChronoUnit.DAYS.between(start, end);  // Calculate duration in days
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+            return (int) ChronoUnit.DAYS.between(start, end);
         } catch (DateTimeParseException e) {
             return 0;  // If dates are invalid, return 0
+        }
+    }
+
+    // Calculate duration based on start and end dates input
+    private int calculateTravelDuration(String startDate, String endDate) {
+        try {
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+            return (int) ChronoUnit.DAYS.between(start, end);
+        } catch (DateTimeParseException e) {
+            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.", Toast.LENGTH_SHORT).show();
+            return 0;  // Return 0 for invalid dates
         }
     }
 }
