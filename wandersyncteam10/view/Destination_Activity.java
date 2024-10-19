@@ -60,7 +60,7 @@ public class Destination_Activity extends AppCompatActivity {
         durationOutcome.setVisibility(View.GONE);
 
         calculateButton = findViewById(R.id.calculate_button);
-        calculateButton.setVisibility(View.GONE);
+        calculateButton.setVisibility(View.GONE);  // Initially hidden
 
         Button logTravelButton = findViewById(R.id.log_travel_button);
         Button calculateVacationButton = findViewById(R.id.calculate_vacation_button);
@@ -69,9 +69,12 @@ public class Destination_Activity extends AppCompatActivity {
 
         updateTravelLogsList();
 
+        // Show the form when "Log Travel" is clicked
         logTravelButton.setOnClickListener(v -> {
             formLayout.setVisibility(View.VISIBLE);
             calculateDurationButton.setVisibility(View.GONE);
+
+            // Hide the duration input fields when logging travel
             startInput.setVisibility(View.GONE);
             endInput.setVisibility(View.GONE);
             durationOutcome.setVisibility(View.GONE);
@@ -83,20 +86,26 @@ public class Destination_Activity extends AppCompatActivity {
             String startDate = startDateInput.getText().toString();
             String endDate = endDateInput.getText().toString();
 
+            // validation for form input
             if (location.isEmpty()) {
                 Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Save travel data in the Singleton Database
             DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
             Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
+
+            // Update the travel logs list
             updateTravelLogsList();
 
             formLayout.setVisibility(View.GONE);
             calculateDurationButton.setVisibility(View.VISIBLE);
         });
 
+        // handle the Calculate Duration button click to show the duration input fields
         calculateDurationButton.setOnClickListener(v -> {
+            // show the duration input fields when the button is clicked
             startInput.setVisibility(View.VISIBLE);
             endInput.setVisibility(View.VISIBLE);
             durationOutcome.setVisibility(View.VISIBLE);
@@ -107,6 +116,7 @@ public class Destination_Activity extends AppCompatActivity {
             String startDateInputText = startInput.getText().toString();
             String endDateInputText = endInput.getText().toString();
 
+            // Validate inputs
             if (startDateInputText.isEmpty() || endDateInputText.isEmpty()) {
                 Toast.makeText(Destination_Activity.this, "Please enter both start and end dates", Toast.LENGTH_SHORT).show();
                 return;
@@ -116,6 +126,7 @@ public class Destination_Activity extends AppCompatActivity {
             durationOutcome.setText(duration + " days");
         });
 
+        // DASHBOARD BUTTONS
         findViewById(R.id.button).setOnClickListener(view -> {
             Intent intent = new Intent(Destination_Activity.this, Logistics_Activity.class);
             startActivity(intent);
@@ -147,9 +158,18 @@ public class Destination_Activity extends AppCompatActivity {
         });
     }
 
+    // Update the travel logs list
     private void updateTravelLogsList() {
+        // Fetch the travel logs from the Singleton Database
         DestinationDatabase db = DestinationDatabase.getInstance(this);
-        List<TravelLog> travelLogs = db.getTravelLogs();
+        List<TravelLog> travelLogs = db.getTravelLogs();  // Get the travel logs
+
+        if (travelLogs.isEmpty()) {
+            Log.d("DEBUG", "No travel logs found in database");
+        } else {
+            Log.d("DEBUG", "Found " + travelLogs.size() + " travel logs.");
+        }
+
 
         List<String> travelLogStrings = new ArrayList<>();
         for (TravelLog log : travelLogs) {
@@ -157,20 +177,23 @@ public class Destination_Activity extends AppCompatActivity {
             travelLogStrings.add(log.getLocation() + " (" + duration + ")");
         }
 
+        // Create an ArrayAdapter to populate the ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, travelLogStrings);
         travelLogsList.setAdapter(adapter);
     }
 
+    // Calculate travel duration between the two dates
     private int getTravelDuration(String startDate, String endDate) {
         try {
             LocalDate start = LocalDate.parse(startDate);
             LocalDate end = LocalDate.parse(endDate);
             return (int) ChronoUnit.DAYS.between(start, end);
         } catch (DateTimeParseException e) {
-            return 0;
+            return 0;  // If dates are invalid, return 0
         }
     }
 
+    // Calculate duration based on start and end dates input
     private int calculateTravelDuration(String startDate, String endDate) {
         try {
             LocalDate start = LocalDate.parse(startDate);
@@ -178,37 +201,7 @@ public class Destination_Activity extends AppCompatActivity {
             return (int) ChronoUnit.DAYS.between(start, end);
         } catch (DateTimeParseException e) {
             Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.", Toast.LENGTH_SHORT).show();
-            return 0;
+            return 0;  // Return 0 for invalid dates
         }
-    }
-
-    // Test methods for manual testing
-    public void runTests() {
-        testCalculateTravelDuration();
-        testGetTravelDuration();
-        testUpdateTravelLogsList();
-    }
-
-    private void testCalculateTravelDuration() {
-        int duration = calculateTravelDuration("2024-10-01", "2024-10-10");
-        Log.d("TEST", "Test Calculate Travel Duration: " + (duration == 9 ? "PASSED" : "FAILED"));
-    }
-
-    private void testGetTravelDuration() {
-        int duration = getTravelDuration("2024-10-05", "2024-10-15");
-        Log.d("TEST", "Test Get Travel Duration: " + (duration == 10 ? "PASSED" : "FAILED"));
-    }
-
-    private void testUpdateTravelLogsList() {
-        DestinationDatabase.getInstance(this).addTravelLog("Paris", "2024-10-20", "2024-10-25");
-        List<TravelLog> logs = DestinationDatabase.getInstance(this).getTravelLogs();
-        boolean result = !logs.isEmpty() && logs.get(0).getLocation().equals("Paris");
-        Log.d("TEST", "Test Update Travel Logs List: " + (result ? "PASSED" : "FAILED"));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        runTests();  // Run tests automatically on resume
     }
 }
