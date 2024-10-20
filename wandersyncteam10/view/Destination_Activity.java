@@ -1,4 +1,4 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.view;  // Fix: Ensuring correct package path
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,12 +25,18 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Destination_Activity extends AppCompatActivity {
+public class DestinationActivity extends AppCompatActivity {  // Fix: Renamed class to follow naming conventions
 
     private LinearLayout formLayout;
-    private EditText locationInput, startDateInput, endDateInput, startInput, endInput, durationOutcome;
+    private EditText locationInput;
+    private EditText startDateInput;  // Fix: Declarations on separate lines
+    private EditText endDateInput;
+    private EditText startInput;
+    private EditText endInput;
+    private EditText durationOutcome;
     private ListView travelLogsList;
-    private Button calculateDurationButton, calculateButton;
+    private Button calculateDurationButton;
+    private Button calculateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,8 @@ public class Destination_Activity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // log travel !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         formLayout = findViewById(R.id.form_layout);
         locationInput = findViewById(R.id.location_input);
@@ -88,13 +96,13 @@ public class Destination_Activity extends AppCompatActivity {
 
             // validation for form input
             if (location.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DestinationActivity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Save travel data in the Singleton Database
-            DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
-            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
+            DestinationDatabase.getInstance(DestinationActivity.this).addTravelLog(location, startDate, endDate);
+            Toast.makeText(DestinationActivity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
 
             // Update the travel logs list
             updateTravelLogsList();
@@ -103,9 +111,8 @@ public class Destination_Activity extends AppCompatActivity {
             calculateDurationButton.setVisibility(View.VISIBLE);
         });
 
-        // handle the Calculate Duration button click to show the duration input fields
+        // Handle the Calculate Duration button click to show the duration input fields
         calculateDurationButton.setOnClickListener(v -> {
-            // show the duration input fields when the button is clicked
             startInput.setVisibility(View.VISIBLE);
             endInput.setVisibility(View.VISIBLE);
             durationOutcome.setVisibility(View.VISIBLE);
@@ -118,7 +125,7 @@ public class Destination_Activity extends AppCompatActivity {
 
             // Validate inputs
             if (startDateInputText.isEmpty() || endDateInputText.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DestinationActivity.this, "Please enter both start and end dates", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -126,34 +133,35 @@ public class Destination_Activity extends AppCompatActivity {
             durationOutcome.setText(duration + " days");
         });
 
-        // DASHBOARD BUTTONS
+        // DASHBOARD BUTTONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         findViewById(R.id.button).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Logistics_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, Logistics_Activity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button2).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Destination_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, DestinationActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button3).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Dining_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, Dining_Activity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button4).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Accommodations_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, Accommodations_Activity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Transportation_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, Transportation_Activity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Travel_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, Travel_Activity.class);
             startActivity(intent);
         });
     }
@@ -170,7 +178,6 @@ public class Destination_Activity extends AppCompatActivity {
             Log.d("DEBUG", "Found " + travelLogs.size() + " travel logs.");
         }
 
-
         List<String> travelLogStrings = new ArrayList<>();
         for (TravelLog log : travelLogs) {
             String duration = getTravelDuration(log.getStartDate(), log.getEndDate()) + " days";
@@ -182,7 +189,7 @@ public class Destination_Activity extends AppCompatActivity {
         travelLogsList.setAdapter(adapter);
     }
 
-    // Calculate travel duration between the two dates
+    // Calculate travel duration between two dates
     private int getTravelDuration(String startDate, String endDate) {
         try {
             LocalDate start = LocalDate.parse(startDate);
