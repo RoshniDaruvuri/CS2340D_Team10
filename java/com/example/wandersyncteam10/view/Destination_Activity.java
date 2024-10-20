@@ -24,13 +24,14 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class Destination_Activity extends AppCompatActivity {
 
     private LinearLayout formLayout;
-    private EditText locationInput, startDateInput, endDateInput, startInput, endInput, durationOutcome;
+    private EditText locationInput, startDateInput, endDateInput;
     private ListView travelLogsList;
-    private Button calculateDurationButton, calculateButton, calculateVacationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,155 +39,159 @@ public class Destination_Activity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_destination);
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // log travel !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
         formLayout = findViewById(R.id.form_layout);
         locationInput = findViewById(R.id.location_input);
         startDateInput = findViewById(R.id.start_date_input);
         endDateInput = findViewById(R.id.end_date_input);
         travelLogsList = findViewById(R.id.travel_logs_list);
-        calculateDurationButton = findViewById(R.id.calculate_duration_button);
-
-        startInput = findViewById(R.id.start_input);
-        endInput = findViewById(R.id.end_input);
-        durationOutcome = findViewById(R.id.duration_outcome);
-
-        startInput.setVisibility(View.GONE);
-        endInput.setVisibility(View.GONE);
-        durationOutcome.setVisibility(View.GONE);
-
-        calculateButton = findViewById(R.id.calculate_button);
-        calculateButton.setVisibility(View.GONE);
 
         Button logTravelButton = findViewById(R.id.log_travel_button);
-        calculateVacationButton = findViewById(R.id.calculate_vacation_button);
-
+        Button calculateVacationButton = findViewById(R.id.calculate_vacation_button);
         formLayout.setVisibility(View.GONE);
 
         updateTravelLogsList();
 
-        logTravelButton.setOnClickListener(v -> {
-            formLayout.setVisibility(View.VISIBLE);
-            calculateDurationButton.setVisibility(View.GONE);
-            startInput.setVisibility(View.GONE);
-            endInput.setVisibility(View.GONE);
-            durationOutcome.setVisibility(View.GONE);
-            calculateButton.setVisibility(View.GONE);
-        });
+        // show the form when "Log Travel" is clicked
+        logTravelButton.setOnClickListener(v -> formLayout.setVisibility(View.VISIBLE));
+        //updateTravelLogsList();
 
+
+
+
+        // Initialize "Calculate Vacation Time" button and Travel Location EditText
+        Button calculateVacationTimeButton = findViewById(R.id.calculate_vacation_button);
+        //EditText travelLocationInput = findViewById(R.id.travel_location_input);
+
+        // Handle form submission on "Calculate Vacation Time"
         calculateVacationButton.setOnClickListener(v -> {
             String location = locationInput.getText().toString();
             String startDate = startDateInput.getText().toString();
             String endDate = endDateInput.getText().toString();
 
+            // Validate form input
             if (location.isEmpty()) {
                 Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            //if (!isValidDate(startDate) || !isValidDate(endDate)) {
+            //Toast.makeText(Destination_Activity.this, "Please enter valid dates", Toast.LENGTH_SHORT).show();
+            //return;
+            //}
+
+            //if (!isEndDateValid(startDate, endDate)) {
+            //    Toast.makeText(Destination_Activity.this, "End date must be after start date", Toast.LENGTH_SHORT).show();
+            //    return;
+            //}
+
+            // Save travel data in the Singleton Database
             DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
             Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
 
+            // Update the travel logs list
             updateTravelLogsList();
+
+            // Optionally hide the form after logging
             formLayout.setVisibility(View.GONE);
-            calculateDurationButton.setVisibility(View.VISIBLE);
         });
 
-        calculateDurationButton.setOnClickListener(v -> {
-            startInput.setVisibility(View.VISIBLE);
-            endInput.setVisibility(View.VISIBLE);
-            durationOutcome.setVisibility(View.VISIBLE);
-            calculateButton.setVisibility(View.VISIBLE);
-        });
 
-        calculateButton.setOnClickListener(v -> {
-            String startDateInputText = startInput.getText().toString();
-            String endDateInputText = endInput.getText().toString();
 
-            if (startDateInputText.isEmpty() || endDateInputText.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates", Toast.LENGTH_SHORT).show();
-                return;
+
+
+// DASHBOARD BUTTONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Destination_Activity.this, Logistics_Activity.class);
+                startActivity(intent);
             }
-
-            int duration = calculateTravelDuration(startDateInputText, endDateInputText);
-            durationOutcome.setText(duration + " days");
         });
 
-        findViewById(R.id.button).setOnClickListener(view -> startActivity(new Intent(this, Logistics_Activity.class)));
-        findViewById(R.id.button3).setOnClickListener(view -> startActivity(new Intent(this, Dining_Activity.class)));
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Destination_Activity.this, Destination_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Destination_Activity.this, Dining_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Destination_Activity.this, Accommodations_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Destination_Activity.this, Transportation_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Destination_Activity.this, Travel_Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void updateTravelLogsList() {
-        DestinationDatabase db = DestinationDatabase.getInstance(this);
-        List<TravelLog> travelLogs = db.getTravelLogs();
 
+
+    private void updateTravelLogsList() {
+        // Fetch the travel logs from the Singleton Database
+        DestinationDatabase db = DestinationDatabase.getInstance(this);
+        List<TravelLog> travelLogs = db.getTravelLogs();  // Get the travel logs
+
+        if (travelLogs.isEmpty()) {
+            Log.d("DEBUG", "No travel logs found in database");
+        } else {
+            Log.d("DEBUG", "Found " + travelLogs.size() + " travel logs.");
+        }
+
+        // Prepare a list of strings to display (formatted with location and duration)
         List<String> travelLogStrings = new ArrayList<>();
         for (TravelLog log : travelLogs) {
             String duration = getTravelDuration(log.getStartDate(), log.getEndDate()) + " days";
             travelLogStrings.add(log.getLocation() + " (" + duration + ")");
         }
 
+        // Create an ArrayAdapter to populate the ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, travelLogStrings);
         travelLogsList.setAdapter(adapter);
     }
 
     private int getTravelDuration(String startDate, String endDate) {
         try {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            return (int) ChronoUnit.DAYS.between(start, end);
+            LocalDate start = LocalDate.parse(startDate);  // Parse the start date
+            LocalDate end = LocalDate.parse(endDate);      // Parse the end date
+            return (int) ChronoUnit.DAYS.between(start, end);  // Calculate duration in days
         } catch (DateTimeParseException e) {
-            return 0;
-        }
-    }
-
-    private int calculateTravelDuration(String startDate, String endDate) {
-        try {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            return (int) ChronoUnit.DAYS.between(start, end);
-        } catch (DateTimeParseException e) {
-            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.", Toast.LENGTH_SHORT).show();
-            return 0;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        runInternalTests();
-    }
-
-    private void runInternalTests() {
-        Log.d("TEST", "Running internal tests...");
-        testInvalidDateInput();
-        testEmptyLocationInput();
-        testNavigationButtons();
-        Log.d("TEST", "Internal tests completed.");
-    }
-
-    private void testInvalidDateInput() {
-        int duration = calculateTravelDuration("invalid-date", "2024-10-10");
-        Log.d("TEST", "Invalid Date Test: " + (duration == 0 ? "PASSED" : "FAILED"));
-    }
-
-    private void testEmptyLocationInput() {
-        locationInput.setText("");
-        calculateVacationButton.performClick();
-        Log.d("TEST", "Empty Location Test: " + ("Please enter a location".equals(locationInput.getText().toString()) ? "PASSED" : "FAILED"));
-    }
-
-    private void testNavigationButtons() {
-        try {
-            findViewById(R.id.button).performClick();
-            findViewById(R.id.button3).performClick();
-            Log.d("TEST", "Navigation Buttons Test: PASSED");
-        } catch (Exception e) {
-            Log.d("TEST", "Navigation Buttons Test FAILED with exception: " + e.getMessage());
+            return 0;  // If dates are invalid, return 0
         }
     }
 }
