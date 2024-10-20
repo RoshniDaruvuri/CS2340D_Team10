@@ -26,11 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-public class Destination_Activity extends AppCompatActivity {
+public class DestinationActivity extends AppCompatActivity {  // Fix: Renamed class to match naming conventions
 
     private LinearLayout formLayout;
-    private EditText locationInput, startDateInput, endDateInput;
+    private EditText locationInput;
+    private EditText startDateInput;  // Fix: Declarations on separate lines
+    private EditText endDateInput;
     private ListView travelLogsList;
 
     @Override
@@ -39,7 +40,6 @@ public class Destination_Activity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_destination);
 
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -47,7 +47,6 @@ public class Destination_Activity extends AppCompatActivity {
         });
 
         // log travel !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
         formLayout = findViewById(R.id.form_layout);
         locationInput = findViewById(R.id.location_input);
@@ -59,18 +58,10 @@ public class Destination_Activity extends AppCompatActivity {
         Button calculateVacationButton = findViewById(R.id.calculate_vacation_button);
         formLayout.setVisibility(View.GONE);
 
-        updateTravelLogsList();
+        updateTravelLogsList();  // Populate the travel logs list
 
         // show the form when "Log Travel" is clicked
         logTravelButton.setOnClickListener(v -> formLayout.setVisibility(View.VISIBLE));
-        //updateTravelLogsList();
-
-
-
-
-        // Initialize "Calculate Vacation Time" button and Travel Location EditText
-        Button calculateVacationTimeButton = findViewById(R.id.calculate_vacation_button);
-        //EditText travelLocationInput = findViewById(R.id.travel_location_input);
 
         // Handle form submission on "Calculate Vacation Time"
         calculateVacationButton.setOnClickListener(v -> {
@@ -80,23 +71,14 @@ public class Destination_Activity extends AppCompatActivity {
 
             // Validate form input
             if (location.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DestinationActivity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            //if (!isValidDate(startDate) || !isValidDate(endDate)) {
-            //Toast.makeText(Destination_Activity.this, "Please enter valid dates", Toast.LENGTH_SHORT).show();
-            //return;
-            //}
-
-            //if (!isEndDateValid(startDate, endDate)) {
-            //    Toast.makeText(Destination_Activity.this, "End date must be after start date", Toast.LENGTH_SHORT).show();
-            //    return;
-            //}
-
             // Save travel data in the Singleton Database
-            DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
-            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
+            DestinationDatabase.getInstance(DestinationActivity.this)
+                    .addTravelLog(location, startDate, endDate);
+            Toast.makeText(DestinationActivity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
 
             // Update the travel logs list
             updateTravelLogsList();
@@ -105,62 +87,30 @@ public class Destination_Activity extends AppCompatActivity {
             formLayout.setVisibility(View.GONE);
         });
 
+        // DASHBOARD BUTTONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
-
-// DASHBOARD BUTTONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Destination_Activity.this, Logistics_Activity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Destination_Activity.this, Destination_Activity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Destination_Activity.this, Dining_Activity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Destination_Activity.this, Accommodations_Activity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Destination_Activity.this, Transportation_Activity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Destination_Activity.this, Travel_Activity.class);
-                startActivity(intent);
-            }
-        });
+        setupDashboardButtons();  // Moved button setup logic to a helper method
     }
 
+    private void setupDashboardButtons() {
+        findViewById(R.id.button).setOnClickListener(view ->
+            startActivity(new Intent(this, LogisticsActivity.class)));
 
+        findViewById(R.id.button2).setOnClickListener(view ->
+            startActivity(new Intent(this, DestinationActivity.class)));
+
+        findViewById(R.id.button3).setOnClickListener(view ->
+            startActivity(new Intent(this, DiningActivity.class)));
+
+        findViewById(R.id.button4).setOnClickListener(view ->
+            startActivity(new Intent(this, AccommodationsActivity.class)));
+
+        findViewById(R.id.button5).setOnClickListener(view ->
+            startActivity(new Intent(this, TransportationActivity.class)));
+
+        findViewById(R.id.button6).setOnClickListener(view ->
+            startActivity(new Intent(this, TravelActivity.class)));
+    }
 
     private void updateTravelLogsList() {
         // Fetch the travel logs from the Singleton Database
@@ -195,4 +145,3 @@ public class Destination_Activity extends AppCompatActivity {
         }
     }
 }
-
