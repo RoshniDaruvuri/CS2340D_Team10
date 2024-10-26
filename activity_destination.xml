@@ -7,9 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".view.Destination_Activity">
 
-
-
-
     <!-- linear layout for form to show up   -->
     <Button
         android:id="@+id/log_travel_button"
