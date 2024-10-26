@@ -7,17 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".view.Destination_Activity">
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Destination Screen"-->
-<!--        android:layout_marginBottom="40dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Destination Screen"-->
+    <!--        android:layout_marginBottom="40dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-3
+
     <!-- linear layout for form to show up   -->
     <Button
         android:id="@+id/log_travel_button"
@@ -27,6 +27,69 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/calculate_duration_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate Duration"
+        app:layout_constraintTop_toBottomOf="@id/log_travel_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Duration layout (hidden by default) -->
+    <LinearLayout
+        android:id="@+id/duration_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calculate_duration_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+    <EditText
+        android:id="@+id/start_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Start Date" />
+    <EditText
+        android:id="@+id/end_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="End Date" />
+    <Button
+        android:id="@+id/calculate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate Duration"
+        android:visibility="gone"/>
+    <EditText
+        android:id="@+id/duration_outcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Duration Outcome"
+        android:inputType="none"
+        android:focusable="false" />
+
+    </LinearLayout>
+
+    <!-- TextView to display the total vacation days result -->
+    <TextView
+        android:id="@+id/total_vacation_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Result: 0 days"
+        android:textSize="18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/form_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 
     <LinearLayout
         android:id="@+id/form_layout"
@@ -68,37 +131,6 @@
             android:layout_height="wrap_content"
             android:text="Calculate Vacation Time" />
 
-
-        <!-- Calculate Duration buttons. Hidden until a button is pressed. -->
-        <EditText
-            android:id="@+id/startDateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Start Date:"
-            android:visibility="gone"
-            app:layout_constraintWidth_percent="0.8" />
-
-        <EditText
-            android:id="@+id/endDateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="End Date:"
-            android:visibility="gone"
-            app:layout_constraintWidth_percent="0.8" />
-
-        <EditText
-            android:id="@+id/durationInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Duration:"
-            android:visibility="gone"
-            app:layout_constraintWidth_percent="0.8" />
-
-        <Button
-            android:id="@+id/Calculate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Calculate" />
 
 
     </LinearLayout>
