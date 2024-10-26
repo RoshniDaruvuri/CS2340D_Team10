@@ -1,3 +1,4 @@
+
 package com.example.wandersyncteam10.view;
 
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,13 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DestinationActivity extends AppCompatActivity {  // Fix: Renamed class to match naming conventions
+
+public class Destination_Activity extends AppCompatActivity {
 
     private LinearLayout formLayout;
-    private EditText locationInput;
-    private EditText startDateInput;  // Fix: Declarations on separate lines
-    private EditText endDateInput;
+    private EditText locationInput, startDateInput, endDateInput;
     private ListView travelLogsList;
+    private TextView totalVacationDaysView;  // New TextView to display total vacation days
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,21 +48,22 @@ public class DestinationActivity extends AppCompatActivity {  // Fix: Renamed cl
             return insets;
         });
 
-        // log travel !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+        // Initialize views
         formLayout = findViewById(R.id.form_layout);
         locationInput = findViewById(R.id.location_input);
         startDateInput = findViewById(R.id.start_date_input);
         endDateInput = findViewById(R.id.end_date_input);
         travelLogsList = findViewById(R.id.travel_logs_list);
+        totalVacationDaysView = findViewById(R.id.total_vacation_days);  // Initialize the new TextView
+
+        updateTravelLogsList();
+        updateTotalVacationDays();  // New method call to display total vacation days
 
         Button logTravelButton = findViewById(R.id.log_travel_button);
         Button calculateVacationButton = findViewById(R.id.calculate_vacation_button);
         formLayout.setVisibility(View.GONE);
 
-        updateTravelLogsList();  // Populate the travel logs list
-
-        // show the form when "Log Travel" is clicked
+        // Show the form when "Log Travel" is clicked
         logTravelButton.setOnClickListener(v -> formLayout.setVisibility(View.VISIBLE));
 
         // Handle form submission on "Calculate Vacation Time"
@@ -71,46 +74,62 @@ public class DestinationActivity extends AppCompatActivity {  // Fix: Renamed cl
 
             // Validate form input
             if (location.isEmpty()) {
-                Toast.makeText(DestinationActivity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Save travel data in the Singleton Database
-            DestinationDatabase.getInstance(DestinationActivity.this)
-                    .addTravelLog(location, startDate, endDate);
-            Toast.makeText(DestinationActivity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
+            DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
+            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
 
-            // Update the travel logs list
+            // Update the travel logs list and total vacation days
             updateTravelLogsList();
+            updateTotalVacationDays();
 
-            // Optionally hide the form after logging
+            // Hide the form after logging
             formLayout.setVisibility(View.GONE);
         });
 
-        // DASHBOARD BUTTONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Dashboard button listeners (keeping these unchanged)
+        findViewById(R.id.button).setOnClickListener(view -> {
+            Intent intent = new Intent(Destination_Activity.this, Logistics_Activity.class);
+            startActivity(intent);
+        });
 
-        setupDashboardButtons();  // Moved button setup logic to a helper method
+        findViewById(R.id.button2).setOnClickListener(view -> {
+            Intent intent = new Intent(Destination_Activity.this, Destination_Activity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button3).setOnClickListener(view -> {
+            Intent intent = new Intent(Destination_Activity.this, Dining_Activity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button4).setOnClickListener(view -> {
+            Intent intent = new Intent(Destination_Activity.this, Accommodations_Activity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button5).setOnClickListener(view -> {
+            Intent intent = new Intent(Destination_Activity.this, Transportation_Activity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button6).setOnClickListener(view -> {
+            Intent intent = new Intent(Destination_Activity.this, Travel_Activity.class);
+            startActivity(intent);
+        });
     }
 
-    private void setupDashboardButtons() {
-        findViewById(R.id.button).setOnClickListener(view ->
-            startActivity(new Intent(this, LogisticsActivity.class)));
-
-        findViewById(R.id.button2).setOnClickListener(view ->
-            startActivity(new Intent(this, DestinationActivity.class)));
-
-        findViewById(R.id.button3).setOnClickListener(view ->
-            startActivity(new Intent(this, DiningActivity.class)));
-
-        findViewById(R.id.button4).setOnClickListener(view ->
-            startActivity(new Intent(this, AccommodationsActivity.class)));
-
-        findViewById(R.id.button5).setOnClickListener(view ->
-            startActivity(new Intent(this, TransportationActivity.class)));
-
-        findViewById(R.id.button6).setOnClickListener(view ->
-            startActivity(new Intent(this, TravelActivity.class)));
+    // Method to update the total vacation days displayed in the TextView
+    private void updateTotalVacationDays() {
+        DestinationDatabase db = DestinationDatabase.getInstance(this);
+        int totalDays = db.getTotalVacationDays();  // Fetch total vacation days from the database
+        totalVacationDaysView.setText("Result: " + totalDays + " days");  // Update the TextView
     }
+
+
 
     private void updateTravelLogsList() {
         // Fetch the travel logs from the Singleton Database
@@ -145,3 +164,4 @@ public class DestinationActivity extends AppCompatActivity {  // Fix: Renamed cl
         }
     }
 }
+
