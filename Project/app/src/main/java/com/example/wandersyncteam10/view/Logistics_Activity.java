@@ -3,6 +3,7 @@ package com.example.wandersyncteam10.view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +19,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wandersyncteam10.R;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -75,6 +85,8 @@ public class Logistics_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.graph_button).setOnClickListener((l) -> draw());
 
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +175,77 @@ public class Logistics_Activity extends AppCompatActivity {
         }
         usernameDisplay.setText(contributorsText.toString());
     }
+
+    public void draw() {
+        // Reference to the Firebase database for travelLogs
+        DatabaseReference travelLogsRef = FirebaseDatabase.getInstance().getReference("travelLogs");
+        DatabaseReference calculatedDurationRef = FirebaseDatabase.getInstance().getReference("calculatedDuration");
+
+        // Initialize total duration variables
+        final float[] totalDuration = {0}; // To store the total from travelLogs
+        final float[] calculatedTotalDuration = {0}; // To store the total from calculatedDuration
+
+        // First, retrieve and sum the total duration from travelLogs
+        travelLogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot travelLogsSnapshot) {
+                // Loop through each travel log in Firebase
+                for (DataSnapshot snapshot : travelLogsSnapshot.getChildren()) {
+                    TravelLog travelLog = snapshot.getValue(TravelLog.class);
+                    if (travelLog != null) {
+                        totalDuration[0] += travelLog.getDuration();
+                    }
+                }
+
+                // Now, retrieve and sum the total duration from calculatedDuration
+                calculatedDurationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot calculatedDurationSnapshot) {
+                        // Loop through each entry in calculatedDuration
+                        for (DataSnapshot snapshot : calculatedDurationSnapshot.getChildren()) {
+                            // Assuming each entry has a field named "duration"
+                            Long duration = snapshot.child("duration").getValue(Long.class); // Change to Double if needed
+                            if (duration != null) {
+                                calculatedTotalDuration[0] += duration; // Sum up the duration
+                            }
+                        }
+
+                        // Create the BarEntry with the total durations
+                        List<BarEntry> entries = new ArrayList<>();
+                        entries.add(new BarEntry(0f, totalDuration[0])); // Entry for totalDuration
+                        entries.add(new BarEntry(1f, calculatedTotalDuration[0])); // Entry for calculatedTotalDuration
+
+                        // Set up the BarDataSet
+                        BarDataSet dataSet = new BarDataSet(entries, "Duration Data");
+                        dataSet.setColors(new int[]{Color.BLUE, Color.GREEN}); // Set different colors for each bar
+                        dataSet.setValueTextColor(Color.WHITE);
+                        dataSet.setValueTextSize(10f);
+
+                        BarData barData = new BarData(dataSet);
+                        BarChart barChart = findViewById(R.id.BarChart);
+                        barChart.setData(barData);
+
+                        // Refresh the chart
+                        barChart.invalidate(); // Redraw the chart
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("FirebaseError", "Failed to load calculated durations: " + databaseError.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FirebaseError", "Failed to load travel logs: " + databaseError.getMessage());
+            }
+        });
+    }
+
+
+
+
 
     // Contributor model class
     public class Contributor {

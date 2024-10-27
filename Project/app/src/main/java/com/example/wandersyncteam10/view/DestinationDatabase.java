@@ -1,4 +1,3 @@
-
 package com.example.wandersyncteam10.view;
 
 import android.content.Context;
@@ -71,6 +70,18 @@ public class DestinationDatabase {
         databaseReference.push().setValue(newLog);
     }
 
+    // New method to add calculated duration directly to the database
+    public void addCalculatedDuration(String startDate, String endDate) {
+        int duration = calculateDuration(startDate, endDate);
+        Log.d("DestinationDatabase", "Calculated duration: " + duration);
+
+        // Create a new TravelLog object with calculated duration
+        TravelLog calculatedLog = new TravelLog("Calculated Duration", startDate, endDate, duration);
+
+        // Push the calculated duration to Firebase
+        databaseReference.push().setValue(calculatedLog);
+    }
+
     public int getTotalVacationDays() {
         int totalDays = 0;
         // Sum up the duration of all travel logs
@@ -80,8 +91,6 @@ public class DestinationDatabase {
         Log.d("DestinationDatabase", "Total vacation days: " + totalDays);
         return totalDays;
     }
-
-
 
     // Method to load travel logs from Firebase in real-time
     private void loadTravelLogsFromFirebase() {
@@ -117,8 +126,8 @@ public class DestinationDatabase {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
                     // Only add if there are no existing logs
-                    TravelLog log1 = new TravelLog("Paris", "2024-01-01", "2024-01-07");
-                    TravelLog log2 = new TravelLog("Tokyo", "2024-02-15", "2024-02-22");
+                    TravelLog log1 = new TravelLog("Paris", "2024-01-01", "2024-01-07", 7);
+                    TravelLog log2 = new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7);
 
                     databaseReference.push().setValue(log1);
                     databaseReference.push().setValue(log2);
@@ -151,5 +160,3 @@ public class DestinationDatabase {
         }
     }
 }
-
-
