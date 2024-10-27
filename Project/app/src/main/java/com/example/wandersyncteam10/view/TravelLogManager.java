@@ -9,12 +9,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages travel log entries and interactions with Firebase.
+ */
 public class TravelLogManager {
 
     private DatabaseReference travelLogReference;
     private DatabaseReference possibleDurationReference;
     private FirebaseAuth mAuth;
 
+    /**
+     * Constructor to initialize Firebase authentication and database references.
+     */
     public TravelLogManager() {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -24,7 +30,14 @@ public class TravelLogManager {
         possibleDurationReference = FirebaseDatabase.getInstance().getReference("calculatedDurations");
     }
 
-    // Method to save a travel log
+    /**
+     * Saves a travel log entry to Firebase.
+     *
+     * @param location The location of the travel log entry.
+     * @param startDate The start date of the travel log entry.
+     * @param endDate The end date of the travel log entry.
+     * @param duration The duration of the travel in days.
+     */
     public void saveTravelLog(String location, String startDate, String endDate, int duration) {
         String userId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
 
@@ -51,7 +64,11 @@ public class TravelLogManager {
         }
     }
 
-    // Method to save a possible duration
+    /**
+     * Saves a possible duration entry to Firebase.
+     *
+     * @param possibleDuration The possible duration to save.
+     */
     public void savePossibleDuration(String possibleDuration) {
         String userId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
 

@@ -16,6 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wandersyncteam10.R;
 
+/**
+ * Activity for managing travel logs, allowing users to input and save travel details.
+ */
 public class Travel_Activity extends AppCompatActivity {
 
     private EditText editTextLocation;
@@ -45,8 +48,10 @@ public class Travel_Activity extends AppCompatActivity {
         editTextLocation = findViewById(R.id.location_input);
         editTextStartDate = findViewById(R.id.start_date_input);
         editTextEndDate = findViewById(R.id.end_date_input);
-        editTextDuration = findViewById(R.id.duration_outcome); // Make sure this EditText is editable if needed
-        buttonSaveLog = findViewById(R.id.calculate_vacation_button); // Change this to a button that makes sense for your logic
+        editTextDuration = findViewById(R.id.duration_outcome);
+        // Make sure this EditText is editable if needed
+        buttonSaveLog = findViewById(R.id.calculate_vacation_button);
+        // Change this to a button that makes sense for your logic
 
         // Set up save log button listener
         buttonSaveLog.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +62,10 @@ public class Travel_Activity extends AppCompatActivity {
                 String endDate = editTextEndDate.getText().toString().trim();
                 String durationString = editTextDuration.getText().toString().trim();
 
-                if (TextUtils.isEmpty(location) || TextUtils.isEmpty(startDate) ||
-                        TextUtils.isEmpty(endDate) || TextUtils.isEmpty(durationString)) {
+                if (TextUtils.isEmpty(location)
+                        || TextUtils.isEmpty(startDate)
+                        || TextUtils.isEmpty(endDate)
+                        || TextUtils.isEmpty(durationString)) {
                     Toast.makeText(Travel_Activity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 } else {
                     int duration = Integer.parseInt(durationString); // Convert duration to int
@@ -101,6 +108,9 @@ public class Travel_Activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Clears the input fields for location, start date, end date, and duration.
+     */
     private void clearInputFields() {
         editTextLocation.setText("");
         editTextStartDate.setText("");

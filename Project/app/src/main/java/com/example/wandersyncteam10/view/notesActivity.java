@@ -1,6 +1,5 @@
 package com.example.wandersyncteam10.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -68,6 +66,9 @@ public class notesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Adds a new note when the user presses Enter.
+     */
     private void addNote() {
         EditText inputText = findViewById(R.id.inputText);
         String noteText = inputText.getText().toString().trim();
@@ -88,7 +89,11 @@ public class notesActivity extends AppCompatActivity {
         }
     }
 
-    // Method to save notes to Firestore
+    /**
+     * Saves the given note to Firestore under the specific user's collection.
+     *
+     * @param note The note text to be saved.
+     */
     private void saveNoteToFirestore(String note) {
         // Create a note object
         Note newNote = new Note(note);
@@ -106,7 +111,9 @@ public class notesActivity extends AppCompatActivity {
                 });
     }
 
-    // Method to restore notes from Firestore
+    /**
+     * Restores notes from Firestore and displays them in the notes container.
+     */
     private void restoreNotes() {
         db.collection("users")
                 .document(userId)
@@ -128,20 +135,38 @@ public class notesActivity extends AppCompatActivity {
     }
 }
 
+
 // Create a Note class to represent a note object
 class Note {
     private String text;
 
-    public Note() {} // Needed for Firestore
+    /**
+     * need for fire store
+     * */
+    public Note() {
 
+    } // Needed for Firestore
+
+    /**
+     * @param text
+     * note text
+     * */
     public Note(String text) {
         this.text = text;
     }
 
+    /**
+     * get text
+     * @return text
+     * */
     public String getText() {
         return text;
     }
 
+    /**
+     * @param text
+     * note text
+     * */
     public void setText(String text) {
         this.text = text;
     }
