@@ -105,6 +105,9 @@ public class Logistics_Activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Displays a dialog to add a contributor to the list.
+     */
     private void showAddContributorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Contributor");
@@ -135,6 +138,9 @@ public class Logistics_Activity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Loads the list of contributors from Firestore and updates the display.
+     */
     private void loadContributorsFromFirestore() {
         // Reference the Firestore collection (e.g., "contributors")
         CollectionReference contributorsRef = db.collection("contributors");
@@ -157,6 +163,10 @@ public class Logistics_Activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Adds a contributor to Firestore and updates the local list of contributors.
+     * @param username The username of the contributor to be added.
+     */
     private void addContributorToFirestore(String username) {
         // Add the new contributor to Firestore
         db.collection("contributors").add(new Contributor(username))
@@ -168,6 +178,9 @@ public class Logistics_Activity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
     }
 
+    /**
+     * Updates the display of contributors in the TextView.
+     */
     private void updateContributorsDisplay() {
         StringBuilder contributorsText = new StringBuilder("Contributors:\n");
         for (String contributor : contributorsList) {
@@ -176,6 +189,9 @@ public class Logistics_Activity extends AppCompatActivity {
         usernameDisplay.setText(contributorsText.toString());
     }
 
+    /**
+     * draw
+     * */
     public void draw() {
         // Reference to the Firebase database for travelLogs
         DatabaseReference travelLogsRef = FirebaseDatabase.getInstance().getReference("travelLogs");
@@ -204,7 +220,8 @@ public class Logistics_Activity extends AppCompatActivity {
                         // Loop through each entry in calculatedDuration
                         for (DataSnapshot snapshot : calculatedDurationSnapshot.getChildren()) {
                             // Assuming each entry has a field named "duration"
-                            Long duration = snapshot.child("duration").getValue(Long.class); // Change to Double if needed
+                            Long duration = snapshot.child("duration").getValue(Long.class);
+                            // Change to Double if needed
                             if (duration != null) {
                                 calculatedTotalDuration[0] += duration; // Sum up the duration
                             }
@@ -245,22 +262,38 @@ public class Logistics_Activity extends AppCompatActivity {
 
 
 
-
-
-    // Contributor model class
+    /**
+     * Represents a contributor in the application.
+     * This class holds the information about a contributor, including their name.
+     */
     public class Contributor {
+
+        /** The name of the contributor. */
         private String name;
 
+        /**
+         * Constructs a new Contributor with the specified name.
+         * @param name the name of the contributor
+         */
         public Contributor(String name) {
             this.name = name;
         }
 
+        /**
+         * Returns the name of the contributor.
+         * @return the name of the contributor
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Sets the name of the contributor.
+         * @param name the new name for the contributor
+         */
         public void setName(String name) {
             this.name = name;
         }
     }
+
 }

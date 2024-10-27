@@ -36,10 +36,16 @@ import java.util.List;
 public class Destination_Activity extends AppCompatActivity {
 
     private LinearLayout formLayout;
-    private EditText locationInput, startDateInput, endDateInput, startInput, endInput;
+    private EditText locationInput;
+    private EditText startDateInput;
+    private EditText endDateInput;
+    private EditText startInput;
+    private EditText endInput;
     private ListView travelLogsList;
-    private TextView totalVacationDaysView, durationOutcome;
-    private Button calculateDurationButton, calculateButton;
+    private TextView totalVacationDaysView;
+    private TextView durationOutcome;
+    private Button calculateDurationButton;
+    private Button calculateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +105,20 @@ public class Destination_Activity extends AppCompatActivity {
                 Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (startDate.isEmpty() || endDate.isEmpty()) {
+                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!isValidDateFormat(startDate) || !isValidDateFormat(endDate)) {
+                Toast.makeText(Destination_Activity.this, "Invalid date format. Please use YYYY-MM-DD.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
-            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!",
+                    Toast.LENGTH_SHORT).show();
 
             updateTravelLogsList();
             updateTotalVacationDays();
@@ -123,7 +140,8 @@ public class Destination_Activity extends AppCompatActivity {
             String endDateInputText = endInput.getText().toString();
 
             if (startDateInputText.isEmpty() || endDateInputText.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -166,26 +184,57 @@ public class Destination_Activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * updates total vacation days
+     * */
     private void updateTotalVacationDays() {
         DestinationDatabase db = DestinationDatabase.getInstance(this);
         int totalDays = db.getTotalVacationDays();
         totalVacationDaysView.setText("Result: " + totalDays + " days");
     }
 
+    /**
+     * updates travel logs list
+     * */
     private void updateTravelLogsList() {
-        DestinationDatabase db = DestinationDatabase.getInstance(this);
-        List<TravelLog> travelLogs = db.getTravelLogs();
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("travelLogs");
+        // Assuming your logs are stored here
 
-        List<String> travelLogStrings = new ArrayList<>();
-        for (TravelLog log : travelLogs) {
-            String duration = getTravelDuration(log.getStartDate(), log.getEndDate()) + " days";
-            travelLogStrings.add(log.getLocation() + " (" + duration + ")");
-        }
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<TravelLog> travelLogs = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    TravelLog log = snapshot.getValue(TravelLog.class);
+                    travelLogs.add(log);
+                }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, travelLogStrings);
-        travelLogsList.setAdapter(adapter);
+                List<String> travelLogStrings = new ArrayList<>();
+                for (TravelLog log : travelLogs) {
+                    String duration = getTravelDuration(log.getStartDate(), log.getEndDate()) + " days";
+                    travelLogStrings.add(log.getLocation() + " (" + duration + ")");
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(Destination_Activity.this,
+                        android.R.layout.simple_list_item_1, travelLogStrings);
+                travelLogsList.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FirebaseTravelLogs", "Failed to load travel logs", databaseError.toException());
+            }
+        });
     }
 
+
+
+    /**
+     * @param startDate start date
+     * @param endDate end date
+     * calcuates travel duration based off startDate and endDate
+     * @return the number of days between the start and end dates
+     * */
     public static int getTravelDuration(String startDate, String endDate) {
         try {
             LocalDate start = LocalDate.parse(startDate);
@@ -196,6 +245,12 @@ public class Destination_Activity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param startDate start date
+     * @param endDate end date
+     * calcuates travel duration based off startDate and endDate
+     * @return the number of days between the start and end dates
+     * */
     private int calculateTravelDuration(String startDate, String endDate) {
         try {
             LocalDate start = LocalDate.parse(startDate);
@@ -207,6 +262,10 @@ public class Destination_Activity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves the calculated duration to the Firebase database.
+     * @param duration the calculated duration in days
+     */
     private void saveCalculatedDuration(int duration) {
         // Create a unique key for each duration entry (e.g., using push to generate a unique ID)
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("calculatedDurations");
@@ -221,14 +280,19 @@ public class Destination_Activity extends AppCompatActivity {
             databaseRef.child(key).setValue(durationData)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Destination_Activity.this, "Duration saved successfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Destination_Activity.this, "Duration saved successfully!",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(Destination_Activity.this, "Failed to save duration.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Destination_Activity.this, "Failed to save duration.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
 
+    /**
+     * loads durations from firebase
+     * */
     private void loadCalculatedDurations() {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("calculatedDurations");
 
@@ -248,4 +312,18 @@ public class Destination_Activity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * @param date the date to check format of
+     * @return boolean if correct return true else return false
+     * */
+    private boolean isValidDateFormat(String date) {
+        try {
+            LocalDate.parse(date);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
 }

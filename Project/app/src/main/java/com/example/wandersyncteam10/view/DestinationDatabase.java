@@ -18,23 +18,30 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Singleton class for managing travel logs in a Firebase database.
+ */
 public class DestinationDatabase {
     private static DestinationDatabase instance;
     private final DatabaseReference databaseReference;
-    private final List<TravelLog> travelLogs = new ArrayList<>();
+    private final List<TravelLog> travelLogs;
     private ValueEventListener eventListener;
 
-    // Constructor that initializes Firebase reference and starts loading travel logs
+    /**
+     * Private constructor for the singleton pattern.
+     */
     private DestinationDatabase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("travelLogs");
-        // Fetch existing logs from Firebase in real-time
-        loadTravelLogsFromFirebase();
-        // Add prepopulated travel logs
-        addPrepopulatedTravelLogs();
+        databaseReference = FirebaseDatabase.getInstance().getReference("travelLogs");
+        travelLogs = new ArrayList<>();
+        initializeDatabase();
     }
 
-    // Singleton pattern for getting the instance of the database
+    /**
+     * Retrieves the singleton instance of DestinationDatabase.
+     *
+     * @param context the context used to initialize the instance.
+     * @return the singleton instance of DestinationDatabase.
+     */
     public static synchronized DestinationDatabase getInstance(Context context) {
         if (instance == null) {
             instance = new DestinationDatabase();
@@ -42,95 +49,105 @@ public class DestinationDatabase {
         return instance;
     }
 
-    // Method to calculate the duration between two dates
+    /**
+     * Initializes database operations, loading existing logs and adding prepopulated logs.
+     */
+    private void initializeDatabase() {
+        loadTravelLogsFromFirebase();
+        addPrepopulatedTravelLogs();
+    }
+
+    /**
+     * Calculates the duration in days between two dates.
+     *
+     * @param startDate the start date in the format "yyyy-MM-dd".
+     * @param endDate   the end date in the format "yyyy-MM-dd".
+     * @return the duration in days, or 0 if the date format is invalid.
+     */
     private int calculateDuration(String startDate, String endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
-            // Parse the input dates
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate start = LocalDate.parse(startDate, formatter);
             LocalDate end = LocalDate.parse(endDate, formatter);
-
-            // Calculate the duration in days
-            long daysBetween = ChronoUnit.DAYS.between(start, end);
-
-            // Ensure the duration is non-negative (in case dates are reversed)
-            return (int) Math.max(daysBetween, 0);
+            return (int) Math.max(ChronoUnit.DAYS.between(start, end), 0);
         } catch (DateTimeParseException e) {
             Log.e("DestinationDatabase", "Invalid date format", e);
             return 0;
         }
     }
 
-    // Method to add a new travel log to Firebase
+    /**
+     * Adds a new travel log to the database.
+     *
+     * @param location  the location of the travel log.
+     * @param startDate the start date of the travel log in the format "yyyy-MM-dd".
+     * @param endDate   the end date of the travel log in the format "yyyy-MM-dd".
+     */
     public void addTravelLog(String location, String startDate, String endDate) {
         int duration = calculateDuration(startDate, endDate);
-        Log.d("DestinationDatabase", "Calculated duration: " + duration);
         TravelLog newLog = new TravelLog(location, startDate, endDate, duration);
-        // Push new entry to Firebase
         databaseReference.push().setValue(newLog);
+        Log.d("DestinationDatabase", "Added travel log: " + newLog);
     }
 
-    // New method to add calculated duration directly to the database
+    /**
+     * Adds a calculated duration travel log to the database.
+     *
+     * @param startDate the start date of the travel log in the format "yyyy-MM-dd".
+     * @param endDate   the end date of the travel log in the format "yyyy-MM-dd".
+     */
     public void addCalculatedDuration(String startDate, String endDate) {
         int duration = calculateDuration(startDate, endDate);
-        Log.d("DestinationDatabase", "Calculated duration: " + duration);
-
-        // Create a new TravelLog object with calculated duration
         TravelLog calculatedLog = new TravelLog("Calculated Duration", startDate, endDate, duration);
-
-        // Push the calculated duration to Firebase
         databaseReference.push().setValue(calculatedLog);
+        Log.d("DestinationDatabase", "Added calculated duration: " + calculatedLog);
     }
 
+    /**
+     * Gets the total vacation days from all travel logs.
+     *
+     * @return the total vacation days.
+     */
     public int getTotalVacationDays() {
-        int totalDays = 0;
-        // Sum up the duration of all travel logs
-        for (TravelLog log : travelLogs) {
-            totalDays += log.getDuration();  // Get the duration from each travel log
-        }
+        int totalDays = travelLogs.stream().mapToInt(TravelLog::getDuration).sum();
         Log.d("DestinationDatabase", "Total vacation days: " + totalDays);
         return totalDays;
     }
 
-    // Method to load travel logs from Firebase in real-time
+    /**
+     * Loads travel logs from Firebase in real-time.
+     */
     private void loadTravelLogsFromFirebase() {
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                travelLogs.clear();  // Clear the local list before updating
+                travelLogs.clear();
                 for (DataSnapshot logSnapshot : snapshot.getChildren()) {
                     TravelLog travelLog = logSnapshot.getValue(TravelLog.class);
                     if (travelLog != null) {
                         travelLogs.add(travelLog);
-                        // Log to check if logs are successfully added
                         Log.d("DestinationDatabase", "Added travel log: " + travelLog.getLocation());
                     }
                 }
-                // Notify the UI that data has changed (if using RecyclerView or similar)
                 notifyDataChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Log an error message if Firebase data retrieval fails
                 Log.e("DestinationDatabase", "Error loading data from Firebase", error.toException());
             }
         });
     }
 
-    // Method to add prepopulated travel logs
+    /**
+     * Adds prepopulated travel logs if the database is empty.
+     */
     private void addPrepopulatedTravelLogs() {
-        // Check if the database is empty before adding the logs
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
-                    // Only add if there are no existing logs
-                    TravelLog log1 = new TravelLog("Paris", "2024-01-01", "2024-01-07", 7);
-                    TravelLog log2 = new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7);
-
-                    databaseReference.push().setValue(log1);
-                    databaseReference.push().setValue(log2);
+                    addSampleTravelLogs();
                 }
             }
 
@@ -141,19 +158,34 @@ public class DestinationDatabase {
         });
     }
 
-    // Retrieve travel logs from the locally updated list (synced with Firebase)
+    /**
+     * Helper method to add sample travel logs.
+     */
+    private void addSampleTravelLogs() {
+        databaseReference.push().setValue(new TravelLog("Paris", "2024-01-01", "2024-01-07", 7));
+        databaseReference.push().setValue(new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7));
+    }
+
+    /**
+     * Retrieves the list of travel logs.
+     *
+     * @return a list of travel logs.
+     */
     public List<TravelLog> getTravelLogs() {
-        return travelLogs;
+        return new ArrayList<>(travelLogs);
     }
 
-    // Method to notify the UI that data has changed (you can call this from your activity or fragment)
+    /**
+     * Notifies the UI of data changes.
+     * Implement UI update logic, e.g., notify RecyclerView adapter.
+     */
     private void notifyDataChanged() {
-        // This is where you'd update your RecyclerView or UI component
-        // For example, if using RecyclerView, you'd call:
-        // adapter.notifyDataSetChanged();
+        // Implement UI update logic here
     }
 
-    // Properly remove the listener when the activity is destroyed to avoid memory leaks
+    /**
+     * Removes the Firebase listener to prevent memory leaks.
+     */
     public void removeListener() {
         if (eventListener != null) {
             databaseReference.removeEventListener(eventListener);

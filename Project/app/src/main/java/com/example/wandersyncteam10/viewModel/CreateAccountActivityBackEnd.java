@@ -11,16 +11,31 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Handles the backend operations for creating a user account.
+ */
 public class CreateAccountActivityBackEnd {
-    public FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
+    /**
+     * Initializes the CreateAccountActivityBackEnd instance.
+     * This constructor sets up the Firebase Authentication instance.
+     */
     public CreateAccountActivityBackEnd() {
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Creates a new user account with the specified email and password.
+     *
+     * @param email    The email address for the new account.
+     * @param password The password for the new account.
+     * @param context  The context used to display Toast messages.
+     */
     public void createAccount(String email, String password, Context context) {
         if (email.isEmpty() || password.isEmpty() || email.contains(" ") || password.contains(" ")) {
-            Toast.makeText(context, "Username or password cannot be empty or contain white space, try again.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Username or password cannot be empty or contain white space, try again.",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -34,9 +49,11 @@ public class CreateAccountActivityBackEnd {
                             Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("REGISTERING", "Registration failed: " + task.getException().getMessage());
-                            Toast.makeText(context, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Registration failed: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 }
+
