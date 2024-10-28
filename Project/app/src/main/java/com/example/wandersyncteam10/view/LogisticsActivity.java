@@ -221,6 +221,7 @@ public class LogisticsActivity extends AppCompatActivity {
      * draw
      * this method creates the bar chart for the actual total duration of the trips vs the alloted duration
      * we reference firebase and the destinationDatabase and the travelLogManager to do so
+     * 
      * */
     public void draw() {
 
