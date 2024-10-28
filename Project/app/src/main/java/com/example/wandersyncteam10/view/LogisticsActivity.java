@@ -38,7 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Logistics_Activity extends AppCompatActivity {
+public class LogisticsActivity extends AppCompatActivity {
 
     private TextView usernameDisplay;
     private List<String> contributorsList;
@@ -81,7 +81,7 @@ public class Logistics_Activity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Logistics_Activity.this, Logistics_Activity.class);
+                Intent intent = new Intent(LogisticsActivity.this, LogisticsActivity.class);
                 startActivity(intent);
             }
         });
@@ -91,7 +91,35 @@ public class Logistics_Activity extends AppCompatActivity {
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Logistics_Activity.this, Destination_Activity.class);
+                Intent intent = new Intent(LogisticsActivity.this, DestinationActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogisticsActivity.this, DiningActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogisticsActivity.this, AccommodationsActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogisticsActivity.this, TransportationActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogisticsActivity.this, TravelActivity.class);
                 startActivity(intent);
             }
         });
@@ -99,7 +127,7 @@ public class Logistics_Activity extends AppCompatActivity {
         findViewById(R.id.notesButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Logistics_Activity.this, notesActivity.class);
+                Intent intent = new Intent(LogisticsActivity.this, NotesActivity.class);
                 startActivity(intent);
             }
         });

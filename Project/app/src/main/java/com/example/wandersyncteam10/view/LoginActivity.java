@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         loginActivityViewModel.getUser().observe(this, firebaseUser -> {
             if (firebaseUser != null) {
                 Toast.makeText(LoginActivity.this, "User has logged in!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, Logistics_Activity.class);
+                Intent intent = new Intent(LoginActivity.this, LogisticsActivity.class);
                 startActivity(intent);
                 finish();
             }

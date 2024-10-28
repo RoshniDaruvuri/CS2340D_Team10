@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashSet;
 import java.util.Set;
 
-public class notesActivity extends AppCompatActivity {
+public class NotesActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private LinearLayout notesContainer;
@@ -46,7 +46,7 @@ public class notesActivity extends AppCompatActivity {
         restoreNotes();
 
         findViewById(R.id.backButton).setOnClickListener(view -> {
-            Intent intent = new Intent(notesActivity.this, Logistics_Activity.class);
+            Intent intent = new Intent(NotesActivity.this, LogisticsActivity.class);
             startActivity(intent);
         });
 

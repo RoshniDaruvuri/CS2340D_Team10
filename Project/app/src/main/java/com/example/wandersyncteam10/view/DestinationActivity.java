@@ -20,6 +20,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wandersyncteam10.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Destination_Activity extends AppCompatActivity {
+public class DestinationActivity extends AppCompatActivity {
 
     private LinearLayout formLayout;
     private EditText locationInput;
@@ -46,6 +48,8 @@ public class Destination_Activity extends AppCompatActivity {
     private TextView durationOutcome;
     private Button calculateDurationButton;
     private Button calculateButton;
+    private FirebaseUser currentUser;
+    private DatabaseReference travelLogsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,19 @@ public class Destination_Activity extends AppCompatActivity {
         durationOutcome = findViewById(R.id.duration_outcome);
         calculateDurationButton = findViewById(R.id.calculate_duration_button);
         calculateButton = findViewById(R.id.calculate_button);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
+
+
+        if (currentUser != null) {
+            travelLogsRef = FirebaseDatabase.getInstance().getReference("travelLogs").child(currentUser.getUid());
+            updateTravelLogsList();
+            updateTotalVacationDays();
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+        }
+
 
         // Hide extra inputs initially
         startInput.setVisibility(View.GONE);
@@ -102,24 +119,25 @@ public class Destination_Activity extends AppCompatActivity {
             String endDate = endDateInput.getText().toString();
 
             if (location.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DestinationActivity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (startDate.isEmpty() || endDate.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates",
+                Toast.makeText(DestinationActivity.this, "Please enter both start and end dates",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
             if (!isValidDateFormat(startDate) || !isValidDateFormat(endDate)) {
-                Toast.makeText(Destination_Activity.this, "Invalid date format. Please use YYYY-MM-DD.",
+                Toast.makeText(DestinationActivity.this, "Invalid date format. Please use YYYY-MM-DD.",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            DestinationDatabase.getInstance(Destination_Activity.this).addTravelLog(location, startDate, endDate);
-            Toast.makeText(Destination_Activity.this, "Vacation logged successfully!",
+            DestinationDatabase.getInstance(DestinationActivity.this).addTravelLog(location, startDate, endDate);
+            Toast.makeText(DestinationActivity.this, "Vacation logged successfully!",
                     Toast.LENGTH_SHORT).show();
 
+            saveTravelLog(location, startDate, endDate);
             updateTravelLogsList();
             updateTotalVacationDays();
             formLayout.setVisibility(View.GONE);
@@ -140,7 +158,7 @@ public class Destination_Activity extends AppCompatActivity {
             String endDateInputText = endInput.getText().toString();
 
             if (startDateInputText.isEmpty() || endDateInputText.isEmpty()) {
-                Toast.makeText(Destination_Activity.this, "Please enter both start and end dates",
+                Toast.makeText(DestinationActivity.this, "Please enter both start and end dates",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -154,32 +172,32 @@ public class Destination_Activity extends AppCompatActivity {
 
         // Dashboard button listeners (keeping these unchanged)
         findViewById(R.id.button).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Logistics_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, LogisticsActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button2).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Destination_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, DestinationActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button3).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Dining_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, DiningActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button4).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Accommodations_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, AccommodationsActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Transportation_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, TransportationActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(Destination_Activity.this, Travel_Activity.class);
+            Intent intent = new Intent(DestinationActivity.this, TravelActivity.class);
             startActivity(intent);
         });
     }
@@ -197,35 +215,66 @@ public class Destination_Activity extends AppCompatActivity {
      * updates travel logs list
      * */
     private void updateTravelLogsList() {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("travelLogs");
-        // Assuming your logs are stored here
+        if (currentUser == null) {
+            return;
+        }
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        travelLogsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<TravelLog> travelLogs = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    TravelLog log = snapshot.getValue(TravelLog.class);
-                    travelLogs.add(log);
-                }
-
                 List<String> travelLogStrings = new ArrayList<>();
-                for (TravelLog log : travelLogs) {
-                    String duration = getTravelDuration(log.getStartDate(), log.getEndDate()) + " days";
-                    travelLogStrings.add(log.getLocation() + " (" + duration + ")");
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String location = snapshot.child("location").getValue(String.class);
+                    String startDate = snapshot.child("startDate").getValue(String.class);
+                    String endDate = snapshot.child("endDate").getValue(String.class);
+                    int duration = calculateTravelDuration(startDate, endDate);
+                    travelLogStrings.add(location + " (" + duration + " days)");
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(Destination_Activity.this,
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(DestinationActivity.this,
                         android.R.layout.simple_list_item_1, travelLogStrings);
                 travelLogsList.setAdapter(adapter);
             }
 
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("FirebaseTravelLogs", "Failed to load travel logs", databaseError.toException());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseTravelLogs", "Failed to load logs", error.toException());
             }
         });
     }
+
+    /**
+     * @param location location
+     * @param startDate start date
+     * @param endDate end date
+     * saves travel log
+     * */
+    private void saveTravelLog(String location, String startDate, String endDate) {
+        if (currentUser == null) {
+            return;
+        }
+
+        String key = travelLogsRef.push().getKey(); // Ensure you're only pushing to user-specific logs
+        if (key != null) {
+            HashMap<String, String> travelData = new HashMap<>();
+            travelData.put("location", location);
+            travelData.put("startDate", startDate);
+            travelData.put("endDate", endDate);
+
+            // Save only to the user-specific reference
+            travelLogsRef.child(key).setValue(travelData)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Travel log saved!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Failed to save travel log.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+
 
 
 
@@ -257,7 +306,8 @@ public class Destination_Activity extends AppCompatActivity {
             LocalDate end = LocalDate.parse(endDate);
             return (int) ChronoUnit.DAYS.between(start, end);
         } catch (DateTimeParseException e) {
-            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.",
+                    Toast.LENGTH_SHORT).show();
             return 0;
         }
     }
@@ -267,28 +317,29 @@ public class Destination_Activity extends AppCompatActivity {
      * @param duration the calculated duration in days
      */
     private void saveCalculatedDuration(int duration) {
-        // Create a unique key for each duration entry (e.g., using push to generate a unique ID)
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("calculatedDurations");
-        String key = databaseRef.push().getKey(); // Generate a new unique key
+        DatabaseReference durationRef =
+                FirebaseDatabase.getInstance().getReference("calculatedDurations").child(currentUser.getUid());
+        String key = durationRef.push().getKey();
+
 
         if (key != null) {
-            // Create a map or a custom object for storing the duration
             HashMap<String, Object> durationData = new HashMap<>();
             durationData.put("duration", duration);
 
-            // Save the duration data
-            databaseRef.child(key).setValue(durationData)
+
+            durationRef.child(key).setValue(durationData)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Destination_Activity.this, "Duration saved successfully!",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Duration saved successfully!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(Destination_Activity.this, "Failed to save duration.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Failed to save duration.", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
+
+
+
 
     /**
      * loads durations from firebase
@@ -327,3 +378,4 @@ public class Destination_Activity extends AppCompatActivity {
     }
 
 }
+
