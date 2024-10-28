@@ -19,7 +19,7 @@ import com.example.wandersyncteam10.R;
 /**
  * Activity for managing travel logs, allowing users to input and save travel details.
  */
-public class Travel_Activity extends AppCompatActivity {
+public class TravelActivity extends AppCompatActivity {
 
     private EditText editTextLocation;
     private EditText editTextStartDate;
@@ -66,11 +66,11 @@ public class Travel_Activity extends AppCompatActivity {
                         || TextUtils.isEmpty(startDate)
                         || TextUtils.isEmpty(endDate)
                         || TextUtils.isEmpty(durationString)) {
-                    Toast.makeText(Travel_Activity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TravelActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 } else {
                     int duration = Integer.parseInt(durationString); // Convert duration to int
                     travelLogManager.saveTravelLog(location, startDate, endDate, duration);
-                    Toast.makeText(Travel_Activity.this, "Travel log saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TravelActivity.this, "Travel log saved!", Toast.LENGTH_SHORT).show();
                     clearInputFields();
                 }
             }
@@ -78,32 +78,32 @@ public class Travel_Activity extends AppCompatActivity {
 
         // Existing button listeners for navigation
         findViewById(R.id.button).setOnClickListener(view -> {
-            Intent intent = new Intent(Travel_Activity.this, Logistics_Activity.class);
+            Intent intent = new Intent(TravelActivity.this, LogisticsActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button2).setOnClickListener(view -> {
-            Intent intent = new Intent(Travel_Activity.this, Destination_Activity.class);
+            Intent intent = new Intent(TravelActivity.this, DestinationActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button3).setOnClickListener(view -> {
-            Intent intent = new Intent(Travel_Activity.this, Dining_Activity.class);
+            Intent intent = new Intent(TravelActivity.this, DiningActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button4).setOnClickListener(view -> {
-            Intent intent = new Intent(Travel_Activity.this, Accommodations_Activity.class);
+            Intent intent = new Intent(TravelActivity.this, AccommodationsActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(Travel_Activity.this, Transportation_Activity.class);
+            Intent intent = new Intent(TravelActivity.this, TransportationActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(Travel_Activity.this, Travel_Activity.class);
+            Intent intent = new Intent(TravelActivity.this, TravelActivity.class);
             startActivity(intent);
         });
     }

@@ -12,13 +12,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wandersyncteam10.R;
 
-public class Dining_Activity extends AppCompatActivity {
+public class TransportationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_dining);
+        setContentView(R.layout.activity_transportation);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -28,7 +28,7 @@ public class Dining_Activity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Dining_Activity.this, Logistics_Activity.class);
+                Intent intent = new Intent(TransportationActivity.this, LogisticsActivity.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +36,7 @@ public class Dining_Activity extends AppCompatActivity {
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Dining_Activity.this, Destination_Activity.class);
+                Intent intent = new Intent(TransportationActivity.this, DestinationActivity.class);
                 startActivity(intent);
             }
         });
@@ -44,7 +44,7 @@ public class Dining_Activity extends AppCompatActivity {
         findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Dining_Activity.this, Dining_Activity.class);
+                Intent intent = new Intent(TransportationActivity.this, DiningActivity.class);
                 startActivity(intent);
             }
         });
@@ -52,7 +52,7 @@ public class Dining_Activity extends AppCompatActivity {
         findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Dining_Activity.this, Accommodations_Activity.class);
+                Intent intent = new Intent(TransportationActivity.this, AccommodationsActivity.class);
                 startActivity(intent);
             }
         });
@@ -60,7 +60,7 @@ public class Dining_Activity extends AppCompatActivity {
         findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Dining_Activity.this, Transportation_Activity.class);
+                Intent intent = new Intent(TransportationActivity.this, TransportationActivity.class);
                 startActivity(intent);
             }
         });
@@ -68,7 +68,7 @@ public class Dining_Activity extends AppCompatActivity {
         findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Dining_Activity.this, Travel_Activity.class);
+                Intent intent = new Intent(TransportationActivity.this, TravelActivity.class);
                 startActivity(intent);
             }
         });

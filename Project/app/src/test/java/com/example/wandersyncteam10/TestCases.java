@@ -1,16 +1,13 @@
 package com.example.wandersyncteam10;
 
 import com.example.wandersyncteam10.view.TravelLog;
-import com.example.wandersyncteam10.view.DestinationDatabase;
-import com.example.wandersyncteam10.view.Logistics_Activity;
+
 import org.junit.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
