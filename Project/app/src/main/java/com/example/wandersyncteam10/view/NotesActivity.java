@@ -22,6 +22,7 @@ import java.util.Set;
 
 public class NotesActivity extends AppCompatActivity {
 
+    //NotesActivity has two files must fix it for the next Sprint
     private FirebaseFirestore db;
     private LinearLayout notesContainer;
     private Set<String> notesSet;
