@@ -7,15 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".view.DiningActivity">
 
+    <!-- Title for Dining Establishments -->
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dining Establishments Screen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Add Reservation Button -->
+    <Button
+        android:id="@+id/buttonAddReservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Reservation"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Reservation Input Form, initially hidden -->
+    <LinearLayout
+        android:id="@+id/reservationFormLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/buttonAddReservation">
+
+        <EditText
+            android:id="@+id/editTextLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Location" />
+
+        <EditText
+            android:id="@+id/editTextWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Website" />
+
+        <EditText
+            android:id="@+id/editTextTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Time" />
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Submit" />
+    </LinearLayout>
+
+    <!-- RecyclerView for displaying reservations -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reservationFormLayout" /> <!-- Ensure this is above the buttons -->
+
+    <!-- Navigation Buttons Row -->
     <!-- First button -->
     <Button
         android:id="@+id/button"
