@@ -1,3 +1,5 @@
+package smellapp;
+
 import java.util.List;
 
 public class Order {
@@ -49,7 +51,7 @@ public class Order {
             message += item.getName() + " - " + item.getPrice() + "\n";
         }
         message += "Total: " + calculateTotalPrice();
-        EmailSender.sendEmail(customerEmail, "Order Confirmation", message);
+        EmailSender.sendEmail(customerEmail, "smellapp.Order Confirmation", message);
     }
 
 
@@ -97,7 +99,7 @@ public class Order {
     }
 
    public void printOrder() {
-        System.out.println("Order Details:");
+        System.out.println("smellapp.Order Details:");
         for (Item item : items) {
             System.out.println(item.getName() + " - " + item.getPrice());
         }
