@@ -18,24 +18,20 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Add Reservation Button -->
-    <Button
-        android:id="@+id/buttonAddReservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Reservation"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Reservation Input Form, initially hidden -->
+
     <LinearLayout
         android:id="@+id/reservationFormLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="411dp"
+        android:layout_marginBottom="664dp"
         android:orientation="vertical"
         android:padding="16dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddReservation">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
             android:id="@+id/editTextLocation"
@@ -63,16 +59,27 @@
             android:text="Submit" />
     </LinearLayout>
 
-    <!-- RecyclerView for displaying reservations -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!-- LinearLayout for displaying reservations -->
+    <!-- LinearLayout for displaying reservations -->
+    <LinearLayout
+        android:id="@+id/linearLayoutReservations"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reservationFormLayout" /> <!-- Ensure this is above the buttons -->
+        app:layout_constraintTop_toBottomOf="@id/reservationFormLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/dining_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reservations will be displayed here"
+            android:padding="8dp" />
+    </LinearLayout>
 
     <!-- Navigation Buttons Row -->
-    <!-- First button -->
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
@@ -83,7 +90,6 @@
         app:layout_constraintEnd_toStartOf="@id/button2"
         app:layout_constraintHorizontal_weight="1" />
 
-    <!-- Second button -->
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
@@ -94,7 +100,6 @@
         app:layout_constraintEnd_toStartOf="@id/button3"
         app:layout_constraintHorizontal_weight="1" />
 
-    <!-- Third button  -->
     <Button
         android:id="@+id/button3"
         android:layout_width="0dp"
@@ -105,7 +110,6 @@
         app:layout_constraintEnd_toStartOf="@id/button4"
         app:layout_constraintHorizontal_weight="1" />
 
-    <!-- Fourth button -->
     <Button
         android:id="@+id/button4"
         android:layout_width="0dp"
@@ -116,7 +120,6 @@
         app:layout_constraintEnd_toStartOf="@id/button5"
         app:layout_constraintHorizontal_weight="1" />
 
-    <!-- Fifth button -->
     <Button
         android:id="@+id/button5"
         android:layout_width="0dp"
@@ -127,7 +130,17 @@
         app:layout_constraintEnd_toStartOf="@id/button6"
         app:layout_constraintHorizontal_weight="1" />
 
-    <!-- Sixth button -->
+    <Button
+        android:id="@+id/buttonAddReservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Reservation"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="DuplicateIds" />
+
+
     <Button
         android:id="@+id/button6"
         android:layout_width="0dp"
