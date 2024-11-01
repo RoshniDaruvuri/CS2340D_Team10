@@ -1,38 +1,39 @@
 package com.example.wandersyncteam10.view;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.wandersyncteam10.R;
-import com.example.wandersyncteam10.view.ReservationAdapter; // Your custom adapter
-import com.example.wandersyncteam10.view.Reservation; // Your model class
-import com.example.wandersyncteam10.view.DiningReservationManager; // Import your manager class
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 public class DiningActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private ReservationAdapter reservationAdapter; // Adapter for RecyclerView
-    private ArrayList<Reservation> reservationList; // List to hold reservations
-    private DiningReservationManager reservationManager; // Dining reservation manager instance
-    private LinearLayout reservationFormLayout;
-    private EditText editTextLocation, editTextWebsite, editTextTime;
+
+    private TextView diningDisplay;
+    private List<Reservation> reservationList;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,104 +41,120 @@ public class DiningActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dining);
 
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Find the TextView for displaying reservations
+        diningDisplay = findViewById(R.id.dining_display);
+
+        // Initialize the list of reservations
+        reservationList = new ArrayList<>();
+
+        // Set the insets for edge-to-edge layout
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Initialize the DiningReservationManager
-        reservationManager = new DiningReservationManager();
+        // Load reservations from Firestore when the activity starts
+        loadReservationsFromFirestore();
 
-        // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        reservationList = new ArrayList<>();
-        reservationAdapter = new ReservationAdapter(reservationList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(reservationAdapter);
-
-        // Initialize Views
-        reservationFormLayout = findViewById(R.id.reservationFormLayout);
-        editTextLocation = findViewById(R.id.editTextLocation);
-        editTextWebsite = findViewById(R.id.editTextWebsite);
-        editTextTime = findViewById(R.id.editTextTime);
-
-        // Show reservation form
+        // Handle Add Reservation button click
         findViewById(R.id.buttonAddReservation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reservationFormLayout.setVisibility(View.VISIBLE);
+                showAddReservationDialog();
             }
         });
+    }
 
-        findViewById(R.id.buttonSubmit).setOnClickListener(new View.OnClickListener() {
+    /**
+     * Displays a dialog to add a reservation.
+     */
+    private void showAddReservationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Reservation");
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_dining, null);
+        builder.setView(dialogView);
+
+        final EditText locationInput = dialogView.findViewById(R.id.editTextLocation);
+        final EditText websiteInput = dialogView.findViewById(R.id.editTextWebsite);
+        final EditText timeInput = dialogView.findViewById(R.id.editTextTime);
+
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String location = editTextLocation.getText().toString();
-                String website = editTextWebsite.getText().toString();
-                String timeString = editTextTime.getText().toString();
-
-                // Debugging logs
-                Log.d("DiningActivity", "Location: " + location);
-                Log.d("DiningActivity", "Website: " + website);
-                Log.d("DiningActivity", "Time: " + timeString);
-
-                // Parse the time string into a Date object
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                Date reservationTime = null;
-                try {
-                    reservationTime = dateFormat.parse(timeString);
-                } catch (ParseException e) {
-                    Log.e("DiningActivity", "Error parsing date", e);
-                    Toast.makeText(DiningActivity.this, "Invalid date format!", Toast.LENGTH_SHORT).show();
-                }
-
-                if (reservationTime != null) {
-                    reservationManager.addDiningReservation(location, website, new String[]{}, reservationTime);
-
-                    Reservation reservation = new Reservation(location, website, timeString);
-                    reservationList.add(reservation);
-                    reservationAdapter.notifyItemInserted(reservationList.size() - 1);
-
-                    // Clear fields and hide form
-                    editTextLocation.setText("");
-                    editTextWebsite.setText("");
-                    editTextTime.setText("");
-                    reservationFormLayout.setVisibility(View.GONE);
+            public void onClick(DialogInterface dialog, int which) {
+                String location = locationInput.getText().toString();
+                String website = websiteInput.getText().toString();
+                String time = timeInput.getText().toString();
+                if (!location.isEmpty() && !website.isEmpty() && !time.isEmpty()) {
+                    addReservationToFirestore(new Reservation(location, website, time));
                 }
             }
         });
 
-
-        // Navigation buttons
-        findViewById(R.id.button).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, LogisticsActivity.class);
-            startActivity(intent);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
         });
 
-        findViewById(R.id.button2).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, DestinationActivity.class);
-            startActivity(intent);
-        });
+        builder.show();
+    }
 
-        findViewById(R.id.button3).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, DiningActivity.class);
-            startActivity(intent);
-        });
+    /**
+     * Loads the list of reservations from Firestore and updates the display.
+     */
+    private void loadReservationsFromFirestore() {
+        CollectionReference reservationRef = db.collection("reservations");
 
-        findViewById(R.id.button4).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, AccommodationsActivity.class);
-            startActivity(intent);
+        reservationRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    reservationList.clear(); // Clear the current list
+                    for (DocumentSnapshot document : task.getResult()) {
+                        String location = document.getString("location");
+                        String website = document.getString("website");
+                        String time = document.getString("time");
+                        reservationList.add(new Reservation(location, website, time));
+                    }
+                    // Update the display after loading from Firestore
+                    updateDiningDisplay();
+                } else {
+                    Log.w("Firestore", "Error getting documents.", task.getException());
+                }
+            }
         });
+    }
 
-        findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, TransportationActivity.class);
-            startActivity(intent);
-        });
+    /**
+     * Adds a reservation to Firestore and updates the local list of reservations.
+     * @param reservation The reservation to be added.
+     */
+    private void addReservationToFirestore(Reservation reservation) {
+        db.collection("reservations").add(reservation)
+                .addOnSuccessListener(documentReference -> {
+                    reservationList.add(reservation);
+                    updateDiningDisplay();
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
+    }
 
-        findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, TravelActivity.class);
-            startActivity(intent);
-        });
+    /**
+     * Updates the display of reservations in the TextView.
+     */
+    private void updateDiningDisplay() {
+        StringBuilder displayText = new StringBuilder("Reservations:\n");
+        for (Reservation reservation : reservationList) {
+            displayText.append(reservation.getLocation()).append(" - ")
+                    .append(reservation.getWebsite()).append(" at ")
+                    .append(reservation.getTime()).append("\n");
+        }
+        diningDisplay.setText(displayText.toString());
     }
 }
