@@ -45,14 +45,19 @@ public class Order {
     }
 
     public void sendConfirmationEmail() {
-        String message = "Thank you for your order, " + customerName + "!\n\n" +
-                "Your order details:\n";
-        for (Item item : items) {
-            message += item.getName() + " - " + item.getPrice() + "\n";
-        }
-        message += "Total: " + calculateTotalPrice();
-        EmailSender.sendEmail(customerEmail, "smellapp.Order Confirmation", message);
-    }
+    
+    StringBuilder message = new StringBuilder();
+    message.append("Thank you for your order, ").append(customerName).append("!\n\n");
+    message.append("Your order details:\n");
+    
+    for (Item item : items) {
+        message.append(item.getName()).append(" - ").append(item.getPrice()).append("\n");
+    }
+    
+    message.append("Total: ").append(calculateTotalPrice());
+    EmailSender.sendEmail(customerEmail, "smellapp.Order Confirmation", message.toString());
+    
+}
 
 
     public void addItem(Item item) {
