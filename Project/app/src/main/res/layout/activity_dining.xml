@@ -61,6 +61,17 @@
 
     <!-- LinearLayout for displaying reservations -->
     <!-- LinearLayout for displaying reservations -->
+
+    <TextView
+        android:id="@+id/dining_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="365dp"
+        android:padding="8dp"
+        android:text="Reservations will be displayed here"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayoutReservations"
         android:layout_width="0dp"
@@ -71,12 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/dining_display"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reservations will be displayed here"
-            android:padding="8dp" />
+
     </LinearLayout>
 
     <!-- Navigation Buttons Row -->
