@@ -82,9 +82,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/main
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,11 +38,7 @@ public class TravelLogManager {
      * @param endDate The end date of the travel log entry.
      * @param duration The duration of the travel in days.
      */
-<<<<<<< HEAD
     public void saveTravelLog(String location, String startDate, String endDate, int duration, String invitedUser) {
-=======
-    public void saveTravelLog(String location, String startDate, String endDate, int duration) {
->>>>>>> origin/main
         String userId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
 
         // Log user ID for debugging
@@ -54,11 +50,7 @@ public class TravelLogManager {
         }
 
         String logId = travelLogReference.child(userId).push().getKey();
-<<<<<<< HEAD
         TravelLog travelLog = new TravelLog(location, startDate, endDate, duration, invitedUser);
-=======
-        TravelLog travelLog = new TravelLog(location, startDate, endDate, duration);
->>>>>>> origin/main
 
         // Save the travel log data under the user's ID
         if (logId != null) {

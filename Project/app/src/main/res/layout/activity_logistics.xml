@@ -8,8 +8,6 @@
     tools:context=".view.LogisticsActivity">
 
     <!-- TextView to display the added username -->
-<<<<<<< HEAD
-=======
 
     <!-- Add Contributors button placed in the middle -->
 
@@ -37,7 +35,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.071" />
 
->>>>>>> origin/main
     <TextView
         android:id="@+id/username_display"
         android:layout_width="wrap_content"
@@ -49,7 +46,7 @@
         app:layout_constraintBottom_toTopOf="@id/button"
         app:layout_constraintStart_toStartOf="parent" />
 
-<<<<<<< HEAD
+
     <!-- Progress indicator for loading trips -->
     <ProgressBar
         android:id="@+id/loadingIndicator"
@@ -75,7 +72,7 @@
 
 
     <!-- Add Contributors button placed in the middle -->
-=======
+
     <Button
         android:id="@+id/graph_button"
         android:layout_width="wrap_content"
@@ -86,7 +83,6 @@
         app:layout_constraintHorizontal_bias="0.549"
         app:layout_constraintStart_toEndOf="@id/add_contributors_button" />
 
->>>>>>> origin/main
     <Button
         android:id="@+id/add_contributors_button"
         android:layout_width="wrap_content"
@@ -99,56 +95,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-<<<<<<< HEAD
-    <!-- Graph button next to Contributors button -->
-    <Button
-        android:id="@+id/graph_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Graph"
-        app:layout_constraintBottom_toTopOf="@id/button"
-        app:layout_constraintEnd_toStartOf="@id/notesButton"
-        app:layout_constraintHorizontal_bias="0.549"
-        app:layout_constraintStart_toEndOf="@id/add_contributors_button" />
-
-    <!-- Bar chart for visualizing data -->
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/BarChart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:ignore="MissingClass" />
-
-    <Button
-        android:id="@+id/view_trips_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Trips"
-        app:layout_constraintBottom_toTopOf="@id/add_contributors_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="0.2" />
-
-
-    <!-- TextView for logistics title -->
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logistics Landing Screen"
-        app:layout_constraintBottom_toTopOf="@+id/add_contributors_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.071" />
-
     <!-- Notes button on the left -->
-=======
->>>>>>> origin/main
+
     <Button
         android:id="@+id/notesButton"
         android:layout_width="wrap_content"
@@ -159,11 +107,7 @@
         app:layout_constraintEnd_toStartOf="@id/button"
         app:layout_constraintHorizontal_bias="0" />
 
-<<<<<<< HEAD
-    <!-- Set of buttons at the bottom -->
-=======
     <!-- First button -->
->>>>>>> origin/main
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
@@ -174,10 +118,7 @@
         app:layout_constraintEnd_toStartOf="@id/button2"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-=======
     <!-- Second button -->
->>>>>>> origin/main
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
@@ -188,10 +129,7 @@
         app:layout_constraintEnd_toStartOf="@id/button3"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-=======
     <!-- Third button  -->
->>>>>>> origin/main
     <Button
         android:id="@+id/button3"
         android:layout_width="0dp"
@@ -202,10 +140,7 @@
         app:layout_constraintEnd_toStartOf="@id/button4"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-=======
     <!-- Fourth button -->
->>>>>>> origin/main
     <Button
         android:id="@+id/button4"
         android:layout_width="0dp"
@@ -216,10 +151,7 @@
         app:layout_constraintEnd_toStartOf="@id/button5"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-=======
     <!-- Fifth button -->
->>>>>>> origin/main
     <Button
         android:id="@+id/button5"
         android:layout_width="0dp"
@@ -230,10 +162,7 @@
         app:layout_constraintEnd_toStartOf="@id/button6"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-=======
     <!-- Sixth button -->
->>>>>>> origin/main
     <Button
         android:id="@+id/button6"
         android:layout_width="0dp"
@@ -244,9 +173,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
 
-<<<<<<< HEAD
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-=======
-</androidx.constraintlayout.widget.ConstraintLayout>
->>>>>>> origin/main

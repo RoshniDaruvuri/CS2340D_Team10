@@ -8,10 +8,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
         applicationId "com.example.wandersyncteam10"
         minSdk 24
         targetSdk 34

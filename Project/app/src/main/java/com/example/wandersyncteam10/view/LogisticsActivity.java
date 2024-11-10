@@ -9,11 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.wandersyncteam10.view.Contributor;
 
+=======
+import android.widget.EditText;
+import android.widget.TextView;
+>>>>>>> origin/main
 =======
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,7 +60,10 @@ public class LogisticsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 =======
 >>>>>>> origin/main
         super.onCreate(savedInstanceState);
@@ -89,6 +97,7 @@ public class LogisticsActivity extends AppCompatActivity {
             }
         });
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Find the button by its ID
         Button viewTripsButton = findViewById(R.id.view_trips_button);
         // Set an OnClickListener for the button
@@ -105,6 +114,8 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+=======
+>>>>>>> origin/main
 =======
 >>>>>>> origin/main
 
@@ -163,7 +174,10 @@ public class LogisticsActivity extends AppCompatActivity {
             }
         });
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 =======
 >>>>>>> origin/main
     }
@@ -257,7 +271,11 @@ public class LogisticsActivity extends AppCompatActivity {
      * this method creates the bar chart for the actual total duration of the trips vs the alloted duration
      * we reference firebase and the destinationDatabase and the travelLogManager to do so
 <<<<<<< HEAD
+<<<<<<< HEAD
      *
+=======
+     * 
+>>>>>>> origin/main
 =======
      * 
 >>>>>>> origin/main
@@ -368,7 +386,11 @@ public class LogisticsActivity extends AppCompatActivity {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main
 =======
 }
 >>>>>>> origin/main

@@ -18,11 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Add Reservation Button -->
-<<<<<<< HEAD
-
-    <!-- Reservation Input Form, initially hidden -->
-
-=======
     <Button
         android:id="@+id/buttonAddReservation"
         android:layout_width="wrap_content"
@@ -45,25 +40,15 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Reservation Form Layout -->
->>>>>>> origin/main
     <LinearLayout
         android:id="@+id/reservationFormLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-        android:layout_marginEnd="411dp"
-        android:layout_marginBottom="664dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-=======
         android:orientation="vertical"
         android:padding="16dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/buttonSortReservations"
         app:layout_constraintStart_toStartOf="parent"
->>>>>>> origin/main
         app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
@@ -92,27 +77,6 @@
             android:text="Submit" />
     </LinearLayout>
 
-<<<<<<< HEAD
-    <!-- LinearLayout for displaying reservations -->
-    <!-- LinearLayout for displaying reservations -->
-    <LinearLayout
-        android:id="@+id/linearLayoutReservations"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reservationFormLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/dining_display"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reservations will be displayed here"
-            android:padding="8dp" />
-    </LinearLayout>
-=======
     <!-- Scrollable Reservations List -->
     <ScrollView
         android:id="@+id/scrollViewReservations"
@@ -144,7 +108,6 @@
         android:text="Reservations will be displayed here"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent" />
->>>>>>> origin/main
 
     <!-- Navigation Buttons Row -->
     <Button
@@ -198,20 +161,6 @@
         app:layout_constraintHorizontal_weight="1" />
 
     <Button
-<<<<<<< HEAD
-        android:id="@+id/buttonAddReservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Reservation"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="DuplicateIds" />
-
-
-    <Button
-=======
->>>>>>> origin/main
         android:id="@+id/button6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
