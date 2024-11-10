@@ -157,7 +157,6 @@ public class DestinationActivity extends AppCompatActivity {
             durationOutcome.setVisibility(View.VISIBLE);
             calculateButton.setVisibility(View.VISIBLE);
         });
-
         // Calculate duration based on start and end date inputs
         calculateButton.setOnClickListener(v -> {
             String startDateInputText = startInput.getText().toString();
