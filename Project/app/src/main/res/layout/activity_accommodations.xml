@@ -8,14 +8,14 @@
     tools:context=".view.AccommodationsActivity">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accommodations Screen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Accommodations Screen"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!-- linear layout for form to show up   -->
 
@@ -38,6 +38,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/sort_alphabetical_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort Alphabetically"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="50dp" />
 
 
 
@@ -115,7 +125,10 @@
 
 
 
-<ListView
+
+
+
+    <ListView
         android:id="@+id/accommodations_logs_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -192,5 +205,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
 
-    
 </androidx.constraintlayout.widget.ConstraintLayout>

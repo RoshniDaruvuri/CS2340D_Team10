@@ -30,7 +30,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AccommodationsActivity extends AppCompatActivity {
@@ -59,20 +58,26 @@ public class AccommodationsActivity extends AppCompatActivity {
         accommodationsLogsList = findViewById(R.id.accommodations_logs_list);
         formLayout = findViewById(R.id.form_layout);
 
+        // Initialize sorting buttons
+        Button sortAlphabeticallyButton = findViewById(R.id.sort_alphabetical_button);
+
+        sortAlphabeticallyButton.setOnClickListener(v -> {
+            sortingStrategy = new AlphabeticalSortingStrategy();
+            fetchAndDisplayData();
+        });
+
         logAccommodationButton = findViewById(R.id.log_accommodation);
-        logFormButton = findViewById(R.id.log_accom); // Button to store data in Firebase
+        logFormButton = findViewById(R.id.log_accom);
         toggleFormButton = findViewById(R.id.toggle_form_button);
 
         formLayout.setVisibility(View.GONE);
         logFormButton.setVisibility(View.GONE);
-        // Apply edge-to-edge UI padding
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Set listeners for the buttons
         toggleFormButton.setOnClickListener(v -> {
             if (formLayout.getVisibility() == View.VISIBLE) {
                 formLayout.setVisibility(View.GONE);
@@ -85,7 +90,6 @@ public class AccommodationsActivity extends AppCompatActivity {
 
         logFormButton.setOnClickListener(v -> logAccommodation());
 
-        // Initialize Firebase authentication and get the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
 
@@ -101,39 +105,8 @@ public class AccommodationsActivity extends AppCompatActivity {
 
         Button sortByCheckInButton = findViewById(R.id.sort_checkin_button);
         sortByCheckInButton.setOnClickListener(v -> {
-            sortingStrategy = new CheckInSort(); // Set to check-in sorting strategy
-            fetchAndDisplayData(); // Fetch and display sorted data
-        });
-
-        // Dashboard button listeners (keeping these unchanged)
-        findViewById(R.id.button).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, LogisticsActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button2).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, DestinationActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button3).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, DiningActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button4).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, AccommodationsActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, TransportationActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, TravelActivity.class);
-            startActivity(intent);
+            sortingStrategy = new CheckInSort();
+            fetchAndDisplayData();
         });
     }
 
@@ -149,12 +122,10 @@ public class AccommodationsActivity extends AppCompatActivity {
                     }
                 }
 
-                // Apply the sorting strategy if selected
                 if (sortingStrategy != null) {
                     sortingStrategy.sort(logs);
                 }
 
-                // Convert logs to strings for display
                 List<String> formattedLogs = new ArrayList<>();
                 for (AccommodationsLog log : logs) {
                     String logDetails = "Check-in: " + log.getCheckin() + "\n" +
@@ -189,12 +160,10 @@ public class AccommodationsActivity extends AppCompatActivity {
                     }
                 }
 
-                // Apply the sorting strategy if selected
                 if (sortingStrategy != null) {
                     sortingStrategy.sort(logs);
                 }
 
-                // Convert logs to strings for display
                 List<String> formattedLogs = new ArrayList<>();
                 for (AccommodationsLog log : logs) {
                     String logDetails = "Check-in: " + log.getCheckin() + "\n" +
@@ -229,8 +198,8 @@ public class AccommodationsActivity extends AppCompatActivity {
             accommodationsLogsRef.push().setValue(log)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "Log added successfully", Toast.LENGTH_SHORT).show();
-                        formLayout.setVisibility(View.GONE); // Hide the form after logging
-                        logFormButton.setVisibility(View.GONE); // Hide the log button
+                        formLayout.setVisibility(View.GONE);
+                        logFormButton.setVisibility(View.GONE);
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Failed to add log: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -258,8 +227,39 @@ public class AccommodationsActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid date format. Use YYYY-MM-DD", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        // Validate numRooms as a positive integer within a sensible range
+        try {
+            int rooms = Integer.parseInt(numRooms);
+            if (rooms <= 0 || rooms > 50) {
+                Toast.makeText(this, "Please enter a reasonable number of rooms (1-50)", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Number of rooms must be numeric", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Validate location length and content
+        if (location.length() > 50) {
+            Toast.makeText(this, "Location name is too long (max 50 characters)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!location.matches("[a-zA-Z\\s]*")) { // Only letters and spaces
+            Toast.makeText(this, "Location can only contain letters and spaces", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Validate room type length and content
+        if (roomType.length() > 30) {
+            Toast.makeText(this, "Room type is too long (max 30 characters)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!roomType.matches("[a-zA-Z\\s]*")) { // Only letters and spaces
+            Toast.makeText(this, "Room type can only contain letters and spaces", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 }
-
-
