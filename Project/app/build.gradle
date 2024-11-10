@@ -8,6 +8,7 @@ android {
     compileSdk 34
 
     defaultConfig {
+
         applicationId "com.example.wandersyncteam10"
         minSdk 24
         targetSdk 34
@@ -41,12 +42,26 @@ dependencies {
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
-    implementation platform('com.google.firebase:firebase-bom:32.0.0') // Use the latest version
+
+    // imp edit
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // Firebase BOM to manage all Firebase versions
+    implementation platform('com.google.firebase:firebase-bom:32.2.0')
+
+    // Firebase Authentication
     implementation 'com.google.firebase:firebase-auth'
+
+    // Firebase Realtime Database
     implementation 'com.google.firebase:firebase-database'
+
+    // Firebase Firestore
+    implementation 'com.google.firebase:firebase-firestore:24.7.1'
+
     implementation libs.activity
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 }
+
 apply plugin: 'com.google.gms.google-services'

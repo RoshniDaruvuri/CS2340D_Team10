@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private CreateAccountActivityBackEnd viewModel;
-    public FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,12 +39,13 @@ public class CreateAccountActivity extends AppCompatActivity {
             String password = passwordEditText.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(CreateAccountActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this, "Please enter both email and password.",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 viewModel.createAccount(email, password, CreateAccountActivity.this);
                 //switch to Logistics_Activity after registration
-                Intent intent = new Intent(CreateAccountActivity.this, Logistics_Activity.class);
+                Intent intent = new Intent(CreateAccountActivity.this, LogisticsActivity.class);
                 startActivity(intent);
             }
         });

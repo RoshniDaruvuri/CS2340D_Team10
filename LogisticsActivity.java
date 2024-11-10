@@ -349,4 +349,3 @@ public class LogisticsActivity extends AppCompatActivity {
         }
     }
 
-}
