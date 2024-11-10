@@ -8,21 +8,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.wandersyncteam10.view.Contributor;
 
-=======
 import android.widget.EditText;
 import android.widget.TextView;
->>>>>>> origin/main
-=======
+
 import android.widget.EditText;
 import android.widget.TextView;
->>>>>>> origin/main
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -59,13 +54,7 @@ public class LogisticsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
-=======
->>>>>>> origin/main
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_logistics);
@@ -96,8 +85,7 @@ public class LogisticsActivity extends AppCompatActivity {
                 showAddContributorDialog();
             }
         });
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         // Find the button by its ID
         Button viewTripsButton = findViewById(R.id.view_trips_button);
         // Set an OnClickListener for the button
@@ -114,10 +102,6 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-=======
->>>>>>> origin/main
-=======
->>>>>>> origin/main
 
         // Other buttons remain unchanged...
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -173,13 +157,7 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
-=======
->>>>>>> origin/main
     }
 
     /**
@@ -385,12 +363,3 @@ public class LogisticsActivity extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> origin/main
-=======
-}
->>>>>>> origin/main
