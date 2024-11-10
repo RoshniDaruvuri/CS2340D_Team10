@@ -18,6 +18,7 @@
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!-- linear layout for form to show up   -->
+
     <Button
         android:id="@+id/log_accommodation"
         android:layout_width="wrap_content"
@@ -26,7 +27,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
     <!--    android:id="@+id/log_travel_button" -->
+
+    <Button
+        android:id="@+id/sort_checkin_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort by Check-in"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 
@@ -48,35 +60,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Check In"
-            android:layout_marginTop="24dp" /> <!-- Adjusted margin -->
+            android:layout_marginTop="15dp" /> <!-- Adjusted margin -->
 
         <EditText
             android:id="@+id/check_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Check Out"
-            android:layout_marginTop="24dp" /> <!-- Adjusted margin -->
+            android:layout_marginTop="15dp" /> <!-- Adjusted margin -->
 
         <EditText
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Location"
-            android:layout_marginTop="24dp" /> <!-- Adjusted margin -->
+            android:layout_marginTop="15dp" /> <!-- Adjusted margin -->
 
         <EditText
             android:id="@+id/num_rooms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Number of Rooms"
-            android:layout_marginTop="24dp" /> <!-- Adjusted margin -->
+            android:layout_marginTop="15dp" /> <!-- Adjusted margin -->
 
         <EditText
             android:id="@+id/room_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Room Type"
-            android:layout_marginTop="40dp" /> <!-- Adjusted margin -->
+            android:layout_marginTop="15dp" /> <!-- Adjusted margin -->
 
         <Button
             android:id="@+id/log_accom"
@@ -89,17 +101,24 @@
     </LinearLayout>
 
 
+
     <ImageButton
         android:id="@+id/toggle_form_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@android:drawable/ic_menu_add"
+        app:tint="#000000"
         android:contentDescription="Toggle Form"
         android:layout_margin="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ListView
+
+
+
+
+
+<ListView
         android:id="@+id/accommodations_logs_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -108,6 +127,7 @@
         app:layout_constraintTop_toBottomOf="@id/form_layout"
         app:layout_constraintBottom_toTopOf="@id/button6"
         android:dividerHeight="1dp" />
+
 
     <!-- First button -->
     <Button

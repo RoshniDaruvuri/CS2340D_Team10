@@ -1,5 +1,6 @@
 package com.example.wandersyncteam10.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,26 +31,40 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class AccommodationsActivity extends AppCompatActivity {
 
     private EditText checkInInput, checkOutInput, locationInput, numRoomsInput, roomTypeInput;
-    private Button logAccommodationButton, logNewHotelButton;
+    private Button logAccommodationButton, logFormButton;
     private ImageButton toggleFormButton;
 
     private FirebaseUser currentUser;
     private DatabaseReference accommodationsLogsRef;
     private ListView accommodationsLogsList;
     private View formLayout;
+    private SortingStrategy sortingStrategy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodations);
+
+        // Initialize UI elements
+        checkInInput = findViewById(R.id.check_in);
+        checkOutInput = findViewById(R.id.check_out);
+        locationInput = findViewById(R.id.location);
+        numRoomsInput = findViewById(R.id.num_rooms);
+        roomTypeInput = findViewById(R.id.room_type);
+        accommodationsLogsList = findViewById(R.id.accommodations_logs_list);
+        formLayout = findViewById(R.id.form_layout);
+
+        logAccommodationButton = findViewById(R.id.log_accommodation);
+        logFormButton = findViewById(R.id.log_accom); // Button to store data in Firebase
         toggleFormButton = findViewById(R.id.toggle_form_button);
 
+        formLayout.setVisibility(View.GONE);
+        logFormButton.setVisibility(View.GONE);
         // Apply edge-to-edge UI padding
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -57,27 +72,18 @@ public class AccommodationsActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize input fields
-        checkInInput = findViewById(R.id.check_in);
-        checkOutInput = findViewById(R.id.check_out);
-        locationInput = findViewById(R.id.location);
-        numRoomsInput = findViewById(R.id.num_rooms);
-        roomTypeInput = findViewById(R.id.room_type);
-        accommodationsLogsList = findViewById(R.id.accommodations_logs_list);
-        formLayout = findViewById(R.id.form_layout); // Reference to the form layout
-
-        // Initialize buttons
-        logAccommodationButton = findViewById(R.id.log_accommodation);
-        toggleFormButton = findViewById(R.id.toggle_form_button);
-
-        // Initially hide the form
-        formLayout.setVisibility(View.GONE);
-
-        // Set listeners for form toggle and log button
+        // Set listeners for the buttons
         toggleFormButton.setOnClickListener(v -> {
-            formLayout.setVisibility(formLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            if (formLayout.getVisibility() == View.VISIBLE) {
+                formLayout.setVisibility(View.GONE);
+                logFormButton.setVisibility(View.GONE);
+            } else {
+                formLayout.setVisibility(View.VISIBLE);
+                logFormButton.setVisibility(View.VISIBLE);
+            }
         });
-        logAccommodationButton.setOnClickListener(v -> logAccommodation());
+
+        logFormButton.setOnClickListener(v -> logAccommodation());
 
         // Initialize Firebase authentication and get the current user
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -92,47 +98,44 @@ public class AccommodationsActivity extends AppCompatActivity {
             Toast.makeText(this, "User not logged in. Please log in to continue.", Toast.LENGTH_SHORT).show();
             Log.e("AccommodationsActivity", "User is null");
         }
-    }
 
-//    private void setupDatabaseListener() {
-//        accommodationsLogsRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                List<String> logs = new ArrayList<>();
-//                for (DataSnapshot data : snapshot.getChildren()) {
-//                    AccommodationsLog log = data.getValue(AccommodationsLog.class);
-//                    if (log != null) {
-//                        LocalDate checkoutDate = LocalDate.parse(log.getCheckout(), DateTimeFormatter.ISO_LOCAL_DATE);
-//                        LocalDate today = LocalDate.now();
-//
-//
-//                        LocalDate.parse(log.getCheckout(), DateTimeFormatter.ISO_LOCAL_DATE);
-//
-//                        String logDetails = "Check-in: " + log.getCheckin() + "\n" +
-//                                "Check-out: " + log.getCheckout() + "\n" +
-//                                "Location: " + log.getLocation() + "\n" +
-//                                "Rooms: " + log.getRoomnum() + "\n" +
-//                                "Room Type: " + log.getRoomtype();
-//
-//                        if (checkoutDate.isBefore(today)) {
-//                            logDetails += "\nStatus: expired";
-//                            //logDetails += "\"\\u001B[1mStatus: expired\\u001B[0m\"";
-//                        }
-//                        logs.add(logDetails);
-//                    }
-//                }
-//
-//                ArrayAdapter<String> adapter = new ArrayAdapter<>(AccommodationsActivity.this, android.R.layout.simple_list_item_1, logs);
-//                accommodationsLogsList.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(AccommodationsActivity.this, "Failed to load logs: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.e("AccommodationsActivity", "Database error: " + error.getMessage());
-//            }
-//        });
-//    }
+        Button sortByCheckInButton = findViewById(R.id.sort_checkin_button);
+        sortByCheckInButton.setOnClickListener(v -> {
+            sortingStrategy = new CheckInSort(); // Set to check-in sorting strategy
+            fetchAndDisplayData(); // Fetch and display sorted data
+        });
+
+        // Dashboard button listeners (keeping these unchanged)
+        findViewById(R.id.button).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, LogisticsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button2).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, DestinationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button3).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, DiningActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button4).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, AccommodationsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button5).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, TransportationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button6).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, TravelActivity.class);
+            startActivity(intent);
+        });
+    }
 
     private void setupDatabaseListener() {
         accommodationsLogsRef.addValueEventListener(new ValueEventListener() {
@@ -146,45 +149,22 @@ public class AccommodationsActivity extends AppCompatActivity {
                     }
                 }
 
-                // Sort the logs by check-in date and then by check-out date
-                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-                Collections.sort(logs, new Comparator<AccommodationsLog>() {
-                    @Override
-                    public int compare(AccommodationsLog log1, AccommodationsLog log2) {
-                        LocalDate checkinDate1 = LocalDate.parse(log1.getCheckin(), formatter);
-                        LocalDate checkinDate2 = LocalDate.parse(log2.getCheckin(), formatter);
-                        int checkinComparison = checkinDate1.compareTo(checkinDate2);
+                // Apply the sorting strategy if selected
+                if (sortingStrategy != null) {
+                    sortingStrategy.sort(logs);
+                }
 
-                        // If check-in dates are the same, compare by check-out date
-                        if (checkinComparison == 0) {
-                            LocalDate checkoutDate1 = LocalDate.parse(log1.getCheckout(), formatter);
-                            LocalDate checkoutDate2 = LocalDate.parse(log2.getCheckout(), formatter);
-                            return checkoutDate1.compareTo(checkoutDate2);
-                        }
-
-                        return checkinComparison;
-                    }
-                });
-
-                // Convert sorted logs to strings for display
+                // Convert logs to strings for display
                 List<String> formattedLogs = new ArrayList<>();
-                LocalDate today = LocalDate.now();
                 for (AccommodationsLog log : logs) {
-                    LocalDate checkoutDate = LocalDate.parse(log.getCheckout(), formatter);
-
                     String logDetails = "Check-in: " + log.getCheckin() + "\n" +
                             "Check-out: " + log.getCheckout() + "\n" +
                             "Location: " + log.getLocation() + "\n" +
                             "Rooms: " + log.getRoomnum() + "\n" +
                             "Room Type: " + log.getRoomtype();
-
-                    if (checkoutDate.isBefore(today) || checkoutDate.isEqual(today)) {
-                        logDetails += "\nStatus: expired";
-                    }
                     formattedLogs.add(logDetails);
                 }
 
-                // Set the formatted logs to the adapter
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(AccommodationsActivity.this, android.R.layout.simple_list_item_1, formattedLogs);
                 accommodationsLogsList.setAdapter(adapter);
             }
@@ -197,6 +177,45 @@ public class AccommodationsActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchAndDisplayData() {
+        accommodationsLogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<AccommodationsLog> logs = new ArrayList<>();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    AccommodationsLog log = data.getValue(AccommodationsLog.class);
+                    if (log != null) {
+                        logs.add(log);
+                    }
+                }
+
+                // Apply the sorting strategy if selected
+                if (sortingStrategy != null) {
+                    sortingStrategy.sort(logs);
+                }
+
+                // Convert logs to strings for display
+                List<String> formattedLogs = new ArrayList<>();
+                for (AccommodationsLog log : logs) {
+                    String logDetails = "Check-in: " + log.getCheckin() + "\n" +
+                            "Check-out: " + log.getCheckout() + "\n" +
+                            "Location: " + log.getLocation() + "\n" +
+                            "Rooms: " + log.getRoomnum() + "\n" +
+                            "Room Type: " + log.getRoomtype();
+                    formattedLogs.add(logDetails);
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(AccommodationsActivity.this, android.R.layout.simple_list_item_1, formattedLogs);
+                accommodationsLogsList.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AccommodationsActivity.this, "Failed to load logs: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("AccommodationsActivity", "Database error: " + error.getMessage());
+            }
+        });
+    }
 
     private void logAccommodation() {
         String checkInDate = checkInInput.getText().toString();
@@ -211,6 +230,7 @@ public class AccommodationsActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "Log added successfully", Toast.LENGTH_SHORT).show();
                         formLayout.setVisibility(View.GONE); // Hide the form after logging
+                        logFormButton.setVisibility(View.GONE); // Hide the log button
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Failed to add log: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -238,29 +258,8 @@ public class AccommodationsActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid date format. Use YYYY-MM-DD", Toast.LENGTH_SHORT).show();
             return false;
         }
-
-        // Validate numRooms as a positive integer within a sensible range
-        try {
-            int rooms = Integer.parseInt(numRooms);
-            if (rooms <= 0 || rooms > 50) {
-                Toast.makeText(this, "Please enter a reasonable number of rooms (1-50)", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Number of rooms must be numeric", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        // Limit text length for location and room type to prevent overly long inputs
-        if (location.length() > 50) {
-            Toast.makeText(this, "Location name is too long (max 50 characters)", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (roomType.length() > 30) {
-            Toast.makeText(this, "Room type is too long (max 30 characters)", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
         return true;
     }
 }
+
+
