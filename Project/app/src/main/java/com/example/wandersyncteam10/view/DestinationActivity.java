@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -34,6 +35,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DestinationActivity extends AppCompatActivity {
 
@@ -43,6 +45,9 @@ public class DestinationActivity extends AppCompatActivity {
     private EditText endDateInput;
     private EditText startInput;
     private EditText endInput;
+
+    private EditText addedUser;
+
     private ListView travelLogsList;
     private TextView totalVacationDaysView;
     private TextView durationOutcome;
@@ -75,10 +80,10 @@ public class DestinationActivity extends AppCompatActivity {
         durationOutcome = findViewById(R.id.duration_outcome);
         calculateDurationButton = findViewById(R.id.calculate_duration_button);
         calculateButton = findViewById(R.id.calculate_button);
+        addedUser = findViewById(R.id.text_invite);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-
 
         if (currentUser != null) {
             travelLogsRef = FirebaseDatabase.getInstance().getReference("travelLogs").child(currentUser.getUid());
@@ -88,15 +93,11 @@ public class DestinationActivity extends AppCompatActivity {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
         }
 
-
         // Hide extra inputs initially
         startInput.setVisibility(View.GONE);
         endInput.setVisibility(View.GONE);
         durationOutcome.setVisibility(View.GONE);
         calculateButton.setVisibility(View.GONE);
-
-        updateTravelLogsList();
-        updateTotalVacationDays();
 
         Button logTravelButton = findViewById(R.id.log_travel_button);
         Button calculateVacationButton = findViewById(R.id.calculate_vacation_button);
@@ -110,6 +111,14 @@ public class DestinationActivity extends AppCompatActivity {
             endInput.setVisibility(View.GONE);
             durationOutcome.setVisibility(View.GONE);
             calculateButton.setVisibility(View.GONE);
+
+            addedUser.setVisibility(View.VISIBLE);
+
+            // Clear input fields
+            locationInput.setText("");
+            startDateInput.setText("");
+            endDateInput.setText("");
+            addedUser.setText("");
         });
 
         // Handle form submission on "Calculate Vacation Time"
@@ -117,6 +126,7 @@ public class DestinationActivity extends AppCompatActivity {
             String location = locationInput.getText().toString();
             String startDate = startDateInput.getText().toString();
             String endDate = endDateInput.getText().toString();
+            String invitedUser = addedUser.getText().toString();
 
             if (location.isEmpty()) {
                 Toast.makeText(DestinationActivity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
@@ -133,11 +143,7 @@ public class DestinationActivity extends AppCompatActivity {
                 return;
             }
 
-            DestinationDatabase.getInstance(DestinationActivity.this).addTravelLog(location, startDate, endDate);
-            Toast.makeText(DestinationActivity.this, "Vacation logged successfully!",
-                    Toast.LENGTH_SHORT).show();
-
-            saveTravelLog(location, startDate, endDate);
+            saveTravelLog(location, startDate, endDate, invitedUser);
             updateTravelLogsList();
             updateTotalVacationDays();
             formLayout.setVisibility(View.GONE);
@@ -151,7 +157,6 @@ public class DestinationActivity extends AppCompatActivity {
             durationOutcome.setVisibility(View.VISIBLE);
             calculateButton.setVisibility(View.VISIBLE);
         });
-
         // Calculate duration based on start and end date inputs
         calculateButton.setOnClickListener(v -> {
             String startDateInputText = startInput.getText().toString();
@@ -201,10 +206,9 @@ public class DestinationActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
     /**
      * updates total vacation days
-     * */
+     */
     private void updateTotalVacationDays() {
         DestinationDatabase db = DestinationDatabase.getInstance(this);
         int totalDays = db.getTotalVacationDays();
@@ -213,7 +217,7 @@ public class DestinationActivity extends AppCompatActivity {
 
     /**
      * updates travel logs list
-     * */
+     */
     private void updateTravelLogsList() {
         if (currentUser == null) {
             return;
@@ -228,14 +232,14 @@ public class DestinationActivity extends AppCompatActivity {
                     String startDate = snapshot.child("startDate").getValue(String.class);
                     String endDate = snapshot.child("endDate").getValue(String.class);
                     int duration = calculateTravelDuration(startDate, endDate);
-                    travelLogStrings.add(location + " (" + duration + " days)");
+                    String invitedUser = snapshot.child("invitedUser").getValue(String.class);
+                    travelLogStrings.add(location + " (" + duration + " days)" + " Invited User: " + invitedUser);
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(DestinationActivity.this,
                         android.R.layout.simple_list_item_1, travelLogStrings);
                 travelLogsList.setAdapter(adapter);
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -245,129 +249,26 @@ public class DestinationActivity extends AppCompatActivity {
     }
 
     /**
-     * @param location location
-     * @param startDate start date
-     * @param endDate end date
-     * saves travel log
-     * */
-    private void saveTravelLog(String location, String startDate, String endDate) {
+     * Saves the travel log to Firebase
+     */
+    private void saveTravelLog(String location, String startDate, String endDate, String invitedUser) {
         if (currentUser == null) {
             return;
         }
 
-        String key = travelLogsRef.push().getKey(); // Ensure you're only pushing to user-specific logs
-        if (key != null) {
-            HashMap<String, String> travelData = new HashMap<>();
-            travelData.put("location", location);
-            travelData.put("startDate", startDate);
-            travelData.put("endDate", endDate);
+        DatabaseReference newLogRef = travelLogsRef.push();
+        Map<String, Object> travelLogData = new HashMap<>();
+        travelLogData.put("location", location);
+        travelLogData.put("startDate", startDate);
+        travelLogData.put("endDate", endDate);
+        travelLogData.put("invitedUser", invitedUser);
 
-            // Save only to the user-specific reference
-            travelLogsRef.child(key).setValue(travelData)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "Travel log saved!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, "Failed to save travel log.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-    }
-
-
-
-
-
-    /**
-     * @param startDate start date
-     * @param endDate end date
-     * calcuates travel duration based off startDate and endDate
-     * @return the number of days between the start and end dates
-     * */
-    public static int getTravelDuration(String startDate, String endDate) {
-        try {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            return (int) ChronoUnit.DAYS.between(start, end);
-        } catch (DateTimeParseException e) {
-            return 0;
-        }
+        newLogRef.setValue(travelLogData);
     }
 
     /**
-     * @param startDate start date
-     * @param endDate end date
-     * calcuates travel duration based off startDate and endDate
-     * @return the number of days between the start and end dates
-     * */
-    private int calculateTravelDuration(String startDate, String endDate) {
-        try {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            return (int) ChronoUnit.DAYS.between(start, end);
-        } catch (DateTimeParseException e) {
-            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.",
-                    Toast.LENGTH_SHORT).show();
-            return 0;
-        }
-    }
-
-    /**
-     * Saves the calculated duration to the Firebase database.
-     * @param duration the calculated duration in days
+     * Validate the date format YYYY-MM-DD
      */
-    private void saveCalculatedDuration(int duration) {
-        DatabaseReference durationRef =
-                FirebaseDatabase.getInstance().getReference("calculatedDurations").child(currentUser.getUid());
-        String key = durationRef.push().getKey();
-
-
-        if (key != null) {
-            HashMap<String, Object> durationData = new HashMap<>();
-            durationData.put("duration", duration);
-
-
-            durationRef.child(key).setValue(durationData)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "Duration saved successfully!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, "Failed to save duration.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-    }
-
-
-
-
-    /**
-     * loads durations from firebase
-     * */
-    private void loadCalculatedDurations() {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("calculatedDurations");
-
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Integer duration = snapshot.child("duration").getValue(Integer.class);
-                    // Do something with the loaded duration (e.g., display in a list)
-                    Log.d("FirebaseDuration", "Loaded duration: " + duration);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("FirebaseDuration", "Failed to load durations", databaseError.toException());
-            }
-        });
-    }
-
-    /**
-     * @param date the date to check format of
-     * @return boolean if correct return true else return false
-     * */
     private boolean isValidDateFormat(String date) {
         try {
             LocalDate.parse(date);
@@ -377,5 +278,28 @@ public class DestinationActivity extends AppCompatActivity {
         }
     }
 
-}
+    /**
+     * Calculate the duration between start and end dates
+     */
+    private int calculateTravelDuration(String startDate, String endDate) {
+        try {
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+            return (int) ChronoUnit.DAYS.between(start, end);
+        } catch (DateTimeParseException e) {
+            return 0;
+        }
+    }
 
+    /**
+     * Save the calculated vacation duration to the database
+     */
+    private void saveCalculatedDuration(int duration) {
+        if (currentUser == null) {
+            return;
+        }
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
+        userRef.child("vacationDuration").setValue(duration);
+    }
+}

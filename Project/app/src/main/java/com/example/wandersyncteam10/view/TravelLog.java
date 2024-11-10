@@ -33,6 +33,9 @@ public class TravelLog {
         this.duration = duration;
     }
 
+    public TravelLog(String location, String startDate, String endDate, int duration, String invitedUser) {
+    }
+
     /**
      * Gets the location of the travel log entry.
      * @return The location.

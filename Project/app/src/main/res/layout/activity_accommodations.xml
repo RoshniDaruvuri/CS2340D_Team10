@@ -8,14 +8,14 @@
     tools:context=".view.AccommodationsActivity">
 
 
-    <!--    <TextView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Accommodations Screen"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accommodations Screen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <!-- linear layout for form to show up   -->
 
@@ -115,9 +115,6 @@
 
 
 
-
-
-
 <ListView
         android:id="@+id/accommodations_logs_list"
         android:layout_width="match_parent"
@@ -195,4 +192,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
 
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

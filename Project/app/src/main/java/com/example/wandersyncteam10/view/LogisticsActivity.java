@@ -8,6 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import com.example.wandersyncteam10.view.Contributor;
+
+import android.widget.EditText;
+import android.widget.TextView;
+
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,7 +42,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +53,7 @@ public class LogisticsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_logistics);
@@ -74,6 +82,23 @@ public class LogisticsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showAddContributorDialog();
+            }
+        });
+
+        // Find the button by its ID
+        Button viewTripsButton = findViewById(R.id.view_trips_button);
+        // Set an OnClickListener for the button
+        viewTripsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to navigate to TripsActivity
+                Intent intent = new Intent(LogisticsActivity.this, DestinationActivity.class);
+
+                // Optional: Log the button click for debugging
+                Log.d("LogisticsActivity", "View Trips button clicked");
+
+                // Start the TripsActivity
+                startActivity(intent);
             }
         });
 
@@ -131,6 +156,7 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     /**
@@ -221,7 +247,15 @@ public class LogisticsActivity extends AppCompatActivity {
      * draw
      * this method creates the bar chart for the actual total duration of the trips vs the alloted duration
      * we reference firebase and the destinationDatabase and the travelLogManager to do so
+<<<<<<< HEAD
+<<<<<<< HEAD
+     *
+=======
      * 
+>>>>>>> origin/main
+=======
+     * 
+>>>>>>> origin/main
      * */
     public void draw() {
 
@@ -328,4 +362,3 @@ public class LogisticsActivity extends AppCompatActivity {
         }
     }
 
-}

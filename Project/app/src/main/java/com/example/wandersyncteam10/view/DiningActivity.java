@@ -2,23 +2,17 @@ package com.example.wandersyncteam10.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import com.example.wandersyncteam10.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,7 +55,6 @@ class ReservationSubject {
 public class DiningActivity extends AppCompatActivity implements ReservationObserver {
 
     private static final String DATE_FORMAT = "MM/dd/yyyy HH:mm";
-
     private TextView diningDisplay;
     private List<Reservation> reservationList;
     private FirebaseFirestore db;
@@ -71,10 +63,8 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dining);
 
-        // Initialize Firestore and subject
         db = FirebaseFirestore.getInstance();
         reservationSubject = new ReservationSubject();
         reservationSubject.addObserver(this);
@@ -84,13 +74,6 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
         // Initialize the list of reservations
         reservationList = new ArrayList<>();
-
-        // Set the insets for edge-to-edge layout
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Load reservations from Firestore when the activity starts
         loadReservationsFromFirestore();
@@ -167,13 +150,15 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
         reservationRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                reservationList.clear();
+                reservationList.clear(); // Clear the current list
                 for (DocumentSnapshot document : task.getResult()) {
                     String location = document.getString("location");
                     String website = document.getString("website");
                     String time = document.getString("time");
                     reservationList.add(new Reservation(location, website, time));
                 }
+                // Update the display after loading from Firestore
+                updateDiningDisplay();
                 reservationSubject.notifyObservers(reservationList);
             } else {
                 Log.w("Firestore", "Error getting documents.", task.getException());
@@ -188,24 +173,17 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
         db.collection("reservations").add(reservation)
                 .addOnSuccessListener(documentReference -> {
                     reservationList.add(reservation);
+                    updateDiningDisplay();
                     reservationSubject.notifyObservers(reservationList);
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
     }
 
     /**
-     * Sorts reservations by date and time, then updates the display.
-     */
-    private void sortReservationsByDateTime() {
-        Collections.sort(reservationList, Comparator.comparing(Reservation::getTime));
-        reservationSubject.notifyObservers(reservationList);
-    }
-
-    /**
-     * Updates the display of reservations with color-coded text for upcoming and expired reservations.
+     * Updates the display of reservations in the TextView.
      */
     private void updateDiningDisplay() {
-        StringBuilder displayText = new StringBuilder("Reservations:<br>");
+        StringBuilder displayText = new StringBuilder("Reservations:\n");
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         Date currentDate = new Date();
 
@@ -223,6 +201,14 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
         }
 
         diningDisplay.setText(Html.fromHtml(displayText.toString()));
+    }
+
+    /**
+     * Sorts reservations by their time.
+     */
+    private void sortReservationsByDateTime() {
+        Collections.sort(reservationList, Comparator.comparing(Reservation::getTime));
+        reservationSubject.notifyObservers(reservationList);
     }
 
     @Override
