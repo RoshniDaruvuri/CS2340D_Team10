@@ -8,16 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-<<<<<<< HEAD
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.wandersyncteam10.view.Contributor;
 
-=======
-import android.widget.EditText;
-import android.widget.TextView;
->>>>>>> origin/main
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -54,21 +49,18 @@ public class LogisticsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_logistics);
 
-        // Initialize Firestore
+        // Initialize Firestore.
         db = FirebaseFirestore.getInstance();
 
-        // Find the TextView for displaying usernames
+        // Find the TextView for displaying usernames.
         usernameDisplay = findViewById(R.id.username_display);
 
-        // Initialize the list of contributors
+        // Initialize the list of contributors.
         contributorsList = new ArrayList<>();
 
         // Set the insets for edge-to-edge layout
@@ -88,7 +80,6 @@ public class LogisticsActivity extends AppCompatActivity {
                 showAddContributorDialog();
             }
         });
-<<<<<<< HEAD
         // Find the button by its ID
         Button viewTripsButton = findViewById(R.id.view_trips_button);
         // Set an OnClickListener for the button
@@ -105,8 +96,6 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-=======
->>>>>>> origin/main
 
         // Other buttons remain unchanged...
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -162,10 +151,7 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
     }
 
     /**
@@ -256,11 +242,7 @@ public class LogisticsActivity extends AppCompatActivity {
      * draw
      * this method creates the bar chart for the actual total duration of the trips vs the alloted duration
      * we reference firebase and the destinationDatabase and the travelLogManager to do so
-<<<<<<< HEAD
      *
-=======
-     * 
->>>>>>> origin/main
      * */
     public void draw() {
 
@@ -367,8 +349,4 @@ public class LogisticsActivity extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/main

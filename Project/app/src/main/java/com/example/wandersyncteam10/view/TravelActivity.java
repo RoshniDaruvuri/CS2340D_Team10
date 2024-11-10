@@ -3,7 +3,10 @@ package com.example.wandersyncteam10.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+>>>>>>> origin/main
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +31,10 @@ public class TravelActivity extends AppCompatActivity {
     private EditText editTextDuration;
     private Button buttonSaveLog;
     private TravelLogManager travelLogManager;
+<<<<<<< HEAD
     private EditText editTextInvitedUser;
+=======
+>>>>>>> origin/main
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +57,17 @@ public class TravelActivity extends AppCompatActivity {
         editTextStartDate = findViewById(R.id.start_date_input);
         editTextEndDate = findViewById(R.id.end_date_input);
         editTextDuration = findViewById(R.id.duration_outcome);
+<<<<<<< HEAD
         buttonSaveLog = findViewById(R.id.calculate_vacation_button);
         editTextInvitedUser = findViewById(R.id.text_invite);
 
+=======
+        // Make sure this EditText is editable if needed
+        buttonSaveLog = findViewById(R.id.calculate_vacation_button);
+        // Change this to a button that makes sense for your logic
+
+        // Set up save log button listener
+>>>>>>> origin/main
         buttonSaveLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +75,7 @@ public class TravelActivity extends AppCompatActivity {
                 String startDate = editTextStartDate.getText().toString().trim();
                 String endDate = editTextEndDate.getText().toString().trim();
                 String durationString = editTextDuration.getText().toString().trim();
+<<<<<<< HEAD
                 String invitedUser = editTextInvitedUser.getText().toString().trim();
 
                 if (TextUtils.isEmpty(location) || TextUtils.isEmpty(startDate)
@@ -78,12 +93,27 @@ public class TravelActivity extends AppCompatActivity {
                     Log.d("TRAVEL_LOG", "Duration: " + duration);
                     Log.d("TRAVEL_LOG", "Invited User: " + invitedUser);
 
+=======
+
+                if (TextUtils.isEmpty(location)
+                        || TextUtils.isEmpty(startDate)
+                        || TextUtils.isEmpty(endDate)
+                        || TextUtils.isEmpty(durationString)) {
+                    Toast.makeText(TravelActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                } else {
+                    int duration = Integer.parseInt(durationString); // Convert duration to int
+                    travelLogManager.saveTravelLog(location, startDate, endDate, duration);
+                    Toast.makeText(TravelActivity.this, "Travel log saved!", Toast.LENGTH_SHORT).show();
+>>>>>>> origin/main
                     clearInputFields();
                 }
             }
         });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
         // Existing button listeners for navigation
         findViewById(R.id.button).setOnClickListener(view -> {
             Intent intent = new Intent(TravelActivity.this, LogisticsActivity.class);
@@ -124,6 +154,9 @@ public class TravelActivity extends AppCompatActivity {
         editTextStartDate.setText("");
         editTextEndDate.setText("");
         editTextDuration.setText("");
+<<<<<<< HEAD
         editTextInvitedUser.setText("");
+=======
+>>>>>>> origin/main
     }
 }

@@ -131,6 +131,7 @@
             android:layout_height="wrap_content"
             android:text="Calculate Vacation Time" />
 
+<<<<<<< HEAD
         <!-- Invite User -->
         <EditText
             android:id="@+id/text_invite"
@@ -142,6 +143,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp" />
 
+=======
+>>>>>>> origin/main
 
 
     </LinearLayout>
@@ -226,5 +229,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 </androidx.constraintlayout.widget.ConstraintLayout>

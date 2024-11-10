@@ -27,7 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+<<<<<<< HEAD
 import com.google.firebase.firestore.FirebaseFirestore;
+=======
+>>>>>>> origin/main
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -35,7 +38,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Map;
+=======
+>>>>>>> origin/main
 
 public class DestinationActivity extends AppCompatActivity {
 
@@ -45,7 +51,10 @@ public class DestinationActivity extends AppCompatActivity {
     private EditText endDateInput;
     private EditText startInput;
     private EditText endInput;
+<<<<<<< HEAD
     private EditText addedUser;
+=======
+>>>>>>> origin/main
     private ListView travelLogsList;
     private TextView totalVacationDaysView;
     private TextView durationOutcome;
@@ -78,11 +87,18 @@ public class DestinationActivity extends AppCompatActivity {
         durationOutcome = findViewById(R.id.duration_outcome);
         calculateDurationButton = findViewById(R.id.calculate_duration_button);
         calculateButton = findViewById(R.id.calculate_button);
+<<<<<<< HEAD
         addedUser = findViewById(R.id.text_invite);
+=======
+>>>>>>> origin/main
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
         if (currentUser != null) {
             travelLogsRef = FirebaseDatabase.getInstance().getReference("travelLogs").child(currentUser.getUid());
             updateTravelLogsList();
@@ -91,6 +107,10 @@ public class DestinationActivity extends AppCompatActivity {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
         // Hide extra inputs initially
         startInput.setVisibility(View.GONE);
         endInput.setVisibility(View.GONE);
@@ -112,6 +132,7 @@ public class DestinationActivity extends AppCompatActivity {
             endInput.setVisibility(View.GONE);
             durationOutcome.setVisibility(View.GONE);
             calculateButton.setVisibility(View.GONE);
+<<<<<<< HEAD
             addedUser.setVisibility(View.VISIBLE);
 
             // Clear input fields
@@ -119,6 +140,8 @@ public class DestinationActivity extends AppCompatActivity {
             startDateInput.setText("");
             endDateInput.setText("");
             addedUser.setText("");
+=======
+>>>>>>> origin/main
         });
 
         // Handle form submission on "Calculate Vacation Time"
@@ -126,7 +149,10 @@ public class DestinationActivity extends AppCompatActivity {
             String location = locationInput.getText().toString();
             String startDate = startDateInput.getText().toString();
             String endDate = endDateInput.getText().toString();
+<<<<<<< HEAD
             String invitedUser = addedUser.getText().toString();
+=======
+>>>>>>> origin/main
 
             if (location.isEmpty()) {
                 Toast.makeText(DestinationActivity.this, "Please enter a location", Toast.LENGTH_SHORT).show();
@@ -143,12 +169,20 @@ public class DestinationActivity extends AppCompatActivity {
                 return;
             }
 
+<<<<<<< HEAD
             DestinationDatabase.getInstance(DestinationActivity.this).addTravelLog(location, startDate, endDate, invitedUser);
 
             Toast.makeText(DestinationActivity.this, "Vacation logged successfully!",
                     Toast.LENGTH_SHORT).show();
 
             saveTravelLog(location, startDate, endDate, invitedUser);
+=======
+            DestinationDatabase.getInstance(DestinationActivity.this).addTravelLog(location, startDate, endDate);
+            Toast.makeText(DestinationActivity.this, "Vacation logged successfully!",
+                    Toast.LENGTH_SHORT).show();
+
+            saveTravelLog(location, startDate, endDate);
+>>>>>>> origin/main
             updateTravelLogsList();
             updateTotalVacationDays();
             formLayout.setVisibility(View.GONE);
@@ -213,7 +247,10 @@ public class DestinationActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
     /**
      * updates total vacation days
      * */
@@ -221,8 +258,11 @@ public class DestinationActivity extends AppCompatActivity {
         DestinationDatabase db = DestinationDatabase.getInstance(this);
         int totalDays = db.getTotalVacationDays();
         totalVacationDaysView.setText("Result: " + totalDays + " days");
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/main
     }
 
     /**
@@ -240,10 +280,16 @@ public class DestinationActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String location = snapshot.child("location").getValue(String.class);
                     String startDate = snapshot.child("startDate").getValue(String.class);
+<<<<<<< HEAD
                     String invitedUser = snapshot.child("invitedUser").getValue(String.class);
                     String endDate = snapshot.child("endDate").getValue(String.class);
                     int duration = calculateTravelDuration(startDate, endDate);
                     travelLogStrings.add(location + " (" + duration + " days)" + " Invited User: " + invitedUser);
+=======
+                    String endDate = snapshot.child("endDate").getValue(String.class);
+                    int duration = calculateTravelDuration(startDate, endDate);
+                    travelLogStrings.add(location + " (" + duration + " days)");
+>>>>>>> origin/main
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(DestinationActivity.this,
@@ -258,6 +304,7 @@ public class DestinationActivity extends AppCompatActivity {
             }
         });
     }
+<<<<<<< HEAD
     private void saveTripToFirestore(String destination, String date) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -288,6 +335,16 @@ public class DestinationActivity extends AppCompatActivity {
      * @param invitedUser
      */
     private void saveTravelLog(String location, String startDate, String endDate, String invitedUser) {
+=======
+
+    /**
+     * @param location location
+     * @param startDate start date
+     * @param endDate end date
+     * saves travel log
+     * */
+    private void saveTravelLog(String location, String startDate, String endDate) {
+>>>>>>> origin/main
         if (currentUser == null) {
             return;
         }
@@ -299,6 +356,7 @@ public class DestinationActivity extends AppCompatActivity {
             travelData.put("startDate", startDate);
             travelData.put("endDate", endDate);
 
+<<<<<<< HEAD
             // Get the invited user's name from the EditText (addedUser)
             invitedUser = addedUser.getText().toString();
 
@@ -310,10 +368,22 @@ public class DestinationActivity extends AppCompatActivity {
             }
 
             travelLogsRef.child(key).setValue(travelData); // Save to Firebase
+=======
+            // Save only to the user-specific reference
+            travelLogsRef.child(key).setValue(travelData)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Travel log saved!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Failed to save travel log.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+>>>>>>> origin/main
         }
     }
 
 
+<<<<<<< HEAD
     /**
      * @param duration calculated duration
      * saves calculated duration to database
@@ -322,12 +392,36 @@ public class DestinationActivity extends AppCompatActivity {
         // Save duration to Firebase or local DB
         // You may need to implement a new database structure for this
         // This function is a placeholder
+=======
+
+
+
+    /**
+     * @param startDate start date
+     * @param endDate end date
+     * calcuates travel duration based off startDate and endDate
+     * @return the number of days between the start and end dates
+     * */
+    public static int getTravelDuration(String startDate, String endDate) {
+        try {
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+            return (int) ChronoUnit.DAYS.between(start, end);
+        } catch (DateTimeParseException e) {
+            return 0;
+        }
+>>>>>>> origin/main
     }
 
     /**
      * @param startDate start date
      * @param endDate end date
+<<<<<<< HEAD
      * @return number of days between start and end date
+=======
+     * calcuates travel duration based off startDate and endDate
+     * @return the number of days between the start and end dates
+>>>>>>> origin/main
      * */
     private int calculateTravelDuration(String startDate, String endDate) {
         try {
@@ -335,15 +429,76 @@ public class DestinationActivity extends AppCompatActivity {
             LocalDate end = LocalDate.parse(endDate);
             return (int) ChronoUnit.DAYS.between(start, end);
         } catch (DateTimeParseException e) {
+<<<<<<< HEAD
             Toast.makeText(DestinationActivity.this, "Invalid date format. Please use YYYY-MM-DD.",
+=======
+            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.",
+>>>>>>> origin/main
                     Toast.LENGTH_SHORT).show();
             return 0;
         }
     }
 
     /**
+<<<<<<< HEAD
      * @param date date to validate
      * @return true if date is in valid format
+=======
+     * Saves the calculated duration to the Firebase database.
+     * @param duration the calculated duration in days
+     */
+    private void saveCalculatedDuration(int duration) {
+        DatabaseReference durationRef =
+                FirebaseDatabase.getInstance().getReference("calculatedDurations").child(currentUser.getUid());
+        String key = durationRef.push().getKey();
+
+
+        if (key != null) {
+            HashMap<String, Object> durationData = new HashMap<>();
+            durationData.put("duration", duration);
+
+
+            durationRef.child(key).setValue(durationData)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Duration saved successfully!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Failed to save duration.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+
+
+
+    /**
+     * loads durations from firebase
+     * */
+    private void loadCalculatedDurations() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("calculatedDurations");
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Integer duration = snapshot.child("duration").getValue(Integer.class);
+                    // Do something with the loaded duration (e.g., display in a list)
+                    Log.d("FirebaseDuration", "Loaded duration: " + duration);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FirebaseDuration", "Failed to load durations", databaseError.toException());
+            }
+        });
+    }
+
+    /**
+     * @param date the date to check format of
+     * @return boolean if correct return true else return false
+>>>>>>> origin/main
      * */
     private boolean isValidDateFormat(String date) {
         try {
@@ -353,4 +508,10 @@ public class DestinationActivity extends AppCompatActivity {
             return false;
         }
     }
+<<<<<<< HEAD
 }
+=======
+
+}
+
+>>>>>>> origin/main

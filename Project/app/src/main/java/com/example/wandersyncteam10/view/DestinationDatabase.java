@@ -83,14 +83,23 @@ public class DestinationDatabase {
      * @param startDate the start date of the travel log in the format "yyyy-MM-dd".
      * @param endDate   the end date of the travel log in the format "yyyy-MM-dd".
      */
+<<<<<<< HEAD
     public void addTravelLog(String location, String startDate, String endDate, String invitedUser) {
         int duration = calculateDuration(startDate, endDate);
         TravelLog newLog = new TravelLog(location, startDate, endDate, duration, invitedUser);
+=======
+    public void addTravelLog(String location, String startDate, String endDate) {
+        int duration = calculateDuration(startDate, endDate);
+        TravelLog newLog = new TravelLog(location, startDate, endDate, duration);
+>>>>>>> origin/main
         databaseReference.push().setValue(newLog);
         Log.d("DestinationDatabase", "Added travel log: " + newLog);
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
     /**
      * Adds a calculated duration travel log to the database.
      *
@@ -163,8 +172,13 @@ public class DestinationDatabase {
      * Helper method to add sample travel logs.
      */
     private void addSampleTravelLogs() {
+<<<<<<< HEAD
         databaseReference.push().setValue(new TravelLog("Paris", "2024-01-01", "2024-01-07", 7, "Amanda"));
         databaseReference.push().setValue(new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7, "Ashley"));
+=======
+        databaseReference.push().setValue(new TravelLog("Paris", "2024-01-01", "2024-01-07", 7));
+        databaseReference.push().setValue(new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7));
+>>>>>>> origin/main
     }
 
     /**

@@ -10,7 +10,10 @@ public class TravelLog {
     private String startDate;
     private String endDate;
     private int duration;
+<<<<<<< HEAD
     private String invitedUser;
+=======
+>>>>>>> origin/main
 
     /**
      * Default constructor needed for Firebase.
@@ -22,16 +25,24 @@ public class TravelLog {
     /**
      * Constructor to create a TravelLog object with specified details.
      *
+<<<<<<< HEAD
      * @param location  The location of the travel.
      * @param startDate The start date of the travel.
      * @param endDate   The end date of the travel.
      * @param duration  The duration of the travel in days.
+=======
+     * @param location The location of the travel.
+     * @param startDate The start date of the travel.
+     * @param endDate The end date of the travel.
+     * @param duration The duration of the travel in days.
+>>>>>>> origin/main
      */
     public TravelLog(String location, String startDate, String endDate, int duration) {
         this.location = location;
         this.startDate = startDate;
         this.endDate = endDate;
         this.duration = duration;
+<<<<<<< HEAD
         //this.invitedUser = "";
     }
     public TravelLog(String location, String startDate, String endDate, int duration, String invitedUser) {
@@ -40,11 +51,16 @@ public class TravelLog {
         this.endDate = endDate;
         this.duration = duration;
         this.invitedUser = invitedUser;
+=======
+>>>>>>> origin/main
     }
 
     /**
      * Gets the location of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @return The location.
      */
     public String getLocation() {
@@ -53,7 +69,10 @@ public class TravelLog {
 
     /**
      * Sets the location of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @param location The location to set.
      */
     public void setLocation(String location) {
@@ -62,7 +81,10 @@ public class TravelLog {
 
     /**
      * Gets the start date of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @return The start date.
      */
     public String getStartDate() {
@@ -71,7 +93,10 @@ public class TravelLog {
 
     /**
      * Sets the start date of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @param startDate The start date to set.
      */
     public void setStartDate(String startDate) {
@@ -80,7 +105,10 @@ public class TravelLog {
 
     /**
      * Gets the end date of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @return The end date.
      */
     public String getEndDate() {
@@ -89,7 +117,10 @@ public class TravelLog {
 
     /**
      * Sets the end date of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @param endDate The end date to set.
      */
     public void setEndDate(String endDate) {
@@ -98,7 +129,10 @@ public class TravelLog {
 
     /**
      * Gets the duration of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @return The duration in days.
      */
     public int getDuration() {
@@ -107,12 +141,16 @@ public class TravelLog {
 
     /**
      * Sets the duration of the travel log entry.
+<<<<<<< HEAD
      *
+=======
+>>>>>>> origin/main
      * @param duration The duration to set, in days.
      */
     public void setDuration(int duration) {
         this.duration = duration;
     }
+<<<<<<< HEAD
 
     public String getInvitedUser() {
         return invitedUser;
@@ -121,4 +159,6 @@ public class TravelLog {
     public void setInvitedUser(String invitedUser) {
         this.invitedUser = invitedUser;
     }
+=======
+>>>>>>> origin/main
 }
