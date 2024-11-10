@@ -2,6 +2,7 @@ package com.example.wandersyncteam10.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.Html;
@@ -83,7 +84,39 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
         // Handle Sort button click
         findViewById(R.id.buttonSortReservations).setOnClickListener(view -> sortReservationsByDateTime());
+
+        // Dashboard button listeners (keeping these unchanged)
+        findViewById(R.id.button).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, LogisticsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button2).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, DestinationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button3).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, DiningActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button4).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, AccommodationsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button5).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, TransportationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button6).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, TravelActivity.class);
+            startActivity(intent);
+        });
     }
+
 
     /**
      * Displays a dialog to add a reservation.
@@ -215,4 +248,9 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
     public void onReservationUpdated(List<Reservation> reservations) {
         updateDiningDisplay();
     }
+
 }
+
+
+
+
