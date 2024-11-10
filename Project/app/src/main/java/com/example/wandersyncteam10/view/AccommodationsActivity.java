@@ -105,6 +105,39 @@ public class AccommodationsActivity extends AppCompatActivity {
 
         Button sortByCheckInButton = findViewById(R.id.sort_checkin_button);
         sortByCheckInButton.setOnClickListener(v -> {
+            sortingStrategy = new CheckInSort(); // Set to check-in sorting strategy
+            fetchAndDisplayData(); // Fetch and display sorted data
+        });
+
+        // Dashboard button listeners (keeping these unchanged)
+        findViewById(R.id.button).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, LogisticsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button2).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, DestinationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button3).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, DiningActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button4).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, AccommodationsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button5).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, TransportationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button6).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, TravelActivity.class);
+            startActivity(intent);
             sortingStrategy = new CheckInSort();
             fetchAndDisplayData();
         });
