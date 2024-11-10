@@ -207,7 +207,6 @@ public class DestinationActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
     /**
      * updates total vacation days
      */
