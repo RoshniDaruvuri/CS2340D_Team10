@@ -58,7 +58,7 @@ public class AccommodationsActivity extends AppCompatActivity {
         accommodationsLogsList = findViewById(R.id.accommodations_logs_list);
         formLayout = findViewById(R.id.form_layout);
 
-        // Initialize sorting buttons
+        // Initialized the sorting buttons
         Button sortAlphabeticallyButton = findViewById(R.id.sort_alphabetical_button);
 
         sortAlphabeticallyButton.setOnClickListener(v -> {
