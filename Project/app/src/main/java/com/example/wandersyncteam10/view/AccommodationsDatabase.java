@@ -30,7 +30,7 @@ public class AccommodationsDatabase {
     /**
      * Private constructor for the singleton pattern.
      */
-    private AccommodationsDatabase() {
+    public AccommodationsDatabase() {
         databaseReference = FirebaseDatabase.getInstance().getReference("accommodationsLogs");
         accommodationsLogs = new ArrayList<>();
         initializeDatabase();

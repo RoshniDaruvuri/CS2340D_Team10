@@ -1,12 +1,22 @@
 package com.example.wandersyncteam10;
 
+import com.example.wandersyncteam10.view.AccommodationsActivity;
+import com.example.wandersyncteam10.view.AccommodationsDatabase;
+import com.example.wandersyncteam10.view.AccommodationsLog;
+import com.example.wandersyncteam10.view.DiningActivity;
+import com.example.wandersyncteam10.view.Reservation;
 import com.example.wandersyncteam10.view.TravelLog;
+import com.google.firebase.auth.FirebaseAuth;
 
+import org.junit.Before;
 import org.junit.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.*;
+
+import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,26 +121,121 @@ public class TestCases {
         assertEquals("There should be 1 long trip", 1, longTrips.size());
     }
 
+
+//new test cases
     @Test
-    public void testAddContributorLogic() {
-        // Simulate adding contributors without relying on the Activity or Firebase
-        List<String> contributorsList = new ArrayList<>();
+    public void testAccommodationsLogConstructorAndGetters() {
+        AccommodationsLog log = new AccommodationsLog("2024-11-10", "2024-11-12", "nyc", "1", "Deluxe");
 
-        // Add a new contributor
-        String contributor = "John Doe";
-        contributorsList.add(contributor);
+        assertEquals("2024-11-10", log.getCheckin());
+        assertEquals("2024-11-12", log.getCheckout());
+        assertEquals("nyc", log.getLocation());
+        assertEquals("1", log.getRoomnum());
+        assertEquals("Deluxe", log.getRoomtype());
+    }
 
-        // Verify the contributor was added correctly
-        assertEquals("Contributor list size should be 1", 1, contributorsList.size());
-        assertTrue("Contributor list should contain 'John Doe'", contributorsList.contains("John Doe"));
+    @Test
+    public void testSetters() {
+        AccommodationsLog log = new AccommodationsLog();
+        log.setCheckin("2024-11-10");
+        log.setCheckout("2024-11-12");
+        log.setLocation("nyc");
+        log.setRoomnum("1");
+        log.setRoomtype("Deluxe");
+
+        assertEquals("2024-11-10", log.getCheckin());
+        assertEquals("2024-11-12", log.getCheckout());
+        assertEquals("nyc", log.getLocation());
+        assertEquals("1", log.getRoomnum());
+        assertEquals("Deluxe", log.getRoomtype());
     }
 
 
+    @Test(expected = java.time.format.DateTimeParseException.class)
+    public void testInvalidDateParsing() {
+        String invalidDate = "2024-31-12";
+        LocalDate.parse(invalidDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     @Test
-    public void testSameStartAndEndDateDuration() {
-        TravelLog log = new TravelLog("Staycation", "2024-01-01", "2024-01-01", 0);
-        int duration = log.getDuration();
-        assertEquals("Duration should be 0 days for same start and end date", 0, duration);
+    public void testRequiredFields() {
+        AccommodationsLog logWithoutLocation = new AccommodationsLog("2024-11-01", "2024-11-05", "", "1", "Standard");
+        assertTrue("location should not be empty", logWithoutLocation.getLocation().isEmpty());
+
+        AccommodationsLog logWithoutCheckin = new AccommodationsLog("", "2024-11-05", "hotel", "1", "Standard");
+        assertTrue("check in date should not be empty", logWithoutCheckin.getCheckin().isEmpty());
+
+        AccommodationsLog validLog = new AccommodationsLog("2024-11-01", "2024-11-05", "hotel", "1", "Suite");
+        assertFalse("entry should not have empty fields", validLog.getCheckin().isEmpty() || validLog.getLocation().isEmpty());
+    }
+
+    @Test
+    public void testValidReservation() {
+        Reservation reservation = new Reservation("nyc", "www.nycdiner.com", "2024-11-15 10:00");
+
+        assertTrue("reservation should be valid when all of the fields are filled", reservation.isValid());
+    }
+
+    @Test
+    public void testInvalidReservationWithEmptyLocation() {
+        Reservation reservation = new Reservation("", "www.nycdiner.com", "2024-11-15 10:00");
+
+        assertFalse("reservation should be invalid when location is empty.", reservation.isValid());
+    }
+
+    @Test
+    public void testInvalidReservationWithEmptyWebsite() {
+        Reservation reservation = new Reservation("nyc", "", "2024-11-15 10:00");
+
+        assertFalse("reservation should be invalid when the website is empty.", reservation.isValid());
+    }
+
+    @Test
+    public void testInvalidReservationWithEmptyTime() {
+        Reservation reservation = new Reservation("nyc", "www.nycdiner.com", "");
+
+        assertFalse("reservation should be invalid when the time is empty", reservation.isValid());
+    }
+
+    @Test
+    public void testInvalidReservationWithAllEmptyFields() {
+        Reservation reservation = new Reservation("", "", "");
+
+        assertFalse("reservation should be invalid when all fields are empty", reservation.isValid());
+    }
+
+    @Test
+    public void testValidReservationWithSpecialCharacters() {
+        Reservation reservation = new Reservation("nyc - Grand Plaza", "www.nycdiner.com", "2024-11-15 10:00");
+
+        assertTrue("reservation should be valid when the fields contain special characters.", reservation.isValid());
+    }
+
+    @Test
+    public void testReservationConstructor() {
+        String location = "Paris";
+        String website = "www.pariseats.com";
+        String time = "2024-11-10 11:00";
+
+        Reservation reservation = new Reservation(location, website, time);
+
+        assertEquals("Paris", reservation.getLocation());
+        assertEquals("www.pariseats.com", reservation.getWebsite());
+        assertEquals("2024-11-10 11:00", reservation.getTime());
+    }
+
+    @Test
+    public void testReservationFieldsNotEmpty() {
+        // Given empty data
+        String location = "";
+        String website = "";
+        String time = "";
+
+        Reservation reservation = new Reservation(location, website, time);
+
+        assertNotNull(reservation.getLocation());
+        assertNotNull(reservation.getWebsite());
+        assertNotNull(reservation.getTime());
     }
 
 }

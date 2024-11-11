@@ -22,5 +22,10 @@ public class Reservation {
     public String getTime() {
         return time;
     }
+
+
+    public boolean isValid() {
+        return !(location.isEmpty() || website.isEmpty() || time.isEmpty());
+    }
 }
 
