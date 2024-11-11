@@ -77,22 +77,22 @@ public class DestinationDatabase {
     }
 
     /**
-     * Adds a new travel log to the database with user information.
+     * Adds a new travel log to the database.
      *
      * @param location  the location of the travel log.
      * @param startDate the start date of the travel log in the format "yyyy-MM-dd".
      * @param endDate   the end date of the travel log in the format "yyyy-MM-dd".
-     * @param invitedUser the invited user for the travel log.
      */
     public void addTravelLog(String location, String startDate, String endDate, String invitedUser) {
         int duration = calculateDuration(startDate, endDate);
         TravelLog newLog = new TravelLog(location, startDate, endDate, duration, invitedUser);
         databaseReference.push().setValue(newLog);
-        Log.d("DestinationDatabase", "Added travel log: " + newLog.getLocation());
+        Log.d("DestinationDatabase", "Added travel log: " + newLog);
     }
 
+
     /**
-     * Adds a travel log to the database with a calculated duration.
+     * Adds a calculated duration travel log to the database.
      *
      * @param startDate the start date of the travel log in the format "yyyy-MM-dd".
      * @param endDate   the end date of the travel log in the format "yyyy-MM-dd".
@@ -101,7 +101,7 @@ public class DestinationDatabase {
         int duration = calculateDuration(startDate, endDate);
         TravelLog calculatedLog = new TravelLog("Calculated Duration", startDate, endDate, duration);
         databaseReference.push().setValue(calculatedLog);
-        Log.d("DestinationDatabase", "Added calculated duration: " + calculatedLog.getLocation());
+        Log.d("DestinationDatabase", "Added calculated duration: " + calculatedLog);
     }
 
     /**
@@ -163,8 +163,8 @@ public class DestinationDatabase {
      * Helper method to add sample travel logs.
      */
     private void addSampleTravelLogs() {
-        databaseReference.push().setValue(new TravelLog("Paris", "2024-01-01", "2024-01-07", 7));
-        databaseReference.push().setValue(new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7));
+        databaseReference.push().setValue(new TravelLog("Paris", "2024-01-01", "2024-01-07", 7, "Amanda"));
+        databaseReference.push().setValue(new TravelLog("Tokyo", "2024-02-15", "2024-02-22", 7, "Ashley"));
     }
 
     /**

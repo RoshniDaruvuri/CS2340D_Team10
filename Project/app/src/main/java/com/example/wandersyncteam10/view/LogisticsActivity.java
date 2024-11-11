@@ -13,11 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.example.wandersyncteam10.view.Contributor;
 
-import android.widget.EditText;
-import android.widget.TextView;
-
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -42,6 +37,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +54,13 @@ public class LogisticsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_logistics);
 
-        // Initialize Firestore
+        // Initialize Firestore.
         db = FirebaseFirestore.getInstance();
 
-        // Find the TextView for displaying usernames
+        // Find the TextView for displaying usernames.
         usernameDisplay = findViewById(R.id.username_display);
 
-        // Initialize the list of contributors
+        // Initialize the list of contributors.
         contributorsList = new ArrayList<>();
 
         // Set the insets for edge-to-edge layout
@@ -84,7 +80,6 @@ public class LogisticsActivity extends AppCompatActivity {
                 showAddContributorDialog();
             }
         });
-
         // Find the button by its ID
         Button viewTripsButton = findViewById(R.id.view_trips_button);
         // Set an OnClickListener for the button
@@ -247,15 +242,7 @@ public class LogisticsActivity extends AppCompatActivity {
      * draw
      * this method creates the bar chart for the actual total duration of the trips vs the alloted duration
      * we reference firebase and the destinationDatabase and the travelLogManager to do so
-<<<<<<< HEAD
-<<<<<<< HEAD
      *
-=======
-     * 
->>>>>>> origin/main
-=======
-     * 
->>>>>>> origin/main
      * */
     public void draw() {
 
@@ -362,3 +349,4 @@ public class LogisticsActivity extends AppCompatActivity {
         }
     }
 
+}
