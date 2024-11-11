@@ -214,6 +214,7 @@ public class LogisticsActivity extends AppCompatActivity {
 
     /**
      * Adds a contributor to Firestore and updates the local list of contributors.
+     *
      * @param username The username of the contributor to be added.
      */
     private void addContributorToFirestore(String username) {
@@ -244,6 +245,7 @@ public class LogisticsActivity extends AppCompatActivity {
      * we reference firebase and the destinationDatabase and the travelLogManager to do so
      *
      * */
+
     public void draw() {
 
         // Reference to the Firebase database for travelLogs
@@ -314,18 +316,20 @@ public class LogisticsActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Represents a contributor in the application.
      * This class holds the information about a contributor, including their name.
      */
     public class Contributor {
 
-        /** The name of the contributor. */
+        /**
+         * The name of the contributor.
+         */
         private String name;
 
         /**
          * Constructs a new Contributor with the specified name.
+         *
          * @param name the name of the contributor
          */
         public Contributor(String name) {
@@ -334,6 +338,7 @@ public class LogisticsActivity extends AppCompatActivity {
 
         /**
          * Returns the name of the contributor.
+         *
          * @return the name of the contributor
          */
         public String getName() {
@@ -342,11 +347,14 @@ public class LogisticsActivity extends AppCompatActivity {
 
         /**
          * Sets the name of the contributor.
+         *
          * @param name the new name for the contributor
          */
         public void setName(String name) {
             this.name = name;
         }
+
+
     }
 
 }
