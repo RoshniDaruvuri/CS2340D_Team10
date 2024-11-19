@@ -131,7 +131,7 @@ public class AccommodationsActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(AccommodationsActivity.this, TransportationActivity.class);
+            Intent intent = new Intent(AccommodationsActivity.this, CommunityActivity.class);
             startActivity(intent);
         });
 
