@@ -19,7 +19,7 @@
             android:name=".view.TravelActivity"
             android:exported="false" />
         <activity
-            android:name=".view.TransportationActivity"
+            android:name=".view.CommunityActivity"
             android:exported="false" />
         <activity
             android:name=".view.LogisticsActivity"

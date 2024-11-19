@@ -203,7 +203,7 @@ public class DestinationActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(DestinationActivity.this, TransportationActivity.class);
+            Intent intent = new Intent(DestinationActivity.this, CommunityActivity.class);
             startActivity(intent);
         });
 

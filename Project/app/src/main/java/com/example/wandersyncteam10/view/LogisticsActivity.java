@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.example.wandersyncteam10.view.Contributor;
 
 
 import androidx.activity.EdgeToEdge;
@@ -132,7 +131,7 @@ public class LogisticsActivity extends AppCompatActivity {
         findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LogisticsActivity.this, TransportationActivity.class);
+                Intent intent = new Intent(LogisticsActivity.this, CommunityActivity.class);
                 startActivity(intent);
             }
         });

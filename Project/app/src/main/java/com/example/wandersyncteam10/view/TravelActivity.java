@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -105,7 +104,7 @@ public class TravelActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(TravelActivity.this, TransportationActivity.class);
+            Intent intent = new Intent(TravelActivity.this, CommunityActivity.class);
             startActivity(intent);
         });
 
