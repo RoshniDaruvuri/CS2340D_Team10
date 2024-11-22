@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Add necessary permissions here if needed, for example -->
+<!--     <uses-permission android:name="android.permission.INTERNET" />-->
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WanderSync10"
+        tools:targetApi="31">
+
+        <!-- List of activities -->
+        <activity
+            android:name=".view.NotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.TravelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.CommunityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.LogisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.DiningActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.DestinationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.AccommodationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Register"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- SplashActivity is the launcher -->
+        <activity
+            android:name=".view.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- WelcomeActivity is accessed from SplashActivity -->
+        <activity
+            android:name=".view.WelcomeActivity"
+            android:exported="true" /> <!-- LoginActivity contains login screen, accessed from WelcomeActivity -->
+        <activity
+            android:name=".view.LoginActivity"
+            android:exported="true" /> <!-- CreateAccountActivity for new account creation, accessed from LoginActivity -->
+        <activity
+            android:name=".view.CreateAccountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.ViewTripsActivity"
+            android:exported="true" />
+
+
+    </application>
+
+</manifest>

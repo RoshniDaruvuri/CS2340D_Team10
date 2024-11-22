@@ -1,0 +1,31 @@
+CS 2340D - Refactoring & Code Smells - Write-Up
+Sumayya M | Nithyaa B | Roshni D | Heeba E | Hala E | Aditi T
+
+GitHub Link: https://github.com/RoshniDaruvuri/CS2340D_Team10
+
+Hala:
+I modified the Order class by changing the sendConfirmationEmail method to use a StringBuilder instead. Before, it was using ‘+’ to concatenate but everytime a new String object was created. This falls under a Bloater, specifically Long Method, because of the complicated concatenations. I decided to fix this by using a StringBuilder to append to the string instead, making it easier to read and more maintainable.
+
+Heeba:
+I refactored the Item class due to the code smell which is a bloater, specifically the long parameter list. The original code had five parameters, which exceeds three or four. I replaced the parameters with method calls. Within the item constructor, I initialized 'this.discountType' to ‘null’ and 'this.discountAmount' to ‘0.0’. I then created setter methods towards the end of the file. When instantiating an item object, the setters can be used to set desired discount types or discount amounts if needed. This approach allows for a concise parameter list, easy readability, and the ability to set discount types or amounts.
+
+Roshni: 
+The code provided originally had a public, implicit constructor in the EmailSender class, making it possible to instantiate the class even though it was designed solely as a utility class with static methods. This is a design flaw known as an Object Oriented Abuser because it does not take full advantage of object-oriented principles. Specifically, it violates encapsulation by allowing the creation of instances when there’s no need for any objects of this class. In object-oriented design, utility classes like EmailSender should not be instantiable because they are not intended to represent an object with state or behavior; rather, they serve as a collection of methods. Allowing instantiation can lead to misuse, where instances of the utility class are unnecessarily created, consuming resources and introducing ambiguity in the code’s purpose.
+To correct this issue, we added a private constructor to the EmailSender class. This change hides the implicit public constructor, preventing instantiation and reinforcing that EmailSender is intended only as a static utility class. By throwing an UnsupportedOperationException in the private constructor, we further clarify that this class is non-instantiable. This solution follows best practices for utility classes, prevents unnecessary instantiation, and aligns with object-oriented principles by properly encapsulating the class’s intended use.
+
+
+Nithyaa:
+The original code for the `EmailSender` class used `System.out.println` statements to print email information, including the recipient's email, subject, and body. This practice of using `System.out` for logging or status updates is considered a code smell because it limits flexibility and makes it harder to manage output behavior across different environments, such as development and production. This issue falls under the **"Change Preventers"** category of code smells, as using `System.out` directly hinders the ability to easily modify logging behavior in response to future needs, such as adjusting log levels or redirecting logs to a file. To address this, we replaced the `System.out.println` calls with a proper logging framework. This change allows for more control over log output, enabling configurable log levels (e.g., INFO, WARN, ERROR) and adaptable logging destinations, which will support better debugging and maintenance as the codebase grows or changes. 
+
+Sumayya:
+Fixed class: main.java
+The name of the ‘main.java’ class did not follow proper naming conventions of “'^[A-Z][a-zA-ZO-9]*$'.” To fix this we simply capitalized the ‘m’ making it ‘Main.java’. This will make the code more readable, maintainable, and consistant since it follows a standardized approach.
+
+Moved files to a named package.
+The files were also not in a named packaged. This can cause a bloater type code smell, where classes arent as organized, and with a growing code base this would make it difficult to understand the purpose of each class without it being organinzed into packages. To correct this issue we created a package named smellapp, which holds all the files within the package. When creating more classes for this project later, we can simply create new packages and put files that relate with each other within that same package. This can avoid class name conflicts, improve navigation, and reduce potential duplicate code since each package holds program related to specific things.
+
+Used a logger instead of System.out
+The ‘main.java’ file, was also using System.out instead of a logger. This can cause a couplers type code smell. The use of System.out.println() tightly couples the output of our Main class to the console output, rather than allowing for more flexible logging mechanisms. To fix this we usined a Logger from the Java logger package to output data onto the console output.
+
+Aditi:
+In the Main.java file, I found a code smell where a block of commented-out lines was flagged, and the error message stated that "this block of commented-out lines should be removed." This error occurred while we were addressing other code smells errors. In order to resolve this issue, I looked over the commented lines to see if it contained any important information or logic, which if removed, would cause the file to crash. I deleted the code after confirming that these lines were not relevant. This made the code cleaner, more readable, and more maintainable.
