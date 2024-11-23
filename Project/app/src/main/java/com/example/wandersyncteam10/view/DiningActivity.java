@@ -132,10 +132,12 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
             String location = locationInput.getText().toString();
             String website = websiteInput.getText().toString();
             String time = timeInput.getText().toString();
-            if (!location.isEmpty() && !website.isEmpty() && isValidTimeFormat(time) && !isDuplicateReservation(location, time)) {
+            if (!location.isEmpty() && !website.isEmpty()
+                    && isValidTimeFormat(time) && !isDuplicateReservation(location, time)) {
                 addReservationToFirestore(new Reservation(location, website, time));
             } else {
-                String message = (!isValidTimeFormat(time)) ? "Invalid time format. Use " + DATE_FORMAT : "Duplicate reservation.";
+                String message = (!isValidTimeFormat(time)) ? "Invalid time format. Use "
+                        + DATE_FORMAT : "Duplicate reservation.";
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
         });

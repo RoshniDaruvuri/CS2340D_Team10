@@ -105,8 +105,11 @@ public class CommunityActivity extends AppCompatActivity {
         String notesValue = notes.getText().toString();
 
         // Validate the input data
-        if (validateInput(startDateValue, endDateValue, destinationValue, accommodationValue, diningValue, transportationValue)) {
-            TravelPost post = new TravelPost(startDateValue, endDateValue, destinationValue, accommodationValue, diningValue, transportationValue, notesValue);
+        if (validateInput(startDateValue, endDateValue, destinationValue,
+                accommodationValue, diningValue, transportationValue)) {
+            TravelPost post = new TravelPost(startDateValue,
+                    endDateValue, destinationValue, accommodationValue,
+                    diningValue, transportationValue, notesValue);
 
             // Add post to Firebase
             String postId = travelPostsRef.push().getKey();
@@ -124,8 +127,12 @@ public class CommunityActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateInput(String startDate, String endDate, String destination, String accommodation, String dining, String transportation) {
-        return !startDate.isEmpty() && !endDate.isEmpty() && !destination.isEmpty() && !accommodation.isEmpty() && !dining.isEmpty() && !transportation.isEmpty();
+    private boolean validateInput(String startDate, String endDate,
+                                  String destination, String accommodation,
+                                  String dining, String transportation) {
+        return !startDate.isEmpty() && !endDate.isEmpty()
+                && !destination.isEmpty() && !accommodation.isEmpty()
+                && !dining.isEmpty() && !transportation.isEmpty();
     }
 
     private void clearInputs() {

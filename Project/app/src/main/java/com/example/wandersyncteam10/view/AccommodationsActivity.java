@@ -161,10 +161,14 @@ public class AccommodationsActivity extends AppCompatActivity {
 
                 List<String> formattedLogs = new ArrayList<>();
                 for (AccommodationsLog log : logs) {
-                    String logDetails = "Check-in: " + log.getCheckin() + "\n" +
-                            "Check-out: " + log.getCheckout() + "\n" +
-                            "Location: " + log.getLocation() + "\n" +
-                            "Rooms: " + log.getRoomnum() + "\n" +
+                    String logDetails = "Check-in: " + log.getCheckin() + "\n"
+                            +
+                            "Check-out: " + log.getCheckout() + "\n"
+                            +
+                            "Location: " + log.getLocation() + "\n"
+                            +
+                            "Rooms: " + log.getRoomnum() + "\n"
+                            +
                             "Room Type: " + log.getRoomtype();
                     formattedLogs.add(logDetails);
                 }
@@ -199,21 +203,27 @@ public class AccommodationsActivity extends AppCompatActivity {
 
                 List<String> formattedLogs = new ArrayList<>();
                 for (AccommodationsLog log : logs) {
-                    String logDetails = "Check-in: " + log.getCheckin() + "\n" +
-                            "Check-out: " + log.getCheckout() + "\n" +
-                            "Location: " + log.getLocation() + "\n" +
-                            "Rooms: " + log.getRoomnum() + "\n" +
+                    String logDetails = "Check-in: " + log.getCheckin() + "\n"
+                            +
+                            "Check-out: " + log.getCheckout() + "\n"
+                            +
+                            "Location: " + log.getLocation() + "\n"
+                            +
+                            "Rooms: " + log.getRoomnum() + "\n"
+                            +
                             "Room Type: " + log.getRoomtype();
                     formattedLogs.add(logDetails);
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(AccommodationsActivity.this, android.R.layout.simple_list_item_1, formattedLogs);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(AccommodationsActivity.this,
+                        android.R.layout.simple_list_item_1, formattedLogs);
                 accommodationsLogsList.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AccommodationsActivity.this, "Failed to load logs: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AccommodationsActivity.this, "Failed to load logs: " + error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
                 Log.e("AccommodationsActivity", "Database error: " + error.getMessage());
             }
         });
