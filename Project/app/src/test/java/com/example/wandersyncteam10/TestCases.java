@@ -6,6 +6,7 @@ import com.example.wandersyncteam10.view.AccommodationsLog;
 import com.example.wandersyncteam10.view.DiningActivity;
 import com.example.wandersyncteam10.view.Reservation;
 import com.example.wandersyncteam10.view.TravelLog;
+import com.example.wandersyncteam10.view.TravelPost;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.Before;
@@ -237,5 +238,231 @@ public class TestCases {
         assertNotNull(reservation.getWebsite());
         assertNotNull(reservation.getTime());
     }
+
+    @Test
+    public void testTravelPostDisplay() {
+        // Arrange
+        TravelPost post = new TravelPost(
+                "2024-11-01",
+                "2024-11-05",
+                "Paris",
+                "Hotel Luxe",
+                "Bistro",
+                "Flight",
+                "Exploring the city of lights!"
+        );
+
+        // Act
+        String displayInfo = post.getDestination() + ": "
+                + post.getStartDate() + " - "
+                + post.getEndDate() + ", "
+                + post.getNotes();
+
+        // Assert
+        assertEquals("Travel post display should match",
+                "Paris: 2024-11-01 - 2024-11-05, Exploring the city of lights!",
+                displayInfo);
+    }
+
+    @Test
+    public void testDefaultConstructor() {
+        // Arrange
+        TravelPost post = new TravelPost();
+
+        // Assert
+        assertNull("Start date should be null", post.getStartDate());
+        assertNull("End date should be null", post.getEndDate());
+        assertNull("Destination should be null", post.getDestination());
+        assertNull("Accommodation should be null", post.getAccommodation());
+        assertNull("Dining should be null", post.getDining());
+        assertNull("Transportation should be null", post.getTransportation());
+        assertNull("Notes should be null", post.getNotes());
+    }
+
+    @Test
+    public void testTravelDuration() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-12-01", "2024-12-10", "Italy", "Villa", "Pasta House", "Car", "Exploring Tuscany");
+
+        // Act
+        String durationInfo = post.getDestination() + " ("
+                + (Integer.parseInt(post.getEndDate().substring(8))
+                - Integer.parseInt(post.getStartDate().substring(8))
+                + 1) + " days)";
+
+        // Assert
+        assertEquals("Travel duration info should match", "Italy (10 days)", durationInfo);
+    }
+
+    @Test
+    public void testPartialTravelPostInfo() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-11-15", "2024-11-20", "Tokyo", "Ryokan", "Sushi Bar", "Train", null);
+
+        // Act
+        String partialInfo = post.getDestination() + ": "
+                + post.getStartDate() + " - " + post.getEndDate() + "\n"
+                + "Accommodation: " + post.getAccommodation() + "\n"
+                + "Dining: " + post.getDining();
+
+        // Assert
+        assertEquals("Partial travel post info should match",
+                "Tokyo: 2024-11-15 - 2024-11-20\n"
+                        + "Accommodation: Ryokan\n"
+                        + "Dining: Sushi Bar",
+                partialInfo);
+    }
+
+    @Test
+    public void testEmptyFields() {
+        // Arrange
+        TravelPost post = new TravelPost("", "", "", "", "", "", "");
+
+        // Assert
+        assertTrue("Start date should be empty", post.getStartDate().isEmpty());
+        assertTrue("End date should be empty", post.getEndDate().isEmpty());
+        assertTrue("Destination should be empty", post.getDestination().isEmpty());
+        assertTrue("Accommodation should be empty", post.getAccommodation().isEmpty());
+        assertTrue("Dining should be empty", post.getDining().isEmpty());
+        assertTrue("Transportation should be empty", post.getTransportation().isEmpty());
+        assertTrue("Notes should be empty", post.getNotes().isEmpty());
+    }
+
+    @Test
+    public void testSingleDayTrip() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-11-01", "2024-11-01", "Berlin", "Hostel", "Currywurst Stand", "Bike", "Visiting museums.");
+
+        // Act
+        String singleDayInfo = post.getDestination() + ": "
+                + post.getStartDate() + " (1 day)";
+
+        // Assert
+        assertEquals("Single-day trip info should match", "Berlin: 2024-11-01 (1 day)", singleDayInfo);
+    }
+
+    @Test
+    public void testFullTravelPostDetails() {
+        // Arrange
+        TravelPost post = new TravelPost(
+                "2024-12-10",
+                "2024-12-20",
+                "Hawaii",
+                "Beach Resort",
+                "Seafood Grill",
+                "Flight",
+                "Relaxing on the beach and snorkeling."
+        );
+
+        // Act
+        String fullDetails = "Destination: " + post.getDestination() + "\n"
+                + "Dates: " + post.getStartDate() + " to " + post.getEndDate() + "\n"
+                + "Accommodation: " + post.getAccommodation() + "\n"
+                + "Dining: " + post.getDining() + "\n"
+                + "Transportation: " + post.getTransportation() + "\n"
+                + "Notes: " + post.getNotes();
+
+        // Assert
+        assertEquals("Full travel post details should match",
+                "Destination: Hawaii\n"
+                        + "Dates: 2024-12-10 to 2024-12-20\n"
+                        + "Accommodation: Beach Resort\n"
+                        + "Dining: Seafood Grill\n"
+                        + "Transportation: Flight\n"
+                        + "Notes: Relaxing on the beach and snorkeling.",
+                fullDetails);
+    }
+
+    @Test
+    public void testNullFields() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-10-01", "2024-10-10", "Paris", null, null, "Train", null);
+
+        // Act
+        String details = "Destination: " + post.getDestination() + "\n"
+                + "Dates: " + post.getStartDate() + " to " + post.getEndDate() + "\n"
+                + "Accommodation: " + (post.getAccommodation() == null ? "N/A" : post.getAccommodation()) + "\n"
+                + "Dining: " + (post.getDining() == null ? "N/A" : post.getDining()) + "\n"
+                + "Transportation: " + post.getTransportation();
+
+        // Assert
+        assertEquals("Details with null fields should handle N/A gracefully",
+                "Destination: Paris\n"
+                        + "Dates: 2024-10-01 to 2024-10-10\n"
+                        + "Accommodation: N/A\n"
+                        + "Dining: N/A\n"
+                        + "Transportation: Train",
+                details);
+    }
+
+    @Test
+    public void testLongNotes() {
+        // Arrange
+        String longNotes = "Visited multiple landmarks: Eiffel Tower, Louvre, Montmartre, and took a boat tour along the Seine River.";
+        TravelPost post = new TravelPost("2024-08-01", "2024-08-05", "Paris", "Hotel", "French Bistro", "Metro", longNotes);
+
+        // Act
+        String extractedNotes = post.getNotes();
+
+        // Assert
+        assertEquals("Notes should match the provided long text",
+                "Visited multiple landmarks: Eiffel Tower, Louvre, Montmartre, and took a boat tour along the Seine River.",
+                extractedNotes);
+    }
+
+    @Test
+    public void testMultipleTravelPosts() {
+        // Arrange
+        TravelPost post1 = new TravelPost("2024-07-10", "2024-07-15", "Rome", "Hotel", "Pizza Place", "Bus", "Exploring the Colosseum.");
+        TravelPost post2 = new TravelPost("2024-08-10", "2024-08-20", "Barcelona", "Hostel", "Tapas Bar", "Train", "Enjoying the beach and Gaudí's architecture.");
+
+        // Act & Assert
+        assertEquals("First travel post destination should be Rome", "Rome", post1.getDestination());
+        assertEquals("Second travel post destination should be Barcelona", "Barcelona", post2.getDestination());
+    }
+
+    @Test
+    public void testTransportationField() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-06-15", "2024-06-20", "Sydney", "Apartment", "Seafood Market", "Ferry", "Enjoying the harbor.");
+
+        // Act
+        String transportation = post.getTransportation();
+
+        // Assert
+        assertEquals("Transportation should match the provided value", "Ferry", transportation);
+    }
+
+    @Test
+    public void testTravelSummaryConcatenation() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-03-01", "2024-03-05", "Berlin", "Airbnb", "Local Cafe", "Bike", "Visiting historical sites.");
+
+        // Act
+        String travelSummary = "Traveling to " + post.getDestination() + " from " + post.getStartDate() + " to " + post.getEndDate()
+                + ". Staying at " + post.getAccommodation() + ", dining at " + post.getDining()
+                + ", and getting around by " + post.getTransportation() + ".";
+
+        // Assert
+        assertEquals("Travel summary should concatenate all details correctly",
+                "Traveling to Berlin from 2024-03-01 to 2024-03-05. Staying at Airbnb, dining at Local Cafe, and getting around by Bike.",
+                travelSummary);
+    }
+
+    @Test
+    public void testDestinationAndNotesCombination() {
+        // Arrange
+        TravelPost post = new TravelPost("2024-06-10", "2024-06-20", "Paris", "Hotel", "French Bistro", "Metro", "Visiting the Eiffel Tower and museums.");
+
+        // Act
+        String destinationAndNotes = post.getDestination() + ": " + post.getNotes();
+
+        // Assert
+        assertEquals("Destination and notes should concatenate correctly",
+                "Paris: Visiting the Eiffel Tower and museums.",
+                destinationAndNotes);
+    }
+
+
 
 }
