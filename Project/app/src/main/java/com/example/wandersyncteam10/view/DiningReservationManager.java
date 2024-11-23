@@ -13,10 +13,22 @@ import java.util.Map;
 public class DiningReservationManager {
     private FirebaseFirestore db;
 
+    /**
+     * Constructor for DiningReservationManager.
+     * Initializes the Firestore database instance.
+     */
     public DiningReservationManager() {
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Adds a new dining reservation to the Firestore database.
+     *
+     * @param location        The location of the reservation.
+     * @param website         The website associated with the reservation.
+     * @param reviews         An array of reviews for the dining place.
+     * @param reservationTime The date and time of the reservation.
+     */
     public void addDiningReservation(String location, String website, String[] reviews, Date reservationTime) {
         Map<String, Object> reservation = new HashMap<>();
         reservation.put("location", location);
@@ -31,6 +43,11 @@ public class DiningReservationManager {
                 .addOnFailureListener(e -> Log.w("Firebase", "Error adding document", e));
     }
 
+    /**
+     * Fetches dining reservations from the Firestore database.
+     *
+     * @param listener A listener to handle the result of the fetch operation.
+     */
     public void fetchDiningReservations(final ReservationFetchListener listener) {
         db.collection("diningReservations")
                 .get()
@@ -50,8 +67,23 @@ public class DiningReservationManager {
                 });
     }
 
+    /**
+     * A listener interface for handling dining reservation fetch results.
+     */
     public interface ReservationFetchListener {
+
+        /**
+         * Called when the fetch operation is successful.
+         *
+         * @param reservations A list of fetched reservations.
+         */
         void onFetchComplete(ArrayList<Reservation> reservations);
+
+        /**
+         * Called when the fetch operation fails.
+         *
+         * @param e The exception that caused the failure.
+         */
         void onFetchFailed(Exception e);
     }
 }

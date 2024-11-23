@@ -20,9 +20,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Activity for managing and displaying notes.
+ */
 public class NotesActivity extends AppCompatActivity {
 
-    //NotesActivity has two files must fix it for the next Sprint
+    // NotesActivity has two files must fix it for the next Sprint
     private FirebaseFirestore db;
     private LinearLayout notesContainer;
     private Set<String> notesSet;
@@ -133,42 +136,5 @@ public class NotesActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-}
-
-
-// Create a Note class to represent a note object
-class Note {
-    private String text;
-
-    /**
-     * need for fire store
-     * */
-    public Note() {
-
-    } // Needed for Firestore
-
-    /**
-     * @param text
-     * note text
-     * */
-    public Note(String text) {
-        this.text = text;
-    }
-
-    /**
-     * get text
-     * @return text
-     * */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * @param text
-     * note text
-     * */
-    public void setText(String text) {
-        this.text = text;
     }
 }

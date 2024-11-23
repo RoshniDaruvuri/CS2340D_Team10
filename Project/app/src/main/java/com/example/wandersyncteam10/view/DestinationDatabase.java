@@ -79,9 +79,10 @@ public class DestinationDatabase {
     /**
      * Adds a new travel log to the database.
      *
-     * @param location  the location of the travel log.
-     * @param startDate the start date of the travel log in the format "yyyy-MM-dd".
-     * @param endDate   the end date of the travel log in the format "yyyy-MM-dd".
+     * @param location    the location of the travel log.
+     * @param startDate   the start date of the travel log in the format "yyyy-MM-dd".
+     * @param endDate     the end date of the travel log in the format "yyyy-MM-dd".
+     * @param invitedUser the name of the invited user for the travel log.
      */
     public void addTravelLog(String location, String startDate, String endDate, String invitedUser) {
         int duration = calculateDuration(startDate, endDate);
@@ -89,7 +90,6 @@ public class DestinationDatabase {
         databaseReference.push().setValue(newLog);
         Log.d("DestinationDatabase", "Added travel log: " + newLog);
     }
-
 
     /**
      * Adds a calculated duration travel log to the database.

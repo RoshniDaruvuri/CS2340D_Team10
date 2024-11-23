@@ -20,10 +20,12 @@ public class SingletonTravelPostManager {
         travelPosts = new ArrayList<>();
     }
 
+    /**
+     * Clears all travel posts from the list.
+     */
     public void clearPosts() {
         travelPosts.clear(); // Assuming travelPosts is the list storing the posts
     }
-
 
     /**
      * Provides the single instance of SingletonTravelPostManager.

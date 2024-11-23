@@ -16,8 +16,15 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CommunityActivity extends AppCompatActivity {
 
-    private EditText startDate, endDate, destination, accommodation, dining, transportation, notes;
-    private Button submitPostButton, viewTripsButton;
+    private EditText startDate;
+    private EditText endDate;
+    private EditText destination;
+    private EditText accommodation;
+    private EditText dining;
+    private EditText transportation;
+    private EditText notes;
+    private Button submitPostButton;
+    private Button viewTripsButton;
 
     private FirebaseUser currentUser;
     private DatabaseReference travelPostsRef;
@@ -95,6 +102,9 @@ public class CommunityActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Submits a new travel post.
+     */
     private void submitTravelPost() {
         String startDateValue = startDate.getText().toString();
         String endDateValue = endDate.getText().toString();
@@ -127,6 +137,17 @@ public class CommunityActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Validates the input fields for the travel post.
+     *
+     * @param startDate       The start date of the trip.
+     * @param endDate         The end date of the trip.
+     * @param destination     The trip destination.
+     * @param accommodation   Accommodation details.
+     * @param dining          Dining details.
+     * @param transportation  Transportation details.
+     * @return True if all fields are valid, false otherwise.
+     */
     private boolean validateInput(String startDate, String endDate,
                                   String destination, String accommodation,
                                   String dining, String transportation) {
@@ -135,6 +156,9 @@ public class CommunityActivity extends AppCompatActivity {
                 && !dining.isEmpty() && !transportation.isEmpty();
     }
 
+    /**
+     * Clears all input fields after submitting a travel post.
+     */
     private void clearInputs() {
         startDate.setText("");
         endDate.setText("");
