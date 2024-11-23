@@ -1,11 +1,6 @@
 package com.example.wandersyncteam10.view;
 
 import android.util.Log;
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -31,7 +26,8 @@ public class DiningReservationManager {
 
         db.collection("diningReservations")
                 .add(reservation)
-                .addOnSuccessListener(documentReference -> Log.d("Firebase", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnSuccessListener(documentReference -> Log.d("Firebase",
+                        "DocumentSnapshot added with ID: " + documentReference.getId()))
                 .addOnFailureListener(e -> Log.w("Firebase", "Error adding document", e));
     }
 

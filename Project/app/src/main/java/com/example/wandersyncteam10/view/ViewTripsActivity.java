@@ -71,12 +71,18 @@ public class ViewTripsActivity extends AppCompatActivity {
                         singletonTravelPostManager.addTravelPost(post);
 
                         // Format post details for display
-                        String postDetails = "Destination: " + post.getDestination() + "\n" +
-                                "Start Date: " + post.getStartDate() + "\n" +
-                                "End Date: " + post.getEndDate() + "\n" +
-                                "Accommodation: " + post.getAccommodation() + "\n" +
-                                "Dining: " + post.getDining() + "\n" +
-                                "Transportation: " + post.getTransportation() + "\n" +
+                        String postDetails = "Destination: " + post.getDestination() + "\n"
+                                +
+                                "Start Date: " + post.getStartDate() + "\n"
+                                +
+                                "End Date: " + post.getEndDate() + "\n"
+                                +
+                                "Accommodation: " + post.getAccommodation() + "\n"
+                                +
+                                "Dining: " + post.getDining() + "\n"
+                                +
+                                "Transportation: " + post.getTransportation() + "\n"
+                                +
                                 "Notes: " + post.getNotes();
                         formattedPosts.add(postDetails);
                     }
