@@ -37,6 +37,7 @@ public class TravelLogManager {
      * @param startDate The start date of the travel log entry.
      * @param endDate The end date of the travel log entry.
      * @param duration The duration of the travel in days.
+     * @param invitedUser The username or identifier of the invited user.
      */
     public void saveTravelLog(String location, String startDate, String endDate, int duration, String invitedUser) {
         String userId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;

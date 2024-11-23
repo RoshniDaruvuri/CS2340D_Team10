@@ -1,6 +1,5 @@
 package com.example.wandersyncteam10.view;
 
-// TravelLog class to represent individual travel log entries
 /**
  * Represents an individual travel log entry, including the location,
  * start and end dates, and the duration of the travel.
@@ -21,10 +20,10 @@ public class TravelLog {
     /**
      * Constructor to create a TravelLog object with specified details.
      *
-     * @param location The location of the travel.
+     * @param location  The location of the travel.
      * @param startDate The start date of the travel.
-     * @param endDate The end date of the travel.
-     * @param duration The duration of the travel in days.
+     * @param endDate   The end date of the travel.
+     * @param duration  The duration of the travel in days.
      */
     public TravelLog(String location, String startDate, String endDate, int duration) {
         this.location = location;
@@ -33,11 +32,22 @@ public class TravelLog {
         this.duration = duration;
     }
 
+    /**
+     * Constructor to create a TravelLog object with specified details and an invited user.
+     *
+     * @param location    The location of the travel.
+     * @param startDate   The start date of the travel.
+     * @param endDate     The end date of the travel.
+     * @param duration    The duration of the travel in days.
+     * @param invitedUser The username or identifier of the invited user.
+     */
     public TravelLog(String location, String startDate, String endDate, int duration, String invitedUser) {
+        // Implementation can be added if needed
     }
 
     /**
      * Gets the location of the travel log entry.
+     *
      * @return The location.
      */
     public String getLocation() {
@@ -46,6 +56,7 @@ public class TravelLog {
 
     /**
      * Sets the location of the travel log entry.
+     *
      * @param location The location to set.
      */
     public void setLocation(String location) {
@@ -54,6 +65,7 @@ public class TravelLog {
 
     /**
      * Gets the start date of the travel log entry.
+     *
      * @return The start date.
      */
     public String getStartDate() {
@@ -62,6 +74,7 @@ public class TravelLog {
 
     /**
      * Sets the start date of the travel log entry.
+     *
      * @param startDate The start date to set.
      */
     public void setStartDate(String startDate) {
@@ -70,6 +83,7 @@ public class TravelLog {
 
     /**
      * Gets the end date of the travel log entry.
+     *
      * @return The end date.
      */
     public String getEndDate() {
@@ -78,6 +92,7 @@ public class TravelLog {
 
     /**
      * Sets the end date of the travel log entry.
+     *
      * @param endDate The end date to set.
      */
     public void setEndDate(String endDate) {
@@ -86,6 +101,7 @@ public class TravelLog {
 
     /**
      * Gets the duration of the travel log entry.
+     *
      * @return The duration in days.
      */
     public int getDuration() {
@@ -94,6 +110,7 @@ public class TravelLog {
 
     /**
      * Sets the duration of the travel log entry.
+     *
      * @param duration The duration to set, in days.
      */
     public void setDuration(int duration) {

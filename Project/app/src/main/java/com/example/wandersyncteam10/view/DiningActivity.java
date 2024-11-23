@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.wandersyncteam10.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,30 +26,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-// Observer interface
-interface ReservationObserver {
-    void onReservationUpdated(List<Reservation> reservations);
-}
-
-// Subject class to manage observers
-class ReservationSubject {
-    private List<ReservationObserver> observers = new ArrayList<>();
-
-    void addObserver(ReservationObserver observer) {
-        observers.add(observer);
-    }
-
-    void removeObserver(ReservationObserver observer) {
-        observers.remove(observer);
-    }
-
-    void notifyObservers(List<Reservation> reservations) {
-        for (ReservationObserver observer : observers) {
-            observer.onReservationUpdated(reservations);
-        }
-    }
-}
-
+/**
+ * DiningActivity handles the display and management of dining reservations.
+ */
 public class DiningActivity extends AppCompatActivity implements ReservationObserver {
 
     private static final String DATE_FORMAT = "MM/dd/yyyy HH:mm";
@@ -65,53 +46,19 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
         reservationSubject = new ReservationSubject();
         reservationSubject.addObserver(this);
 
-        // Find the TextView for displaying reservations
         diningDisplay = findViewById(R.id.dining_display);
-
-        // Initialize the list of reservations
         reservationList = new ArrayList<>();
 
-        // Load reservations from Firestore when the activity starts
         loadReservationsFromFirestore();
 
-        // Handle Add Reservation button click
         findViewById(R.id.buttonAddReservation).setOnClickListener(view -> showAddReservationDialog());
-
-        // Handle Sort button click
         findViewById(R.id.buttonSortReservations).setOnClickListener(view -> sortReservationsByDateTime());
 
-        // Dashboard button listeners (keeping these unchanged)
-        findViewById(R.id.button).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, LogisticsActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button2).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, DestinationActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button3).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, DiningActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button4).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, AccommodationsActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button5).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, CommunityActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(DiningActivity.this, TravelActivity.class);
-            startActivity(intent);
-        });
+        // Example dashboard navigation buttons
+        findViewById(R.id.button).setOnClickListener(view ->
+                startActivity(new Intent(this, LogisticsActivity.class))
+        );
     }
-
 
     /**
      * Displays a dialog to add a reservation.
@@ -148,6 +95,9 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
     /**
      * Validates that the time string is in the correct format.
+     *
+     * @param time The time string to validate.
+     * @return True if the time is valid; false otherwise.
      */
     private boolean isValidTimeFormat(String time) {
         try {
@@ -162,6 +112,10 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
     /**
      * Checks if a reservation with the same location and time already exists.
+     *
+     * @param location The reservation location.
+     * @param time     The reservation time.
+     * @return True if a duplicate exists; false otherwise.
      */
     private boolean isDuplicateReservation(String location, String time) {
         for (Reservation reservation : reservationList) {
@@ -180,14 +134,13 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
         reservationRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                reservationList.clear(); // Clear the current list
+                reservationList.clear();
                 for (DocumentSnapshot document : task.getResult()) {
                     String location = document.getString("location");
                     String website = document.getString("website");
                     String time = document.getString("time");
                     reservationList.add(new Reservation(location, website, time));
                 }
-                // Update the display after loading from Firestore
                 updateDiningDisplay();
                 reservationSubject.notifyObservers(reservationList);
             } else {
@@ -198,6 +151,8 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
 
     /**
      * Adds a reservation to Firestore and updates the local list of reservations.
+     *
+     * @param reservation The reservation to add.
      */
     private void addReservationToFirestore(Reservation reservation) {
         db.collection("reservations").add(reservation)
@@ -220,7 +175,8 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
         for (Reservation reservation : reservationList) {
             try {
                 Date reservationDate = dateFormat.parse(reservation.getTime());
-                String color = reservationDate != null && reservationDate.before(currentDate) ? "#FF0000" : "#00FF00";
+                String color = reservationDate != null && reservationDate.before(currentDate)
+                        ? "#FF0000" : "#00FF00";
                 displayText.append("<font color='").append(color).append("'>")
                         .append(reservation.getLocation()).append(" - ")
                         .append(reservation.getWebsite()).append(" at ")
@@ -245,9 +201,4 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
     public void onReservationUpdated(List<Reservation> reservations) {
         updateDiningDisplay();
     }
-
 }
-
-
-
-

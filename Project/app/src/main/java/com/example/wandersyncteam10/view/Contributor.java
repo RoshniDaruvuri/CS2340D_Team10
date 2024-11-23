@@ -4,23 +4,40 @@ public class Contributor {
     private String name;
     private boolean canEdit;
 
-    // Constructor
+    /**
+     * Constructor for Contributor.
+     *
+     * @param name    The name of the contributor.
+     * @param canEdit Whether the contributor has edit permissions.
+     */
     public Contributor(String name, boolean canEdit) {
         this.name = name;
         this.canEdit = canEdit;
     }
 
-    // Getter for name
+    /**
+     * Gets the name of the contributor.
+     *
+     * @return The name of the contributor.
+     */
     public String getName() {
         return name;
     }
 
-    // Getter for canEdit
+    /**
+     * Checks if the contributor has edit permissions.
+     *
+     * @return True if the contributor can edit, false otherwise.
+     */
     public boolean canEdit() {
         return canEdit;
     }
 
-    // Optional: Override toString() to display the contributor information
+    /**
+     * Returns a string representation of the contributor.
+     *
+     * @return A string containing the contributor's name and edit permissions.
+     */
     @Override
     public String toString() {
         return "Contributor{name='" + name + "', canEdit=" + canEdit + "}";

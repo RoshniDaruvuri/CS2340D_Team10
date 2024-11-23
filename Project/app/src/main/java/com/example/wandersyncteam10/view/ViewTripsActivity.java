@@ -45,7 +45,8 @@ public class ViewTripsActivity extends AppCompatActivity {
         singletonTravelPostManager = SingletonTravelPostManager.getInstance();
 
         if (currentUser != null) {
-            travelPostsRef = FirebaseDatabase.getInstance().getReference("communityPosts").child(currentUser.getUid());
+            travelPostsRef = FirebaseDatabase.getInstance().getReference("communityPosts")
+                    .child(currentUser.getUid());
             loadTravelPosts();
         } else {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
@@ -58,6 +59,9 @@ public class ViewTripsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Loads travel posts from Firebase and populates the ListView.
+     */
     private void loadTravelPosts() {
         travelPostsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,22 +76,20 @@ public class ViewTripsActivity extends AppCompatActivity {
 
                         // Format post details for display
                         String postDetails = "Destination: " + post.getDestination() + "\n"
-                                +
-                                "Start Date: " + post.getStartDate() + "\n"
-                                +
-                                "End Date: " + post.getEndDate() + "\n"
-                                +
-                                "Accommodation: " + post.getAccommodation() + "\n"
-                                +
-                                "Dining: " + post.getDining() + "\n"
-                                +
-                                "Transportation: " + post.getTransportation() + "\n"
-                                +
-                                "Notes: " + post.getNotes();
+                                + "Start Date: " + post.getStartDate() + "\n"
+                                + "End Date: " + post.getEndDate() + "\n"
+                                + "Accommodation: " + post.getAccommodation() + "\n"
+                                + "Dining: " + post.getDining() + "\n"
+                                + "Transportation: " + post.getTransportation() + "\n"
+                                + "Notes: " + post.getNotes();
                         formattedPosts.add(postDetails);
                     }
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewTripsActivity.this, android.R.layout.simple_list_item_1, formattedPosts);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        ViewTripsActivity.this,
+                        android.R.layout.simple_list_item_1,
+                        formattedPosts
+                );
                 travelPostsListView.setAdapter(adapter);
             }
 

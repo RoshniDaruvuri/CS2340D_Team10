@@ -9,13 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wandersyncteam10.R;
-import com.example.wandersyncteam10.view.Reservation;
 
 import java.util.ArrayList;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ReservationViewHolder> {
     private final ArrayList<Reservation> reservations;
 
+    /**
+     * Constructor for ReservationAdapter.
+     *
+     * @param reservations The list of reservations to display.
+     */
     public ReservationAdapter(ArrayList<Reservation> reservations) {
         this.reservations = reservations;
     }
@@ -41,8 +45,15 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     }
 
     public static class ReservationViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewLocation, textViewWebsite, textViewTime;
+        private final TextView textViewLocation;
+        private final TextView textViewWebsite;
+        private final TextView textViewTime;
 
+        /**
+         * Constructor for ReservationViewHolder.
+         *
+         * @param itemView The view of the individual list item.
+         */
         public ReservationViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewLocation = itemView.findViewById(R.id.textViewLocation);
