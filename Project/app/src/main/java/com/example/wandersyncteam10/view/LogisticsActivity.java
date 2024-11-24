@@ -135,13 +135,13 @@ public class LogisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LogisticsActivity.this, TravelActivity.class);
-                startActivity(intent);
-            }
-        });
+//        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(LogisticsActivity.this, TravelActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         findViewById(R.id.notesButton).setOnClickListener(new View.OnClickListener() {
             @Override

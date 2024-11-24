@@ -58,6 +58,36 @@ public class DiningActivity extends AppCompatActivity implements ReservationObse
         findViewById(R.id.button).setOnClickListener(view ->
                 startActivity(new Intent(this, LogisticsActivity.class))
         );
+
+        findViewById(R.id.button).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, LogisticsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button2).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, DestinationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button3).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, DiningActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button4).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, AccommodationsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button5).setOnClickListener(view -> {
+            Intent intent = new Intent(DiningActivity.this, CommunityActivity.class);
+            startActivity(intent);
+        });
+
+//        findViewById(R.id.button6).setOnClickListener(view -> {
+//            Intent intent = new Intent(DiningActivity.this, TravelActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     /**

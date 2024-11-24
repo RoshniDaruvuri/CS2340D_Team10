@@ -1,5 +1,6 @@
 package com.example.wandersyncteam10.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -107,6 +108,36 @@ public class AccommodationsActivity extends AppCompatActivity {
             sortingStrategy = new CheckInSort();
             fetchAndDisplayData();
         });
+
+        findViewById(R.id.button).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, LogisticsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button2).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, DestinationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button3).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, DiningActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button4).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, AccommodationsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.button5).setOnClickListener(view -> {
+            Intent intent = new Intent(AccommodationsActivity.this, CommunityActivity.class);
+            startActivity(intent);
+        });
+
+//        findViewById(R.id.button6).setOnClickListener(view -> {
+//            Intent intent = new Intent(AccommodationsActivity.this, TravelActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     /**
