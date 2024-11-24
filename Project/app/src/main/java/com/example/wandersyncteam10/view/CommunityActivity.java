@@ -114,21 +114,22 @@ public class CommunityActivity extends AppCompatActivity {
         String transportationValue = transportation.getText().toString();
         String notesValue = notes.getText().toString();
 
-        // Validate the input data
-        if (validateInput(startDateValue, endDateValue, destinationValue,
-                accommodationValue, diningValue, transportationValue)) {
-            TravelPost post = new TravelPost(startDateValue,
-                    endDateValue, destinationValue, accommodationValue,
-                    diningValue, transportationValue, notesValue);
+        if (validateInput(startDateValue, endDateValue, destinationValue, accommodationValue, diningValue, transportationValue)) {
+            String commonId = travelPostsRef.push().getKey(); // Generate unique ID
 
-            // Add post to Firebase
-            String postId = travelPostsRef.push().getKey();
-            if (postId != null) {
-                travelPostsRef.child(postId).setValue(post);
+            TravelPost post = new TravelPost(commonId, startDateValue, endDateValue, destinationValue, accommodationValue, diningValue, transportationValue, notesValue);
+
+            // Save to communityPosts database
+            if (commonId != null) {
+                travelPostsRef.child(commonId).setValue(post);
             }
 
-            // Add post to SingletonTravelPostManager
-            SingletonTravelPostManager.getInstance().addTravelPost(post);
+            // Save to travelLogs database
+            DatabaseReference travelLogsRef = FirebaseDatabase.getInstance()
+                    .getReference("travelLogs")
+                    .child(currentUser.getUid())
+                    .child(commonId);
+            travelLogsRef.setValue(post);
 
             Toast.makeText(this, "Post submitted successfully!", Toast.LENGTH_SHORT).show();
             clearInputs();
@@ -136,6 +137,7 @@ public class CommunityActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     /**
      * Validates the input fields for the travel post.
