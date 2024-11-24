@@ -70,6 +70,51 @@ public class DestinationActivity extends AppCompatActivity {
         configureButtons();
     }
 
+    private void fetchLinkedData(String commonId) {
+        // Retrieve data from communityPosts
+        DatabaseReference communityPostsRef = FirebaseDatabase.getInstance()
+                .getReference("communityPosts")
+                .child(currentUser.getUid())
+                .child(commonId);
+        communityPostsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TravelPost post = snapshot.getValue(TravelPost.class);
+                if (post != null) {
+                    // Use the post data
+                    Toast.makeText(DestinationActivity.this, "Fetched Community Post: " + post.getDestination(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(DestinationActivity.this, "Failed to fetch community post", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Retrieve data from travelLogs
+        DatabaseReference travelLogsRef = FirebaseDatabase.getInstance()
+                .getReference("travelLogs")
+                .child(currentUser.getUid())
+                .child(commonId);
+        travelLogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TravelPost post = snapshot.getValue(TravelPost.class);
+                if (post != null) {
+                    // Use the post data
+                    Toast.makeText(DestinationActivity.this, "Fetched Travel Log: " + post.getDestination(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(DestinationActivity.this, "Failed to fetch travel log", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     /**
      * Initializes UI elements and sets default visibility.
      */

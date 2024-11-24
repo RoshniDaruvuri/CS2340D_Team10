@@ -243,6 +243,7 @@ public class TestCases {
     public void testTravelPostDisplay() {
         // Arrange
         TravelPost post = new TravelPost(
+                "uniqueId123",
                 "2024-11-01",
                 "2024-11-05",
                 "Paris",
@@ -282,7 +283,7 @@ public class TestCases {
     @Test
     public void testTravelDuration() {
         // Arrange
-        TravelPost post = new TravelPost("2024-12-01", "2024-12-10", "Italy", "Villa", "Pasta House", "Car", "Exploring Tuscany");
+        TravelPost post = new TravelPost("1", "2024-12-01", "2024-12-10", "Italy", "Villa", "Pasta House", "Car", "Exploring Tuscany");
 
         // Act
         String durationInfo = post.getDestination() + " ("
@@ -297,7 +298,7 @@ public class TestCases {
     @Test
     public void testPartialTravelPostInfo() {
         // Arrange
-        TravelPost post = new TravelPost("2024-11-15", "2024-11-20", "Tokyo", "Ryokan", "Sushi Bar", "Train", null);
+        TravelPost post = new TravelPost("1", "2024-11-15", "2024-11-20", "Tokyo", "Ryokan", "Sushi Bar", "Train", null);
 
         // Act
         String partialInfo = post.getDestination() + ": "
@@ -316,7 +317,7 @@ public class TestCases {
     @Test
     public void testEmptyFields() {
         // Arrange
-        TravelPost post = new TravelPost("", "", "", "", "", "", "");
+        TravelPost post = new TravelPost("", "", "", "", "", "", "", "");
 
         // Assert
         assertTrue("Start date should be empty", post.getStartDate().isEmpty());
@@ -331,7 +332,7 @@ public class TestCases {
     @Test
     public void testSingleDayTrip() {
         // Arrange
-        TravelPost post = new TravelPost("2024-11-01", "2024-11-01", "Berlin", "Hostel", "Currywurst Stand", "Bike", "Visiting museums.");
+        TravelPost post = new TravelPost("1", "2024-11-01", "2024-11-01", "Berlin", "Hostel", "Currywurst Stand", "Bike", "Visiting museums.");
 
         // Act
         String singleDayInfo = post.getDestination() + ": "
@@ -345,6 +346,7 @@ public class TestCases {
     public void testFullTravelPostDetails() {
         // Arrange
         TravelPost post = new TravelPost(
+                "1",
                 "2024-12-10",
                 "2024-12-20",
                 "Hawaii",
@@ -376,7 +378,7 @@ public class TestCases {
     @Test
     public void testNullFields() {
         // Arrange
-        TravelPost post = new TravelPost("2024-10-01", "2024-10-10", "Paris", null, null, "Train", null);
+        TravelPost post = new TravelPost("0","2024-10-01", "2024-10-10", "Paris", null, null, "Train", null);
 
         // Act
         String details = "Destination: " + post.getDestination() + "\n"
@@ -399,7 +401,7 @@ public class TestCases {
     public void testLongNotes() {
         // Arrange
         String longNotes = "Visited multiple landmarks: Eiffel Tower, Louvre, Montmartre, and took a boat tour along the Seine River.";
-        TravelPost post = new TravelPost("2024-08-01", "2024-08-05", "Paris", "Hotel", "French Bistro", "Metro", longNotes);
+        TravelPost post = new TravelPost("1", "2024-08-01", "2024-08-05", "Paris", "Hotel", "French Bistro", "Metro", longNotes);
 
         // Act
         String extractedNotes = post.getNotes();
@@ -413,8 +415,8 @@ public class TestCases {
     @Test
     public void testMultipleTravelPosts() {
         // Arrange
-        TravelPost post1 = new TravelPost("2024-07-10", "2024-07-15", "Rome", "Hotel", "Pizza Place", "Bus", "Exploring the Colosseum.");
-        TravelPost post2 = new TravelPost("2024-08-10", "2024-08-20", "Barcelona", "Hostel", "Tapas Bar", "Train", "Enjoying the beach and Gaudí's architecture.");
+        TravelPost post1 = new TravelPost("0","2024-07-10", "2024-07-15", "Rome", "Hotel", "Pizza Place", "Bus", "Exploring the Colosseum.");
+        TravelPost post2 = new TravelPost("1","2024-08-10", "2024-08-20", "Barcelona", "Hostel", "Tapas Bar", "Train", "Enjoying the beach and Gaudí's architecture.");
 
         // Act & Assert
         assertEquals("First travel post destination should be Rome", "Rome", post1.getDestination());
@@ -424,7 +426,7 @@ public class TestCases {
     @Test
     public void testTransportationField() {
         // Arrange
-        TravelPost post = new TravelPost("2024-06-15", "2024-06-20", "Sydney", "Apartment", "Seafood Market", "Ferry", "Enjoying the harbor.");
+        TravelPost post = new TravelPost("0","2024-06-15", "2024-06-20", "Sydney", "Apartment", "Seafood Market", "Ferry", "Enjoying the harbor.");
 
         // Act
         String transportation = post.getTransportation();
@@ -436,7 +438,7 @@ public class TestCases {
     @Test
     public void testTravelSummaryConcatenation() {
         // Arrange
-        TravelPost post = new TravelPost("2024-03-01", "2024-03-05", "Berlin", "Airbnb", "Local Cafe", "Bike", "Visiting historical sites.");
+        TravelPost post = new TravelPost("2","2024-03-01", "2024-03-05", "Berlin", "Airbnb", "Local Cafe", "Bike", "Visiting historical sites.");
 
         // Act
         String travelSummary = "Traveling to " + post.getDestination() + " from " + post.getStartDate() + " to " + post.getEndDate()
@@ -452,7 +454,7 @@ public class TestCases {
     @Test
     public void testDestinationAndNotesCombination() {
         // Arrange
-        TravelPost post = new TravelPost("2024-06-10", "2024-06-20", "Paris", "Hotel", "French Bistro", "Metro", "Visiting the Eiffel Tower and museums.");
+        TravelPost post = new TravelPost("0","2024-06-10", "2024-06-20", "Paris", "Hotel", "French Bistro", "Metro", "Visiting the Eiffel Tower and museums.");
 
         // Act
         String destinationAndNotes = post.getDestination() + ": " + post.getNotes();

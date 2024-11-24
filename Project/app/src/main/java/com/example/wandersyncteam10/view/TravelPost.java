@@ -1,10 +1,11 @@
 package com.example.wandersyncteam10.view;
 
 /**
- * Represents a travel post containing details about a trip, including dates,
- * destination, accommodation, dining, transportation, and notes
+ * Represents a travel post containing details about a trip, including a common ID,
+ * dates, destination, accommodation, dining, transportation, and notes.
  */
 public class TravelPost {
+    private String commonId;
     private String startDate;
     private String endDate;
     private String destination;
@@ -21,7 +22,9 @@ public class TravelPost {
     }
 
     /**
-     * Constructs a TravelPost instance with specified details
+     * Constructs a TravelPost instance with specified details.
+     *
+     * @param commonId       a unique identifier for the post
      * @param startDate      the start date of the trip
      * @param endDate        the end date of the trip
      * @param destination    the destination of the trip
@@ -30,8 +33,9 @@ public class TravelPost {
      * @param transportation the transportation details for the trip
      * @param notes          additional notes about the trip
      */
-    public TravelPost(String startDate, String endDate, String destination,
+    public TravelPost(String commonId, String startDate, String endDate, String destination,
                       String accommodation, String dining, String transportation, String notes) {
+        this.commonId = commonId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.destination = destination;
@@ -41,59 +45,69 @@ public class TravelPost {
         this.notes = notes;
     }
 
-    /**
-     * Gets the start date of the trip
-     * @return the start date
-     */
+    // Getters
+    public String getCommonId() {
+        return commonId;
+    }
+
     public String getStartDate() {
         return startDate;
     }
 
-    /**
-     * Gets the end date of the trip
-     * @return the end date
-     */
     public String getEndDate() {
         return endDate;
     }
 
-    /**
-     * Gets the destination of the trip
-     * @return the destination
-     */
     public String getDestination() {
         return destination;
     }
 
-    /**
-     * Gets the accommodation details for the trip
-     * @return the accommodation details
-     */
     public String getAccommodation() {
         return accommodation;
     }
 
-    /**
-     * Gets the dining details for the trip
-     * @return the dining details
-     */
     public String getDining() {
         return dining;
     }
 
-    /**
-     * Gets the transportation details for the trip
-     * @return the transportation details
-     */
     public String getTransportation() {
         return transportation;
     }
 
-    /**
-     * Gets additional notes about the trip
-     * @return the notes
-     */
     public String getNotes() {
         return notes;
+    }
+
+    // Setters
+    public void setCommonId(String commonId) {
+        this.commonId = commonId;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setAccommodation(String accommodation) {
+        this.accommodation = accommodation;
+    }
+
+    public void setDining(String dining) {
+        this.dining = dining;
+    }
+
+    public void setTransportation(String transportation) {
+        this.transportation = transportation;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
