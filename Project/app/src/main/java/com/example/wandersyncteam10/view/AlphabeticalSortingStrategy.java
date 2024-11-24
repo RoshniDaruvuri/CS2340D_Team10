@@ -1,5 +1,8 @@
 package com.example.wandersyncteam10.view;
 
+import com.example.wandersyncteam10.Model.AccommodationsLog;
+import com.example.wandersyncteam10.Model.SortingStrategy;
+
 import java.util.Collections;
 import java.util.List;
 

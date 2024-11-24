@@ -1,4 +1,4 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.Model;
 
 /**
  * Represents a single note object.

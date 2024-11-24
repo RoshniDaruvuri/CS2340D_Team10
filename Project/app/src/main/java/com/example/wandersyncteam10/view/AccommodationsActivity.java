@@ -17,6 +17,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.wandersyncteam10.Model.AccommodationsLog;
+import com.example.wandersyncteam10.Model.SortingStrategy;
 import com.example.wandersyncteam10.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

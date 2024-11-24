@@ -1,4 +1,4 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.Model;
 
 import android.content.Context;
 import android.util.Log;

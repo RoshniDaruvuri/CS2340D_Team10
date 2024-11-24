@@ -1,6 +1,9 @@
 package com.example.wandersyncteam10.view;
 
-//import com.example.wandersyncteam10.view.AccommodationsLog;
+//import com.example.wandersyncteam10.Model.AccommodationsLog;
+import com.example.wandersyncteam10.Model.AccommodationsLog;
+import com.example.wandersyncteam10.Model.SortingStrategy;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;

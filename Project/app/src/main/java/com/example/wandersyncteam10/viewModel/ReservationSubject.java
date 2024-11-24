@@ -1,4 +1,6 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.viewModel;
+
+import com.example.wandersyncteam10.Model.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;
