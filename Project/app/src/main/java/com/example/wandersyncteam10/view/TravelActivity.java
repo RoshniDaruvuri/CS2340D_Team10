@@ -108,10 +108,10 @@ public class TravelActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(TravelActivity.this, TravelActivity.class);
-            startActivity(intent);
-        });
+//        findViewById(R.id.button6).setOnClickListener(view -> {
+//            Intent intent = new Intent(TravelActivity.this, TravelActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     /**

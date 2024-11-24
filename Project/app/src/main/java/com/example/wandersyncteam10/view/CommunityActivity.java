@@ -96,10 +96,6 @@ public class CommunityActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        findViewById(R.id.button6).setOnClickListener(view -> {
-            Intent intent = new Intent(CommunityActivity.this, TravelActivity.class);
-            startActivity(intent);
-        });
     }
 
     /**
