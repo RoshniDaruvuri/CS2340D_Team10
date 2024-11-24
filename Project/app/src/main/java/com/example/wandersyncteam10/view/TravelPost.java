@@ -5,7 +5,7 @@ package com.example.wandersyncteam10.view;
  * dates, destination, accommodation, dining, transportation, and notes.
  */
 public class TravelPost {
-    private String commonId;
+    private String commonId; //the id to connect the community database and destination database
     private String startDate;
     private String endDate;
     private String destination;
