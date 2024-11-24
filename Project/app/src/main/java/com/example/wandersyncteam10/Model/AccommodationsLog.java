@@ -1,4 +1,4 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.Model;
 
 /**
  * Represents an accommodation log entry with details such as check-in, check-out, location, room number, and room type.

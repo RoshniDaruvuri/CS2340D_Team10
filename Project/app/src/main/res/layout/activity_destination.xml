@@ -50,29 +50,29 @@
         app:layout_constraintHorizontal_bias="0.5"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
-    <EditText
-        android:id="@+id/start_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Start Date" />
-    <EditText
-        android:id="@+id/end_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End Date" />
-    <Button
-        android:id="@+id/calculate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calculate Duration"
-        android:visibility="gone"/>
-    <EditText
-        android:id="@+id/duration_outcome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Duration Outcome"
-        android:inputType="none"
-        android:focusable="false" />
+        <EditText
+            android:id="@+id/start_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Start Date" />
+        <EditText
+            android:id="@+id/end_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="End Date" />
+        <Button
+            android:id="@+id/calculate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calculate Duration"
+            android:visibility="gone"/>
+        <EditText
+            android:id="@+id/duration_outcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Duration Outcome"
+            android:inputType="none"
+            android:focusable="false" />
 
     </LinearLayout>
 
@@ -205,6 +205,7 @@
         app:layout_constraintHorizontal_weight="1" />
 
     <!-- Fifth button -->
+
     <Button
         android:id="@+id/button5"
         android:layout_width="0dp"
@@ -214,6 +215,5 @@
         app:layout_constraintStart_toEndOf="@id/button4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
-    
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,19 +1,28 @@
 package com.example.wandersyncteam10.view;
 
+import com.example.wandersyncteam10.Model.Note;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wandersyncteam10.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth; // Added import
+import com.google.firebase.auth.FirebaseUser; // Added import
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,11 +34,13 @@ import java.util.Set;
  */
 public class NotesActivity extends AppCompatActivity {
 
-    // NotesActivity has two files must fix it for the next Sprint
+    private static final String TAG = "NotesActivity";
+
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth; // FirebaseAuth instance
     private LinearLayout notesContainer;
     private Set<String> notesSet;
-    private String userId = "unique_user_id"; // Replace this with the actual user ID
+    private String userId; // Dynamic user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +55,24 @@ public class NotesActivity extends AppCompatActivity {
 
         notesContainer = findViewById(R.id.notesContainer);
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance(); // Initialize FirebaseAuth
         notesSet = new HashSet<>();
 
-        // Restore notes from Firestore
-        restoreNotes();
+        // Get current user
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            userId = currentUser.getUid();
+            // Restore notes from Firestore
+            restoreNotes();
+        } else {
+            // Handle the case where the user is not authenticated
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            // Redirect to login screen or handle appropriately
+            Intent intent = new Intent(NotesActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         findViewById(R.id.backButton).setOnClickListener(view -> {
             Intent intent = new Intent(NotesActivity.this, LogisticsActivity.class);
@@ -90,6 +115,8 @@ public class NotesActivity extends AppCompatActivity {
 
             inputText.setText(""); // Clear the EditText
             findViewById(R.id.inputLayout).setVisibility(View.GONE); // Hide the layout
+        } else {
+            Toast.makeText(this, "Note cannot be empty", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -102,16 +129,18 @@ public class NotesActivity extends AppCompatActivity {
         // Create a note object
         Note newNote = new Note(note);
 
-        // Save to Firestore under a specific user's collection
+        // Save to Firestore under the authenticated user's collection
         db.collection("users")
                 .document(userId)
                 .collection("notes")
                 .add(newNote)
                 .addOnSuccessListener(documentReference -> {
-                    // Optionally handle success
+                    Log.d(TAG, "Note successfully written with ID: " + documentReference.getId());
+                    Toast.makeText(NotesActivity.this, "Note saved", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    // Optionally handle failure
+                    Log.w(TAG, "Error adding note", e);
+                    Toast.makeText(NotesActivity.this, "Failed to save note", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -125,15 +154,27 @@ public class NotesActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        notesContainer.removeAllViews(); // Clear existing views
                         for (DocumentSnapshot document : task.getResult()) {
-                            String noteText = document.toObject(Note.class).getText();
-                            // Create a new TextView for each saved note
-                            TextView noteTextView = new TextView(this);
-                            noteTextView.setText(noteText);
-                            noteTextView.setTextSize(16);
-                            noteTextView.setPadding(16, 16, 16, 16);
-                            notesContainer.addView(noteTextView);
+                            Note note = document.toObject(Note.class);
+                            if (note != null && note.getText() != null) {
+                                String noteText = note.getText();
+                                // Avoid adding duplicate notes
+                                if (!notesSet.contains(noteText)) {
+                                    // Create a new TextView for each saved note
+                                    TextView noteTextView = new TextView(this);
+                                    noteTextView.setText(noteText);
+                                    noteTextView.setTextSize(16);
+                                    noteTextView.setPadding(16, 16, 16, 16);
+                                    notesContainer.addView(noteTextView);
+                                    notesSet.add(noteText);
+                                }
+                            }
                         }
+                        Log.d(TAG, "Notes successfully restored");
+                    } else {
+                        Log.w(TAG, "Error getting notes.", task.getException());
+                        Toast.makeText(this, "Failed to load notes", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

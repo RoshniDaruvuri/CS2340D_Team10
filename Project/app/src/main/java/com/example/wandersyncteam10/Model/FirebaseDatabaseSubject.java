@@ -1,7 +1,8 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.Model;
 
 import androidx.annotation.NonNull;
 
+import com.example.wandersyncteam10.viewModel.DatabaseObserver;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

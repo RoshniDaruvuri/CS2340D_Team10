@@ -1,6 +1,7 @@
-package com.example.wandersyncteam10.view;
+package com.example.wandersyncteam10.Model;
 
 import android.util.Log;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 

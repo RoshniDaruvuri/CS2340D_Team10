@@ -1,23 +1,15 @@
 package com.example.wandersyncteam10;
 
-import com.example.wandersyncteam10.view.AccommodationsActivity;
-import com.example.wandersyncteam10.view.AccommodationsDatabase;
-import com.example.wandersyncteam10.view.AccommodationsLog;
-import com.example.wandersyncteam10.view.DiningActivity;
-import com.example.wandersyncteam10.view.Reservation;
-import com.example.wandersyncteam10.view.TravelLog;
-import com.example.wandersyncteam10.view.TravelPost;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.wandersyncteam10.Model.AccommodationsLog;
+import com.example.wandersyncteam10.Model.Reservation;
+import com.example.wandersyncteam10.Model.TravelLog;
+import com.example.wandersyncteam10.Model.TravelPost;
 
-import org.junit.Before;
 import org.junit.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.*;
-
-import android.content.Context;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;

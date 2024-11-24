@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.wandersyncteam10.Model.Reservation;
 import com.example.wandersyncteam10.R;
+import com.example.wandersyncteam10.viewModel.ReservationObserver;
+import com.example.wandersyncteam10.viewModel.ReservationSubject;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
