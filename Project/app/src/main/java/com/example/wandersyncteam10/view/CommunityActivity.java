@@ -1,3 +1,5 @@
+
+
 package com.example.wandersyncteam10.view;
 
 import android.content.Intent;
@@ -14,6 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class CommunityActivity extends AppCompatActivity {
 
@@ -135,7 +140,6 @@ public class CommunityActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Validates the input fields for the travel post.
      *
@@ -150,9 +154,31 @@ public class CommunityActivity extends AppCompatActivity {
     private boolean validateInput(String startDate, String endDate,
                                   String destination, String accommodation,
                                   String dining, String transportation) {
-        return !startDate.isEmpty() && !endDate.isEmpty()
-                && !destination.isEmpty() && !accommodation.isEmpty()
-                && !dining.isEmpty() && !transportation.isEmpty();
+        // Check if the destination is empty
+        if (destination.isEmpty()) {
+            Toast.makeText(this, "Destination cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Check if any of the fields are empty
+        if (startDate.isEmpty() || endDate.isEmpty() || accommodation.isEmpty() || dining.isEmpty() || transportation.isEmpty()) {
+            Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Check if the start date is before the end date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Use appropriate date format for your input
+        try {
+            if (sdf.parse(startDate).after(sdf.parse(endDate))) {
+                Toast.makeText(this, "Start date cannot be after end date.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (ParseException e) {
+            Toast.makeText(this, "Invalid date format. Please use YYYY-MM-DD.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     /**
