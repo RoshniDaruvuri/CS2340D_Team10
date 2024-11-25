@@ -139,7 +139,7 @@ public class AccommodationsActivity extends AppCompatActivity {
 //        findViewById(R.id.button6).setOnClickListener(view -> {
 //            Intent intent = new Intent(AccommodationsActivity.this, TravelActivity.class);
 //            startActivity(intent);
-//        });
+//      });
     }
 
     /**

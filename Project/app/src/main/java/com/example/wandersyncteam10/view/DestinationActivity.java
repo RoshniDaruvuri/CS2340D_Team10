@@ -212,7 +212,7 @@ public class DestinationActivity extends AppCompatActivity {
 //        findViewById(R.id.button6).setOnClickListener(view -> {
 //            Intent intent = new Intent(DestinationActivity.this, TravelActivity.class);
 //            startActivity(intent);
-//        });
+//      });
     }
 
 
@@ -260,6 +260,13 @@ public class DestinationActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Saves a trip to Firestore with the specified destination and date.
+     *
+     * @param destination the name of the destination to log
+     * @param date the date of the trip in a string format
+     */
     private void saveTripToFirestore(String destination, String date) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
